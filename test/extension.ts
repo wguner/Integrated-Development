@@ -1,3 +1,5 @@
+import { TextDocumentChangeEvent } from 'vscode';
+
 import('vscode')
 
 const { create } = require('domain');
@@ -45,10 +47,8 @@ function onDidCreateFiles()
 }
 function changeTextDocument(e: TextDocumentChangeEvent)
 {
-	console.log("Document Changed");
-	vscode.window.showInformationMessage('Document changed!');
-{
-	console.log("Document Changed");
+	var pathToFile = e.document.uri.fsPath;
+	console.log("Document Changed: " + pathToFile);
 	vscode.window.showInformationMessage('Document changed!');
 }
 exports.activate = activate;
