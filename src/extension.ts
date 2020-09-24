@@ -20,28 +20,49 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Hello World from Integrated Development tools!');
 	});
 
+	//Events handlers are registered when the extension is loaded.
 	vscode.workspace.onWillSaveTextDocument(changeTextDocument);
 	vscode.workspace.onDidCreateFiles(onDidCreateFiles);
 	vscode.workspace.onWillDeleteFiles(deleteTextDocument);
+	
 	context.subscriptions.push(disposable);
 }
 
+/*
+*Name: onDidCreateFiles
+*Parameters: None.
+*Description: Function is triggered when a file is created. 
+*	Currently prints a log and notification when a file is created.
+*/ 
 export function onDidCreateFiles()
 {
 	console.log("File Created");
 	vscode.window.showInformationMessage("File Created");
 }
 
+/*
+*Name: changeTextDocument
+*Parameters: TextDocumentWillSaveEvent
+*Description: Function is triggered when a file is saved.
+*	Currently prints a log and notification when a file is saved.
+*/ 
 export function changeTextDocument(e: vscode.TextDocumentWillSaveEvent)
 {
 	console.log("Document Changed");
 	vscode.window.showInformationMessage('Document changed!');
 }
 
+/*
+*Name: deleteTextDocument
+*Parameters: FileWillDeleteEvent
+*Description:  Function is triggered when a filed is deleted.
+*	Currently prints a log and notification when a file is deleted.
+*/ 
 export function deleteTextDocument(e: vscode.FileWillDeleteEvent)
 {
 	console.log("Document Deleted");
 	vscode.window.showInformationMessage('Document Deleted!');
 }
+
 // this method is called when your extension is deactivated
 export function deactivate() {}
