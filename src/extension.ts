@@ -1,7 +1,6 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -23,24 +22,33 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.workspace.onWillSaveTextDocument(changeTextDocument);
 	vscode.workspace.onDidCreateFiles(onDidCreateFiles);
 	vscode.workspace.onWillDeleteFiles(deleteTextDocument);
+	vscode.workspace.onWillRenameFiles(onDidRenameFiles);
 	context.subscriptions.push(disposable);
 }
-
-export function onDidCreateFiles()
+export function onDidRenameFiles(e: vscode.FileRenameEvent)
+{
+	console.log("File Renamed");
+	//TODO: git add . "file name"
+	vscode.window.showInformationMessage("File Renamed");
+}
+export function onDidCreateFiles(e: vscode.FileCreateEvent)
 {
 	console.log("File Created");
+	//TODO: git add . "file name"
 	vscode.window.showInformationMessage("File Created");
 }
 
 export function changeTextDocument(e: vscode.TextDocumentWillSaveEvent)
 {
 	console.log("Document Changed");
+	// TODO: git edit . "file name"
 	vscode.window.showInformationMessage('Document changed!');
 }
 
 export function deleteTextDocument(e: vscode.FileWillDeleteEvent)
 {
 	console.log("Document Deleted");
+	//TODO: git rm "file name"
 	vscode.window.showInformationMessage('Document Deleted!');
 }
 // this method is called when your extension is deactivated

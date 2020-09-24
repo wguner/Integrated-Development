@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deactivate = exports.deleteTextDocument = exports.changeTextDocument = exports.onDidCreateFiles = exports.activate = void 0;
+exports.deactivate = exports.deleteTextDocument = exports.changeTextDocument = exports.onDidCreateFiles = exports.onDidRenameFiles = exports.activate = void 0;
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
@@ -21,21 +21,31 @@ function activate(context) {
     vscode.workspace.onWillSaveTextDocument(changeTextDocument);
     vscode.workspace.onDidCreateFiles(onDidCreateFiles);
     vscode.workspace.onWillDeleteFiles(deleteTextDocument);
+    vscode.workspace.onWillRenameFiles(onDidRenameFiles);
     context.subscriptions.push(disposable);
 }
 exports.activate = activate;
-function onDidCreateFiles() {
+function onDidRenameFiles(e) {
+    console.log("File Renamed");
+    //TODO: git add . "file name"
+    vscode.window.showInformationMessage("File Renamed");
+}
+exports.onDidRenameFiles = onDidRenameFiles;
+function onDidCreateFiles(e) {
     console.log("File Created");
+    //TODO: git add . "file name"
     vscode.window.showInformationMessage("File Created");
 }
 exports.onDidCreateFiles = onDidCreateFiles;
 function changeTextDocument(e) {
     console.log("Document Changed");
+    // TODO: git edit . "file name"
     vscode.window.showInformationMessage('Document changed!');
 }
 exports.changeTextDocument = changeTextDocument;
 function deleteTextDocument(e) {
     console.log("Document Deleted");
+    //TODO: git rm "file name"
     vscode.window.showInformationMessage('Document Deleted!');
 }
 exports.deleteTextDocument = deleteTextDocument;
