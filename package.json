@@ -1,4 +1,18 @@
 {
+	"commands" : {
+		"git commands": [
+			{
+			"add": "git.add",
+			"commit" : "git.commit",
+			"push" : "git.push",
+			"delete" : "git.rm",
+			"edit" : "git.edit",
+			"pull" : "git.pull",
+			"merge" : "git.merge"
+			}
+		]
+	},
+
 	"name": "test",
 	"displayName": "test",
 	"description": "test",
