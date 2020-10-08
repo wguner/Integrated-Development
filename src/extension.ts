@@ -1,7 +1,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-
+var fs = require('fs');
+const path = require('path');
+const gitSCM = vscode.scm.createSourceControl('git', 'Git');
+const index = gitSCM.createResourceGroup('index', 'Index');
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -38,8 +41,37 @@ export function onDidCreateFiles()
 {
 	console.log("File Created");
 	vscode.window.showInformationMessage("File Created");
-}
 
+	var folderPath = vscode.workspace.rootPath;
+	let command = "/d/GitLab/CPTS_421/cpts-421/cpts-421/";
+
+	
+	const exec = require('child_process').exec;
+	var out = null;
+	
+	exec("git add .", {cwd:folderPath}, (err: any, stdout: any, stderr: any) => {
+		out = stdout;
+
+		if (err) {
+			console.log("Error: " + stderr);
+			 return;
+		}
+		console.log("After exec: " + stdout);
+	});
+	
+	console.log("out after exec: " + out);
+	
+	/*
+	var runGit =function(){
+	console.log("runGit() start");
+	exec('C:\\Program Files\\Git\\git-bash.exe',  function() {  
+		console.log("runGit() inside function now");   
+		});  
+	};
+
+	runGit();*/
+}
+// Process Execution API (string path, string addfile)
 /*
 *Name: changeTextDocument
 *Parameters: TextDocumentWillSaveEvent
@@ -62,6 +94,21 @@ export function deleteTextDocument(e: vscode.FileWillDeleteEvent)
 {
 	console.log("Document Deleted");
 	vscode.window.showInformationMessage('Document Deleted!');
+	let folderPath = vscode.workspace.rootPath;
+	let command = folderPath;
+	console.log(command);
+	var exec = require('child_process').execFile;
+	var out = null;
+	//exec("git rm", (cwd:dolfe), (err: any, stdout: any, stderr: any) => {
+		//out = stdout;
+
+	//	if (err) {
+		//	console.log("Error: " + stderr);
+	//		return;
+		//}
+	//});
+	//console.log("out after exec: ")
+
 }
 
 // this method is called when your extension is deactivated
