@@ -43,16 +43,27 @@ export function onDidCreateFiles()
 	vscode.window.showInformationMessage("File Created");
 
 	var folderPath = vscode.workspace.rootPath;
+<<<<<<< HEAD
 	
 	const exec = require('child_process').exec;
 	const exec2 = require('child_process').exec;
 	var out = null;
 	
 	var output = exec("git log", {cwd:folderPath}, (err: any, stdout: any, stderr: any) => {
+=======
+	let command = "/d/GitLab/CPTS_421/cpts-421/cpts-421/";
+
+	
+	const exec = require('child_process').exec;
+	var out = null;
+	
+	exec("git add .", {cwd:folderPath}, (err: any, stdout: any, stderr: any) => {
+>>>>>>> f77ff17cde4ed1bd5120ee3683ba3858f2d3f534
 		out = stdout;
 
 		if (err) {
 			console.log("Error: " + stderr);
+<<<<<<< HEAD
 		}
 		console.log(stdout);
 	});
@@ -61,6 +72,15 @@ export function onDidCreateFiles()
 	console.log("out after exec: " + output);
 	var json = JSON.parse(output);
 	console.log("JSON parsed: " + output);*/
+=======
+			 return;
+		}
+		console.log("After exec: " + stdout);
+	});
+	
+	console.log("out after exec: " + out);
+	
+>>>>>>> f77ff17cde4ed1bd5120ee3683ba3858f2d3f534
 	/*
 	var runGit =function(){
 	console.log("runGit() start");
@@ -111,6 +131,7 @@ export function deleteTextDocument(e: vscode.FileWillDeleteEvent)
 	vscode.window.showInformationMessage('Document Deleted!');
 	let folderPath = vscode.workspace.rootPath;
 	let command = folderPath;
+<<<<<<< HEAD
 	var exec = require('child_process').exec;
 	var out = null;
 	exec("git add .", {cwd: folderPath}, (err: any, stdout: any, stderr: any) => {
@@ -122,6 +143,20 @@ export function deleteTextDocument(e: vscode.FileWillDeleteEvent)
 		}
 		console.log("out after exec: " + stdout);
 	});
+=======
+	console.log(command);
+	var exec = require('child_process').execFile;
+	var out = null;
+	//exec("git rm", (cwd:dolfe), (err: any, stdout: any, stderr: any) => {
+		//out = stdout;
+
+	//	if (err) {
+		//	console.log("Error: " + stderr);
+	//		return;
+		//}
+	//});
+	//console.log("out after exec: ")
+>>>>>>> f77ff17cde4ed1bd5120ee3683ba3858f2d3f534
 
 }
 
