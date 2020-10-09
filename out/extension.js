@@ -1,20 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deactivate = exports.testGit = exports.deleteFile = exports.changeTextDocument = exports.fileCreated = exports.renameFile = exports.activate = void 0;
+exports.deactivate = exports.deleteTextDocument = exports.changeTextDocument = exports.onDidCreateFiles = exports.activate = void 0;
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require("vscode");
+var fs = require('fs');
+const path = require('path');
 const gitSCM = vscode.scm.createSourceControl('git', 'Git');
-const index = gitSCM.createResourceGroup('index', "Index");
-const workingTree = gitSCM.createResourceGroup('workingTree', 'Changes');
-function createResourceUri(relativePath) {
-    const absolutePath = path.join(vscode.workspace.rootPath, relativePath);
-    return vscode.Uri.file(absolutePath);
-}
-//workingTree.resourceStates = [
-//	{ resourceUri: createResourceUri('git  .')}
-////	{ resourceUri: }
-//]//;
+const index = gitSCM.createResourceGroup('index', 'Index');
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 function activate(context) {
@@ -29,43 +22,96 @@ function activate(context) {
         // Display a message box to the user
         vscode.window.showInformationMessage('Hello World from Integrated Development tools!');
     });
+    //Events handlers are registered when the extension is loaded.
     vscode.workspace.onWillSaveTextDocument(changeTextDocument);
-    vscode.workspace.onWillCreateFiles(fileCreated);
-    vscode.workspace.onWillDeleteFiles(deleteFile);
-    vscode.workspace.onWillRenameFiles(renameFile);
-    testGit();
+    vscode.workspace.onDidCreateFiles(onDidCreateFiles);
+    vscode.workspace.onWillDeleteFiles(deleteTextDocument);
     context.subscriptions.push(disposable);
 }
 exports.activate = activate;
-function renameFile(e) {
-    console.log("File Renamed");
-    //TODO: git add . "file name"
-    vscode.window.showInformationMessage("File Renamed");
-}
-exports.renameFile = renameFile;
-function fileCreated(e) {
-    console.log("File Created onWillCreate");
-    //TODO: git add . "file name"
+/*
+*Name: onDidCreateFiles
+*Parameters: None.
+*Description: Function is triggered when a file is created.
+*	Currently prints a log and notification when a file is created.
+*/
+function onDidCreateFiles() {
+    console.log("File Created");
     vscode.window.showInformationMessage("File Created");
+    var folderPath = vscode.workspace.rootPath;
+    const exec = require('child_process').exec;
+    const exec2 = require('child_process').exec;
+    var out = null;
+    var output = exec("git log", { cwd: folderPath }, (err, stdout, stderr) => {
+        out = stdout;
+        if (err) {
+            console.log("Error: " + stderr);
+        }
+        console.log(stdout);
+    });
+    //console.log(output.stdout);
+    /*
+    console.log("out after exec: " + output);
+    var json = JSON.parse(output);
+    console.log("JSON parsed: " + output);*/
+    /*
+    var runGit =function(){
+    console.log("runGit() start");
+    exec('C:\\Program Files\\Git\\git-bash.exe',  function() {
+        console.log("runGit() inside function now");
+        });
+    };
+
+    runGit();*/
 }
-exports.fileCreated = fileCreated;
+exports.onDidCreateFiles = onDidCreateFiles;
+// Process Execution API (string path, string addfile)
+/*
+*Name: changeTextDocument
+*Parameters: TextDocumentWillSaveEvent
+*Description: Function is triggered when a file is saved.
+*	Currently prints a log and notification when a file is saved.
+*/
 function changeTextDocument(e) {
     console.log("Document Changed");
-    // TODO: git edit . "file name"
     vscode.window.showInformationMessage('Document changed!');
+    var folderPath = vscode.workspace.rootPath;
+    const exec = require('child_process').exec;
+    const exec2 = require('child_process').exec;
+    var out = null;
+    var output = exec("git add . ", { cwd: folderPath }, (err, stdout, stderr) => {
+        out = stdout;
+        if (err) {
+            console.log("Error: " + stderr);
+        }
+        console.log(stdout);
+    });
 }
 exports.changeTextDocument = changeTextDocument;
-function deleteFile(e) {
-    console.log("File Deleted");
-    //TODO: git rm "file name"
-    vscode.window.showInformationMessage('File Deleted!');
+/*
+*Name: deleteTextDocument
+*Parameters: FileWillDeleteEvent
+*Description:  Function is triggered when a filed is deleted.
+*	Currently prints a log and notification when a file is deleted.
+*/
+function deleteTextDocument(e) {
+    //e.files[0];
+    console.log("Document Deleted");
+    vscode.window.showInformationMessage('Document Deleted!');
+    let folderPath = vscode.workspace.rootPath;
+    let command = folderPath;
+    var exec = require('child_process').exec;
+    var out = null;
+    exec("git add .", { cwd: folderPath }, (err, stdout, stderr) => {
+        out = stdout;
+        if (err) {
+            console.log("Error: " + stderr);
+            return;
+        }
+        console.log("out after exec: " + stdout);
+    });
 }
-exports.deleteFile = deleteFile;
-function testGit() {
-    const { exec } = require("child_process");
-    exec('C:\Program Files\Git\cmd.exe');
-}
-exports.testGit = testGit;
+exports.deleteTextDocument = deleteTextDocument;
 // this method is called when your extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;

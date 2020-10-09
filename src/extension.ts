@@ -54,9 +54,9 @@ export function onDidCreateFiles()
 		if (err) {
 			console.log("Error: " + stderr);
 		}
-		//console.log(stdout);
+		console.log(stdout);
 	});
-	console.log(output.stdout);
+	//console.log(output.stdout);
 	/*
 	console.log("out after exec: " + output);
 	var json = JSON.parse(output);
@@ -82,6 +82,20 @@ export function changeTextDocument(e: vscode.TextDocumentWillSaveEvent)
 {
 	console.log("Document Changed");
 	vscode.window.showInformationMessage('Document changed!');
+	var folderPath = vscode.workspace.rootPath;
+	
+	const exec = require('child_process').exec;
+	const exec2 = require('child_process').exec;
+	var out = null;
+	
+	var output = exec("git add . ", {cwd:folderPath}, (err: any, stdout: any, stderr: any) => {
+		out = stdout;
+
+		if (err) {
+			console.log("Error: " + stderr);
+		}
+		console.log(stdout);
+	});
 }
 
 /*
