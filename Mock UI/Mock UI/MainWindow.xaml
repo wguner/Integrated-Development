@@ -39,7 +39,11 @@
                 <CheckBox Content="Day" HorizontalAlignment="Left" Height="22" Margin="162.8,35,0,0" VerticalAlignment="Top" Width="84" Grid.Column="1"/>
                 <CheckBox Content="Month" HorizontalAlignment="Left" Height="22" Margin="163,62,0,0" VerticalAlignment="Top" Width="77" Grid.Column="1"/>
                 <CheckBox Content="Time" HorizontalAlignment="Left" Height="21" Margin="163,116,0,0" VerticalAlignment="Top" Width="74" Grid.Column="1"/>
+<<<<<<< HEAD
                 <CheckBox Content="Email" HorizontalAlignment="Left" Height="24" Margin="163,142,0,0" VerticalAlignment="Top" Width="109" Grid.Column="1"/>
+=======
+                <CheckBox Content="Email" HorizontalAlignment="Left" Height="24" Margin="163,142,0,0" VerticalAlignment="Top" Width="109"  Grid.Column="1"/>
+>>>>>>> 6646d5382a1f87b0e00059ca99752925e9e34797
                 <CheckBox Content="Recent Commit" HorizontalAlignment="Left" Height="15" Margin="163,171,0,0" VerticalAlignment="Top" Width="109" Grid.Column="1"/>
                 <CheckBox Content="Year" Grid.Column="1" HorizontalAlignment="Left" Margin="163,89,0,0" VerticalAlignment="Top"/>
             </Grid>
