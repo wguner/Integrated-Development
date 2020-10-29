@@ -1,6 +1,9 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
+import { parse } from 'path';
 import * as vscode from 'vscode';
+const packageJson = require('../package.json');
+
 var fs = require('fs');
 const path = require('path');
 const gitSCM = vscode.scm.createSourceControl('git', 'Git');
@@ -37,41 +40,36 @@ export function activate(context: vscode.ExtensionContext) {
 *Description: Function is triggered when a file is created. 
 *	Currently prints a log and notification when a file is created.
 */ 
-export function onDidCreateFiles()
+export function onDidCreateFiles(e: vscode.FileCreateEvent)
 {
 	console.log("File Created");
 	vscode.window.showInformationMessage("File Created");
 
-	var folderPath = vscode.workspace.rootPath;
-	let command = "/d/GitLab/CPTS_421/cpts-421/cpts-421/";
+	var files = [...e.files];
+	var fileNames = parseFileNames(files);
 
-	
+	//display file names to console
+	for (var i = 0; i < fileNames.length; i++) {
+		console.log("File name created: " + fileNames[i]);
+	}	
+
+	var folderPath = vscode.workspace.rootPath;
 	const exec = require('child_process').exec;
 	var out = null;
-	
-	exec("git add .", {cwd:folderPath}, (err: any, stdout: any, stderr: any) => {
+	var command = packageJson.commands.gitCommands.add;
+
+	var output = exec(command + " " + fileNames[0], {cwd:folderPath}, (err: any, stdout: any, stderr: any) => {
 		out = stdout;
 
 		if (err) {
 			console.log("Error: " + stderr);
-			 return;
 		}
-		console.log("After exec: " + stdout);
+		console.log(stdout);
 	});
 	
-	console.log("out after exec: " + out);
 	
-	/*
-	var runGit =function(){
-	console.log("runGit() start");
-	exec('C:\\Program Files\\Git\\git-bash.exe',  function() {  
-		console.log("runGit() inside function now");   
-		});  
-	};
-
-	runGit();*/
 }
-// Process Execution API (string path, string addfile)
+
 /*
 *Name: changeTextDocument
 *Parameters: TextDocumentWillSaveEvent
@@ -82,6 +80,29 @@ export function changeTextDocument(e: vscode.TextDocumentWillSaveEvent)
 {
 	console.log("Document Changed");
 	vscode.window.showInformationMessage('Document changed!');
+
+
+	let uri = vscode.Uri.file(e.document.fileName);
+	var filename = [];
+	filename.push(uri);
+	var fileNames = parseFileNames(filename);
+
+
+	var folderPath = vscode.workspace.rootPath;
+	const exec = require('child_process').exec;
+	var out = null;
+	var command = packageJson.commands.gitCommands.modify;
+
+	var output = exec(command, {cwd:folderPath}, (err: any, stdout: any, stderr: any) => {
+		out = stdout;
+
+		if (err) {
+			console.log("Error: " + stderr);
+		}
+		console.log(stdout);
+	});
+	
+		
 }
 
 /*
@@ -92,24 +113,59 @@ export function changeTextDocument(e: vscode.TextDocumentWillSaveEvent)
 */ 
 export function deleteTextDocument(e: vscode.FileWillDeleteEvent)
 {
+	
 	console.log("Document Deleted");
 	vscode.window.showInformationMessage('Document Deleted!');
-	let folderPath = vscode.workspace.rootPath;
-	let command = folderPath;
-	console.log(command);
-	var exec = require('child_process').execFile;
+
+	var files = [...e.files];
+	var fileNames = parseFileNames(files);
+
+	//display file names to console
+	for (var i = 0; i < fileNames.length; i++) {
+		console.log("File name deleted: " + fileNames[i]);
+	}
+
+
+	var folderPath = vscode.workspace.rootPath;
+	const exec = require('child_process').exec;
 	var out = null;
-	//exec("git rm", (cwd:dolfe), (err: any, stdout: any, stderr: any) => {
-		//out = stdout;
+	var command = packageJson.commands.gitCommands.add;
 
-	//	if (err) {
-		//	console.log("Error: " + stderr);
-	//		return;
-		//}
-	//});
-	//console.log("out after exec: ")
+	var output = exec(command, {cwd:folderPath}, (err: any, stdout: any, stderr: any) => {
+		out = stdout;
 
+		if (err) {
+			console.log("Error: " + stderr);
+		}
+		console.log(stdout);
+	});
+
+	
+	
+
+}
+
+export function parseFileNames(files: vscode.Uri[]) {
+
+	if (files === null || files.length === 0) {
+		return [];
+	}
+	else {
+
+		var fileList = [];
+		for(var i = 0; i < files.length; i++)
+		{
+			var filepath = String(files[i].fsPath);
+			var arr = filepath.split("\\");
+			var count = arr.length;
+			fileList.push(arr[count - 1]);
+		}
+
+		return fileList;
+	}
+	
 }
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+

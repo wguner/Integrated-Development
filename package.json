@@ -3,6 +3,18 @@
 	"displayName": "test",
 	"description": "test",
 	"version": "0.0.1",
+	"commands": {
+		"gitCommands": {
+			"add": "git add",
+			"push": "git push",
+			"pull": "git pull",
+			"edit": "git edit",
+			"delete": "git rm",
+			"status": "git status",
+			"log": "git log",
+			"modify": "git add -u"
+		}
+	},
 	"engines": {
 		"vscode": "^1.49.0"
 	},
