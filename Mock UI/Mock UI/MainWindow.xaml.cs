@@ -27,7 +27,9 @@ namespace Mock_UI
 
         private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            //
+            //TODO: Add file filtering. Have a list of file names and extensions for auto completion 
+            //TODO: Data filtering: Data range - start date and end date.
         }
     }
 }
