@@ -1,0 +1,10 @@
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.csprojAssemblyReference.cache
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.Form1.resources
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.Properties.Resources.resources
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.csproj.GenerateResource.cache
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.csproj.CoreCompileInputs.cache
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\bin\Debug\CodebaseView.exe.config
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\bin\Debug\CodebaseView.exe
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\bin\Debug\CodebaseView.pdb
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.exe
+C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.pdb

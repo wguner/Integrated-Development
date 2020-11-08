@@ -14,12 +14,18 @@ namespace CodebaseView
 
         public GitParser()
         {
-            outputLines = new List<string>();
-            init();
+            this.outputLines = new List<string>();
+            this.commits = new List<string>();
+            
+        }
+
+        public void init()
+        {
+            initProcess();
             initCommits();
         }
 
-        private void init()
+        private void initProcess()
         {
             var proc = new Process
             {
@@ -36,7 +42,7 @@ namespace CodebaseView
             while (!proc.StandardOutput.EndOfStream)
             {
                 string line = proc.StandardOutput.ReadLine();
-                outputLines.Add(line);
+                this.outputLines.Add(line);
             }
         }
 

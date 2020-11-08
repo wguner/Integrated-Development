@@ -6,16 +6,17 @@ using System.Threading.Tasks;
 
 namespace CodebaseView
 {
-    public static class SQL
+    public class SQL
     {
-        public static string createInsertStatement()
+        private Form1 form;
+
+        public SQL(Form1 form)
         {
-            return "";
+            this.form = form;
         }
-
-        public static void execute(string statement)
+        public string execute(string statement)
         {
-
+            return statement;
         }
     }
  
