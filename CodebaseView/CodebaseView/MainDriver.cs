@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace CodebaseView
 {
-    static class Program
+    static class MainDriver
     {
         /// <summary>
         /// The main entry point for the application.
@@ -25,14 +25,22 @@ namespace CodebaseView
             GitParser parser = new GitParser();
             parser.init();
 
-            if (parser.doUpdate("pass in most recent database commit"))
+            if (parser.doUpdate(getMostRecentCommit(sql)))
             {
                 // update database
-                string statement = "the update database statement built by an insert statement builder";
-                sql.execute(statement);
+                
+                foreach (string commitID in parser.getCommitIDs())
+                {
+                    if (!parser.doUpdate(commitID)) break;
+                    INSERTQueryBuilder insertQueryBuilder = new INSERTQueryBuilder().setTable("commit");
+                    insertQueryBuilder.addColumnValue("commitID", "1234");
+                    sql.execute(insertQueryBuilder.build());
+                }
+
+                
             }
 
-            form.output.Text = doQuery(sql);
+            //form.output.Text = doQuery(sql);
             Application.Run(form);
         }
 
@@ -40,6 +48,11 @@ namespace CodebaseView
         {
             // query database and update selection
             return sql.execute(new SELECTQueryBuilder().setColumns("commit_id", "name").setTables("commits").build());
+        }
+
+        public static string getMostRecentCommit(SQL sql)
+        {
+            return sql.execute(new SELECTQueryBuilder().setColumns("commitID", "MAX(date)").setTables("commit").setGroupBy("date").build());
         }
     }
 }
