@@ -17,7 +17,7 @@ namespace CodebaseView
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Form1 form = new Form1();
+            CodebaseView form = new CodebaseView();
             
 
             SQL sql = new SQL(form);
