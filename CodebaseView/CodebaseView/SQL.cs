@@ -8,12 +8,14 @@ namespace CodebaseView
 {
     public class SQL
     {
-        private Form1 form;
+        private CodebaseView form;
 
-        public SQL(Form1 form)
+        public SQL(CodebaseView form)
         {
             this.form = form;
         }
+
+        // needs to return information somehow
         public string execute(string statement)
         {
             return statement;

@@ -10,13 +10,18 @@ namespace CodebaseView
     public class GitParser
     {
         private List<string> outputLines;
-        private List<string> commits;
+        private List<string> commitIDs;
 
         public GitParser()
         {
             this.outputLines = new List<string>();
-            this.commits = new List<string>();
+            this.commitIDs = new List<string>();
             
+        }
+
+        public List<string> getCommitIDs()
+        {
+            return this.commitIDs;
         }
 
         public void init()
@@ -52,14 +57,14 @@ namespace CodebaseView
             {
                 if (line.StartsWith("commit"))
                 {
-                    commits.Add(line.Substring(7, 40));
+                    commitIDs.Add(line.Substring(7, 40));
                 }
             }
         }
 
         public bool doUpdate(string commit)
         {
-            return commits[0] == commit;
+            return commitIDs[0] != commit;
         }
 
     }
