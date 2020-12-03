@@ -30,17 +30,19 @@
         {
             this.CommitInfo = new System.Windows.Forms.GroupBox();
             this.Options = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.CodeChanges = new System.Windows.Forms.GroupBox();
             this.Contributors = new System.Windows.Forms.GroupBox();
             this.ContributorsBox = new System.Windows.Forms.ListBox();
             this.Commits = new System.Windows.Forms.GroupBox();
             this.CommitsBox = new System.Windows.Forms.ListBox();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.dateTimePicker3 = new System.Windows.Forms.DateTimePicker();
             this.Options.SuspendLayout();
+            this.CodeChanges.SuspendLayout();
             this.Contributors.SuspendLayout();
             this.Commits.SuspendLayout();
             this.SuspendLayout();
@@ -72,9 +74,52 @@
             this.Options.Text = "Options";
             this.Options.Enter += new System.EventHandler(this.Options_Enter);
             // 
+            // button1
+            // 
+            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(6, 536);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(213, 40);
+            this.button1.TabIndex = 4;
+            this.button1.Text = "Filter";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(3, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(55, 13);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Start Date";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 73);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(52, 13);
+            this.label1.TabIndex = 2;
+            this.label1.Text = "End Date";
+            // 
+            // dateTimePicker2
+            // 
+            this.dateTimePicker2.Location = new System.Drawing.Point(6, 89);
+            this.dateTimePicker2.Name = "dateTimePicker2";
+            this.dateTimePicker2.Size = new System.Drawing.Size(197, 20);
+            this.dateTimePicker2.TabIndex = 1;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Location = new System.Drawing.Point(6, 34);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(197, 20);
+            this.dateTimePicker1.TabIndex = 0;
+            // 
             // CodeChanges
             // 
             this.CodeChanges.AutoSize = true;
+            this.CodeChanges.Controls.Add(this.dateTimePicker3);
             this.CodeChanges.Location = new System.Drawing.Point(12, 72);
             this.CodeChanges.Name = "CodeChanges";
             this.CodeChanges.Size = new System.Drawing.Size(530, 411);
@@ -124,47 +169,12 @@
             this.CommitsBox.Size = new System.Drawing.Size(209, 368);
             this.CommitsBox.TabIndex = 1;
             // 
-            // dateTimePicker1
+            // dateTimePicker3
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(6, 34);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(197, 20);
-            this.dateTimePicker1.TabIndex = 0;
-            // 
-            // dateTimePicker2
-            // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(6, 89);
-            this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(197, 20);
-            this.dateTimePicker2.TabIndex = 1;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 73);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "End Date";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Start Date";
-            // 
-            // button1
-            // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(6, 536);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(213, 40);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Filter";
-            this.button1.UseVisualStyleBackColor = true;
+            this.dateTimePicker3.Location = new System.Drawing.Point(175, 110);
+            this.dateTimePicker3.Name = "dateTimePicker3";
+            this.dateTimePicker3.Size = new System.Drawing.Size(294, 20);
+            this.dateTimePicker3.TabIndex = 0;
             // 
             // CodebaseView
             // 
@@ -182,6 +192,7 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Options.ResumeLayout(false);
             this.Options.PerformLayout();
+            this.CodeChanges.ResumeLayout(false);
             this.Contributors.ResumeLayout(false);
             this.Commits.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -203,6 +214,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.DateTimePicker dateTimePicker3;
     }
 }
 
