@@ -8,3 +8,13 @@ C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\Code
 C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.exe
 C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.pdb
 C:\Users\User\OneDrive\Documents\College\WSU\421\repo\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.CodebaseView.resources
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\bin\Debug\CodebaseView.exe.config
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\bin\Debug\CodebaseView.exe
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\bin\Debug\CodebaseView.pdb
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.csprojAssemblyReference.cache
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.CodebaseView.resources
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.Properties.Resources.resources
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.csproj.GenerateResource.cache
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.csproj.CoreCompileInputs.cache
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.exe
+D:\GitLab\CPTS_421\cpts-421\CodebaseView\CodebaseView\obj\Debug\CodebaseView.pdb
