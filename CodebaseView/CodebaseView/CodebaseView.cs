@@ -41,5 +41,33 @@ namespace CodebaseView
         {
 
         }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Console.WriteLine(openFileDialog1.FileNames[0]);
+                //textBox1.Text = folderBrowserDialog1.SelectedPath;
+            }
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Console.WriteLine(folderBrowserDialog1.SelectedPath);
+              
+            }
+        }
     }
 }
