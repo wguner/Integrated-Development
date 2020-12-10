@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Data;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Npgsql;
 
 namespace CodebaseView
 {
@@ -18,6 +20,7 @@ namespace CodebaseView
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             CodebaseView form = new CodebaseView();
+           // form.displayCommitInfo("", commit);
             
 
             SQL sql = new SQL(form);
@@ -53,6 +56,13 @@ namespace CodebaseView
         public static string getMostRecentCommit(SQL sql)
         {
             return sql.execute(new SELECTQueryBuilder().setColumns("commitID", "MAX(date)").setTables("commit").setGroupBy("date").build());
+        }
+        public static void commit(NpgsqlDataReader reader)
+        {
+            if (reader.HasRows)
+            {
+                
+            }
         }
     }
 }
