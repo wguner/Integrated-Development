@@ -64,6 +64,7 @@
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Messaging" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
@@ -102,9 +103,14 @@
     <Compile Include="Date.cs" />
     <Compile Include="file.cs" />
     <Compile Include="INSERTQueryBuilder.cs" />
+    <Compile Include="MessageBox.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MessageBox.Designer.cs">
+      <DependentUpon>MessageBox.cs</DependentUpon>
+    </Compile>
     <Compile Include="QueryBuilder.cs" />
     <Compile Include="QueryExecuter.cs" />
-    <Compile Include="QueryInsertBuild.cs" />
     <Compile Include="SELECTQueryBuilder.cs" />
     <Compile Include="SQL.cs" />
     <Compile Include="GitParser.cs" />
@@ -118,6 +124,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="CodebaseView.resx">
       <DependentUpon>CodebaseView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MessageBox.resx">
+      <DependentUpon>MessageBox.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

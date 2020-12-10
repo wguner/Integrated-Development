@@ -7,20 +7,16 @@ using Npgsql;
 
 namespace CodebaseView
 {
-    public class Commit
+    public struct Commit
     {
         public string commit_id { get; set; }
         public string email { get; set; }
         public string author { get; set; }
         public string message { get; set; }
-        Dictionary<string, string> condition = new Dictionary<string, string>();
+        public string month { get; set; }
+        public string day { get; set; }
+        public string year { get; set; }
+        public string time { get; set; }
 
-        /*
-        public string createCommit(string commitID)
-        {
-            condition.Add("commit.commit_id", commitID);
-            SELECTQueryBuilder qe = new SELECTQueryBuilder();
-            return qe.build(commitID);
-        }*/
     }
 }

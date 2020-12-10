@@ -18,41 +18,26 @@ namespace CodebaseView
         BindingSource binding = new BindingSource();
         
         public string connectionString = "Host = localhost; Username = postgres; Database = 421Db; password = password";
+
+        
         public CodebaseView()
         {
             InitializeComponent();
-            displayCommitInfo();
+            InitPopulate();
+        }
 
-        }
-        public void displayCommitInfo()
+        private void InitPopulate()
         {
-            string sqlstr = "SELECT commit_id FROM commit";
-            DataTable commitinfo = new DataTable();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                try
-                {
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(sqlstr, connection))
-                    {
-                        using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd))
-                        {
-                            adapter.Fill(commitinfo);
-                            // s.binding.DataSource = commitInfo;
-                            this.dataGridView1.DataSource = commitinfo;
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
+            string query = new SELECTQueryBuilder().setColumns("commit_id").setTables("commit").build();
+            populateCommits(query);
         }
+
+        private void populateCommits(string query)
+        {
+            DataTable dt = SQL.execute(query);
+            this.commitsDataGrid.DataSource = dt;
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
@@ -105,65 +90,18 @@ namespace CodebaseView
 
             }
         }
+        
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int row = e.RowIndex;
-            string commitId = this.dataGridView1.Rows[row].Cells[0].Value.ToString();
-            string sqlstr = "SELECT message, author FROM commit WHERE commit_id = '" + commitId + "'";
-            DataTable commitinfo = new DataTable();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                try
-                {
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(sqlstr, connection))
-                    {
-                        using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd))
-                        {
-                            adapter.Fill(commitinfo);
-                            // s.binding.DataSource = commitInfo;
-                            textBox2.Text = commitinfo.Rows[0]["message"].ToString();
-                            textBox3.Text = commitinfo.Rows[0]["author"].ToString();
-                        }
-                    }
-                }
-                catch (Exception s)
-                {
-                    Console.WriteLine(s);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
-            
-            string sqlstr2 = "SELECT filename FROM file WHERE commit_id = '" + commitId + "'";
-            DataTable commitinfo2 = new DataTable();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                try
-                {
-                    using (NpgsqlCommand cmd = new NpgsqlCommand(sqlstr2, connection))
-                    {
-                        using (NpgsqlDataAdapter adapter = new NpgsqlDataAdapter(cmd))
-                        {
-                            adapter.Fill(commitinfo2);
-                            // s.binding.DataSource = commitInfo;
-                            textBox4.Text = commitinfo2.Rows[0]["filename"].ToString();
-                        }
-                    }
-                }
-                catch (Exception s)
-                {
-                    Console.WriteLine(s);
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
+            string commitId = this.commitsDataGrid.Rows[row].Cells[0].Value.ToString();
+            string sqlstr = new SELECTQueryBuilder().setColumns("message", "author")
+                                .setTables("commit").setConditionals("commit_id = '" + commitId + "'").build();
+            DataTable commitinfo = SQL.execute(sqlstr);
+            textBox2.Text = commitinfo.Rows[0]["message"].ToString();
+            textBox3.Text = commitinfo.Rows[0]["author"].ToString();
+
         }
 
     }

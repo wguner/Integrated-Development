@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.CommitBox = new System.Windows.Forms.GroupBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.Options = new System.Windows.Forms.GroupBox();
             this.button2 = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
@@ -40,20 +41,19 @@
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.CodeChanges = new System.Windows.Forms.GroupBox();
+            this.textBox4 = new System.Windows.Forms.TextBox();
             this.Contributors = new System.Windows.Forms.GroupBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
             this.Commits = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.commitsDataGrid = new System.Windows.Forms.DataGridView();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
             this.CommitBox.SuspendLayout();
             this.Options.SuspendLayout();
             this.CodeChanges.SuspendLayout();
             this.Contributors.SuspendLayout();
             this.Commits.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.commitsDataGrid)).BeginInit();
             this.SuspendLayout();
             // 
             // CommitBox
@@ -67,6 +67,13 @@
             this.CommitBox.TabStop = false;
             this.CommitBox.Text = "Commit Info";
             this.CommitBox.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(9, 18);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(738, 20);
+            this.textBox2.TabIndex = 0;
             // 
             // Options
             // 
@@ -184,6 +191,13 @@
             this.CodeChanges.TabStop = false;
             this.CodeChanges.Text = "Code / Changes";
             // 
+            // textBox4
+            // 
+            this.textBox4.Location = new System.Drawing.Point(9, 29);
+            this.textBox4.Name = "textBox4";
+            this.textBox4.Size = new System.Drawing.Size(506, 20);
+            this.textBox4.TabIndex = 0;
+            // 
             // Contributors
             // 
             this.Contributors.AutoSize = true;
@@ -195,10 +209,17 @@
             this.Contributors.TabStop = false;
             this.Contributors.Text = "Contributors";
             // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(9, 19);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(736, 20);
+            this.textBox3.TabIndex = 0;
+            // 
             // Commits
             // 
             this.Commits.AutoSize = true;
-            this.Commits.Controls.Add(this.dataGridView1);
+            this.Commits.Controls.Add(this.commitsDataGrid);
             this.Commits.Location = new System.Drawing.Point(548, 72);
             this.Commits.Name = "Commits";
             this.Commits.Size = new System.Drawing.Size(228, 430);
@@ -207,16 +228,16 @@
             this.Commits.Text = "Commits";
             this.Commits.Enter += new System.EventHandler(this.Commits_Enter);
             // 
-            // dataGridView1
+            // commitsDataGrid
             // 
-            this.dataGridView1.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.GridColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 13);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(222, 398);
-            this.dataGridView1.TabIndex = 2;
-            this.dataGridView1.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.commitsDataGrid.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.commitsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.commitsDataGrid.GridColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.commitsDataGrid.Location = new System.Drawing.Point(0, 13);
+            this.commitsDataGrid.Name = "commitsDataGrid";
+            this.commitsDataGrid.Size = new System.Drawing.Size(222, 398);
+            this.commitsDataGrid.TabIndex = 2;
+            this.commitsDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // folderBrowserDialog1
             // 
@@ -225,27 +246,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // textBox2
-            // 
-            this.textBox2.Location = new System.Drawing.Point(9, 18);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(738, 20);
-            this.textBox2.TabIndex = 0;
-            // 
-            // textBox3
-            // 
-            this.textBox3.Location = new System.Drawing.Point(9, 19);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(736, 20);
-            this.textBox3.TabIndex = 0;
-            // 
-            // textBox4
-            // 
-            this.textBox4.Location = new System.Drawing.Point(9, 29);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(506, 20);
-            this.textBox4.TabIndex = 0;
             // 
             // CodebaseView
             // 
@@ -270,7 +270,7 @@
             this.Contributors.ResumeLayout(false);
             this.Contributors.PerformLayout();
             this.Commits.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.commitsDataGrid)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -293,7 +293,7 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView commitsDataGrid;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox3;

@@ -44,11 +44,16 @@ namespace CodebaseView
             query += ") VALUES (";
             foreach (string value in this.values)
             {
-                query += value + ",";
+                query += "'" + cleanforsql(value) + "',";
             }
             query = query.Trim(',');
             query += ")";
             return query;
+        }
+
+        public string cleanforsql(string value)
+        {
+            return value.Replace("'", "");
         }
     }
 }

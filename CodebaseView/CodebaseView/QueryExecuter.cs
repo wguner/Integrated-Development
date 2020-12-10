@@ -27,6 +27,7 @@ namespace CodebaseView
             // placeholder for the db
             return "Host = localhost; Username = postgres; Database = 421Db; password = password;";
         }
+
         public void ExecuteQuery()
         {
             using (var connection = new NpgsqlConnection(buildConnectionString()))
@@ -52,6 +53,7 @@ namespace CodebaseView
                 }
             }
         }
+
         private void ExecuteCommandQuery()
         {
             using (var connection = new NpgsqlConnection(buildConnectionString()))
