@@ -18,7 +18,7 @@ namespace CodebaseView
                                 .setTables("commit").build();
             var data = execute(query);
             if (data.Rows.Count > 0)
-                return data.Rows[0]["commit_id"].ToString();
+                return data.Rows[data.Rows.Count - 1]["commit_id"].ToString();
             else
                 return "";
         }

@@ -59,10 +59,11 @@
             // CommitBox
             // 
             this.CommitBox.AutoSize = true;
+            this.CommitBox.Controls.Add(this.Commits);
             this.CommitBox.Controls.Add(this.textBox2);
             this.CommitBox.Location = new System.Drawing.Point(12, 12);
             this.CommitBox.Name = "CommitBox";
-            this.CommitBox.Size = new System.Drawing.Size(758, 57);
+            this.CommitBox.Size = new System.Drawing.Size(770, 496);
             this.CommitBox.TabIndex = 0;
             this.CommitBox.TabStop = false;
             this.CommitBox.Text = "Commit Info";
@@ -70,9 +71,10 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(9, 18);
+            this.textBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox2.Location = new System.Drawing.Point(3, 16);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(738, 20);
+            this.textBox2.Size = new System.Drawing.Size(764, 20);
             this.textBox2.TabIndex = 0;
             // 
             // Options
@@ -193,9 +195,10 @@
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(9, 29);
+            this.textBox4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox4.Location = new System.Drawing.Point(3, 16);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(506, 20);
+            this.textBox4.Size = new System.Drawing.Size(524, 20);
             this.textBox4.TabIndex = 0;
             // 
             // Contributors
@@ -211,18 +214,19 @@
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(9, 19);
+            this.textBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.textBox3.Location = new System.Drawing.Point(3, 16);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(736, 20);
+            this.textBox3.Size = new System.Drawing.Size(752, 20);
             this.textBox3.TabIndex = 0;
             // 
             // Commits
             // 
             this.Commits.AutoSize = true;
             this.Commits.Controls.Add(this.commitsDataGrid);
-            this.Commits.Location = new System.Drawing.Point(548, 72);
+            this.Commits.Location = new System.Drawing.Point(536, 60);
             this.Commits.Name = "Commits";
-            this.Commits.Size = new System.Drawing.Size(228, 430);
+            this.Commits.Size = new System.Drawing.Size(228, 417);
             this.Commits.TabIndex = 4;
             this.Commits.TabStop = false;
             this.Commits.Text = "Commits";
@@ -232,9 +236,14 @@
             // 
             this.commitsDataGrid.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
             this.commitsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.commitsDataGrid.ColumnHeadersVisible = false;
+            this.commitsDataGrid.Dock = System.Windows.Forms.DockStyle.Top;
+            this.commitsDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.commitsDataGrid.GridColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.commitsDataGrid.Location = new System.Drawing.Point(0, 13);
+            this.commitsDataGrid.Location = new System.Drawing.Point(3, 16);
             this.commitsDataGrid.Name = "commitsDataGrid";
+            this.commitsDataGrid.ReadOnly = true;
+            this.commitsDataGrid.RowHeadersVisible = false;
             this.commitsDataGrid.Size = new System.Drawing.Size(222, 398);
             this.commitsDataGrid.TabIndex = 2;
             this.commitsDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
@@ -252,7 +261,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1007, 619);
-            this.Controls.Add(this.Commits);
             this.Controls.Add(this.Contributors);
             this.Controls.Add(this.CodeChanges);
             this.Controls.Add(this.Options);

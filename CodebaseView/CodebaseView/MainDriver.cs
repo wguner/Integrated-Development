@@ -17,8 +17,9 @@ namespace CodebaseView
         [STAThread]
         public static void Main()
         {
-            
-            
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
 
             GitParser parser = new GitParser();
             parser.init();
@@ -29,8 +30,7 @@ namespace CodebaseView
                 parser.updateDatabase(mostRecentCommitID);
             }
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+           
             CodebaseView form = new CodebaseView();
             Application.Run(form);
         }
