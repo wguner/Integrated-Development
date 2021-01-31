@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:version-control-extension.helloWorld"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -18,9 +18,15 @@
 			{
 				"command": "version-control-extension.helloWorld",
 				"title": "Hello World"
+			},
+			{
+				"command": "version-control-extension.openGUI",
+				"title": "Open GUI"
 			}
 		]
 	},
+
+	
 	"scripts": {
 		"vscode:prepublish": "npm run compile",
 		"compile": "tsc -p ./",

@@ -26,6 +26,13 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage('Hello World from Integrated Development tools!');
 	});
 
+	let disposable1 = vscode.commands.registerCommand('version-control-extension.openGUI', () => {
+		// The code you place here will be executed every time your command is executed
+		openGUI();
+		// Display a message box to the user
+		vscode.window.showInformationMessage('Opening GUI...');
+	});
+
 	//Events handlers are registered when the extension is loaded.
 	vscode.workspace.onWillSaveTextDocument(changeTextDocument);
 	vscode.workspace.onDidCreateFiles(onDidCreateFiles);
@@ -164,6 +171,19 @@ export function parseFileNames(files: vscode.Uri[]) {
 		return fileList;
 	}
 	
+}
+
+export function openGUI() 
+{
+	const execFile = require('child_process').execFile;
+	const child = execFile('CodebaseView.exe', {cwd: __dirname + '\\..\\CodebaseView'}, (err: any, stdout: any, stderr: any) => {
+		if (err) {
+			throw err;
+		}
+
+
+		console.log(stdout);
+	});
 }
 
 // this method is called when your extension is deactivated

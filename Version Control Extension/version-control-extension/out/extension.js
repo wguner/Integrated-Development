@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deactivate = exports.parseFileNames = exports.deleteTextDocument = exports.changeTextDocument = exports.onDidCreateFiles = exports.activate = void 0;
+exports.deactivate = exports.openGUI = exports.parseFileNames = exports.deleteTextDocument = exports.changeTextDocument = exports.onDidCreateFiles = exports.activate = void 0;
 const vscode = require("vscode");
 const packageJson = require('../package.json');
 var fs = require('fs');
@@ -20,6 +20,12 @@ function activate(context) {
         // The code you place here will be executed every time your command is executed
         // Display a message box to the user
         vscode.window.showInformationMessage('Hello World from Integrated Development tools!');
+    });
+    let disposable1 = vscode.commands.registerCommand('version-control-extension.openGUI', () => {
+        // The code you place here will be executed every time your command is executed
+        openGUI();
+        // Display a message box to the user
+        vscode.window.showInformationMessage('Opening GUI...');
     });
     //Events handlers are registered when the extension is loaded.
     vscode.workspace.onWillSaveTextDocument(changeTextDocument);
@@ -126,6 +132,16 @@ function parseFileNames(files) {
     }
 }
 exports.parseFileNames = parseFileNames;
+function openGUI() {
+    const execFile = require('child_process').execFile;
+    const child = execFile('CodebaseView.exe', { cwd: __dirname + '\\..\\CodebaseView' }, (err, stdout, stderr) => {
+        if (err) {
+            throw err;
+        }
+        console.log(stdout);
+    });
+}
+exports.openGUI = openGUI;
 // this method is called when your extension is deactivated
 function deactivate() { }
 exports.deactivate = deactivate;
