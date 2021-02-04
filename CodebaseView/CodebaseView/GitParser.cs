@@ -43,7 +43,7 @@ namespace CodebaseView
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "git",
-                    Arguments = "log",
+                    Arguments = "log --all",
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
