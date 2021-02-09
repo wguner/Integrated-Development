@@ -35,8 +35,9 @@
             // 
             this.message.Dock = System.Windows.Forms.DockStyle.Fill;
             this.message.Location = new System.Drawing.Point(0, 0);
+            this.message.Multiline = true;
             this.message.Name = "message";
-            this.message.Size = new System.Drawing.Size(284, 20);
+            this.message.Size = new System.Drawing.Size(284, 211);
             this.message.TabIndex = 0;
             // 
             // MessageBox
