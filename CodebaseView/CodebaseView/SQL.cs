@@ -14,15 +14,16 @@ namespace CodebaseView
 
         public static string getMostRecentCommitID()
         {
+            
             string query = new SELECTQueryBuilder().setColumns("commit_id")
                                 .setTables("commit").build();
             var data = execute(query);
             if (data.Rows.Count > 0)
                 return data.Rows[data.Rows.Count - 1]["commit_id"].ToString();
             else
-                return "";
+                return "";    
         }
-
+        
         public static DataTable execute(string sqlstr)
         {
             using (var connection = new NpgsqlConnection(connectionString))

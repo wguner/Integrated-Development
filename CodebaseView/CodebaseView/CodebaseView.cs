@@ -99,8 +99,8 @@ namespace CodebaseView
             string sqlstr = new SELECTQueryBuilder().setColumns("message", "author")
                                 .setTables("commit").setConditionals("commit_id = '" + commitId + "'").build();
             DataTable commitinfo = SQL.execute(sqlstr);
-            textBox2.Text = commitinfo.Rows[0]["message"].ToString();
-            textBox3.Text = commitinfo.Rows[0]["author"].ToString();
+            // textBox2.Text = commitinfo.Rows[0]["message"].ToString();
+           // textBox3.Text = commitinfo.Rows[0]["author"].ToString();
 
         }
 
