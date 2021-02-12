@@ -99,6 +99,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Author.cs" />
+    <Compile Include="GitParser.cs" />
+    <Compile Include="TimeStamp.cs" />
     <Compile Include="Commit.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="file.cs" />
@@ -113,7 +115,6 @@
     <Compile Include="QueryExecuter.cs" />
     <Compile Include="SELECTQueryBuilder.cs" />
     <Compile Include="SQL.cs" />
-    <Compile Include="GitParser.cs" />
     <Compile Include="CodebaseView.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -17,12 +17,8 @@ namespace CodebaseView
 
             GitParser parser = new GitParser();
             parser.init();
+            parser.updateDatabase();
 
-            string mostRecentCommitID = SQL.getMostRecentCommitID();
-            if (parser.doUpdate(mostRecentCommitID))
-            {
-                parser.updateDatabase(mostRecentCommitID);
-            }
 
            
             CodebaseView form = new CodebaseView();
