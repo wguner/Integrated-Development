@@ -9,12 +9,14 @@ CREATE TABLE File (
     filename VARCHAR,
     file_id SERIAL, 
     file_extension VARCHAR,
-    PRIMARY KEY (file_id)
+	repo_id SERIAL,
+    PRIMARY KEY (file_id),
+	FOREIGN KEY (repo_id) REFERENCES Repository(repo_id)
 );
 
 CREATE TABLE Repository (
 	repo_id SERIAL,
-	repoName VARCHAR,
+	repoURL VARCHAR,
 	PRIMARY KEY(repo_id)
 );
 
@@ -35,7 +37,7 @@ CREATE TABLE FILE_MAP_COMMIT (
     FOREIGN KEY(commit_id) REFERENCES Commit(commit_id)
 );
 
-CREATE TABLE Repository_map_commithash (
+CREATE TABLE Repository_map_commit (
 	repo_id SERIAL,
 	commit_id SERIAL,
 	FOREIGN KEY(repo_id) REFERENCES Repository(repo_id),
