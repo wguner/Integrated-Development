@@ -1,48 +1,39 @@
-CREATE TABLE Commit(
-    commit_id SERIAL,
-    commit_hash VARCHAR,
-    email VARCHAR, 
-    author VARCHAR, 
-    message VARCHAR,
-    datetime TIMESTAMP,
-	repoName VARCHAR,
-	
-    PRIMARY KEY(commit_id),
-	FOREIGN KEY(repoName, commit_hash) REFERENCES Repository(repoName)
-);
-
 CREATE TABLE Author(
     author_id SERIAL,
     name VARCHAR, 
     email VARCHAR, 
-
     PRIMARY KEY(author_id)
 );
 
-CREATE TABLE File (
-    filename VARCHAR, 
-    file_extension VARCHAR,
-    PRIMARY KEY (filename)
+CREATE TABLE Repository (
+	repo_id SERIAL,
+	repoURL VARCHAR,
+	PRIMARY KEY(repo_id)
 );
 
-CREATE TABLE FILE_MAP_COMMIT (
+CREATE TABLE File (
     filename VARCHAR,
+    file_id SERIAL, 
+    file_extension VARCHAR,
+	repo_id INTEGER,
+    PRIMARY KEY (file_id),
+	FOREIGN KEY (repo_id) REFERENCES Repository(repo_id)
+);
+
+CREATE TABLE Commit(
     commit_id SERIAL,
-    FOREIGN KEY (filename) REFERENCES File(filename),
+    commit_hash VARCHAR,
+    author_id INTEGER, 
+    message VARCHAR,
+    datetime TIMESTAMP,
+	repo_id INTEGER,
+    PRIMARY KEY(commit_id),
+	FOREIGN KEY(repo_id) REFERENCES Repository(repo_id)
+);
+
+CREATE TABLE File_Map_Commit (
+    file_id INTEGER,
+    commit_id INTEGER,
+    FOREIGN KEY (file_id) REFERENCES File(file_id),
     FOREIGN KEY(commit_id) REFERENCES Commit(commit_id)
 );
-
-CREATE TABLE Repository (
-	repoID SERIAL,
-	repoName VARCHAR,
-	PRIMARY KEY(repoID)
-);
---
-CREATE TABLE Repository_map_commithash (
-	repoName VARCHAR,
-	commit_hash VARCHAR,
-	FOREIGN KEY(repoName) REFERENCES Repository(repoName),
-	FOREIGN KEY(commit_hash) REFERENCES Commit(commit_hash)
-);
-
-	
