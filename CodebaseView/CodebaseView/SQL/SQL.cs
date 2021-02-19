@@ -12,6 +12,7 @@ namespace CodebaseView
     {
         public static readonly string connectionString = "Host = localhost; Username = postgres; Database = 421Db; password = password";
 
+<<<<<<< HEAD:CodebaseView/CodebaseView/SQL.cs
         public static string getMostRecentCommitID()
         {
             
@@ -24,6 +25,8 @@ namespace CodebaseView
                 return "";    
         }
         
+=======
+>>>>>>> databaseFileMapping:CodebaseView/CodebaseView/SQL/SQL.cs
         public static DataTable execute(string sqlstr)
         {
             using (var connection = new NpgsqlConnection(connectionString))
@@ -44,6 +47,26 @@ namespace CodebaseView
                         MessageBox message = new MessageBox("SQL Error: " + e.Message.ToString() + "\n Failing Query: " + sqlstr);
                         message.Show();
                         return null;
+                    }
+                }
+            }
+        }
+
+        public static bool executeInsert(string sqlstr)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var cmd = new NpgsqlCommand(sqlstr, connection))
+                {
+                    try
+                    {
+                        NpgsqlDataAdapter da = new NpgsqlDataAdapter(cmd);
+                        return true;
+                    }
+                    catch (NpgsqlException e)
+                    {
+                        return false;
                     }
                 }
             }

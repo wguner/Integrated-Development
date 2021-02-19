@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Data;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Npgsql;
 
 namespace CodebaseView
 {
@@ -23,12 +17,8 @@ namespace CodebaseView
 
             GitParser parser = new GitParser();
             parser.init();
+            parser.updateDatabase();
 
-            string mostRecentCommitID = SQL.getMostRecentCommitID();
-            if (parser.doUpdate(mostRecentCommitID))
-            {
-                parser.updateDatabase(mostRecentCommitID);
-            }
 
            
             CodebaseView form = new CodebaseView();

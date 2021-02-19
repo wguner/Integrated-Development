@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -10,101 +11,99 @@ namespace CodebaseView
 {
     public class GitParser
     {
-        private List<string> outputLines;
         private List<Commit> commits;
+        //private List<file> files;
+        private string newestCommitID;
 
         public GitParser()
         {
-            this.outputLines = new List<string>();
             this.commits = new List<Commit>();
-            
-        }
-
-        public List<string> getCommitIDs()
-        {
-            List<string> commitIDs = new List<string>();
-            foreach (Commit commit in this.commits)
-            {
-                commitIDs.Add(commit.commit_id);
-            }
-            return commitIDs;
+            //this.files = new List<file>();
         }
 
         public void init()
         {
-            initProcess();
             initCommits();
+            initNewestCommit();
         }
 
-        private void initProcess()
+        private List<string> runGitCommandProcess(string args)
         {
             var proc = new Process
             {
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = "git",
-                    Arguments = "log --all",
+                    Arguments = args,
                     UseShellExecute = false,
                     RedirectStandardOutput = true,
                     CreateNoWindow = true
                 }
             };
             proc.Start();
+
+            List<string> outputLines = new List<string>();
             while (!proc.StandardOutput.EndOfStream)
             {
                 string line = proc.StandardOutput.ReadLine();
-                this.outputLines.Add(line);
+                outputLines.Add(line);
             }
+            return outputLines;
+        }
+
+        private void initNewestCommit()
+        {
+            List<string> lines = runGitCommandProcess("log --all -1");
+            this.newestCommitID = lines[0].Substring(7, 40);
+
         }
 
         private void initCommits()
         {
-            for (int i = 0; i < this.outputLines.Count; i++)
+            List<string> commitLines = runGitCommandProcess("log --all");
+            for (int i = 0; i < commitLines.Count; i++)
             {
-                string line = this.outputLines[i];
+                string line = commitLines[i];
                 if (line.StartsWith("commit"))
                 {
                     Commit commit = new Commit();
-                    commit.commit_id = line.Substring(7, 40);
+                    commit.commit_hash = line.Substring(7, 40);
 
                     string authorline;
                     string dateline;
                     int messagelinestart;
 
-                    if (outputLines[i + 1].StartsWith("Merge:"))
+                    if (commitLines[i + 1].StartsWith("Merge:"))
                     {
-                        authorline = outputLines[i + 2];
-                        dateline = outputLines[i + 3];
+                        authorline = commitLines[i + 2];
+                        dateline = commitLines[i + 3];
                         messagelinestart = 5;
                     }
                     else
                     {
-                        authorline = outputLines[i + 1];
-                        dateline = outputLines[i + 2];
+                        authorline = commitLines[i + 1];
+                        dateline = commitLines[i + 2];
                         messagelinestart = 4;
                     }
 
                     string authorEmail = authorline.Substring(8);
                     int emailStart = authorEmail.IndexOf('<') + 1;
                     int emailEnd = authorEmail.IndexOf('>');
-                    commit.email = authorEmail.Substring(emailStart, emailEnd - emailStart - 1);
-                    commit.author = authorEmail.Substring(0, emailStart - 2);
+                    commit.authorEmail = authorEmail.Substring(emailStart, emailEnd - emailStart);
+                    commit.authorName = authorEmail.Substring(0, emailStart - 2);
 
-                    string dateTime = dateline.Substring(12, 22);
-                    commit.month = dateTime.Substring(0, 3);
-                    commit.year = dateTime.Substring(18, 4);
-                    commit.day = dateTime.Substring(4, 2);
-                    commit.time = dateTime.Substring(8, 8);
+                    TimeStamp timestamp = new TimeStamp(dateline.Substring(12, 21));
+                    commit.timestamp = timestamp;
 
                     StringBuilder message = new StringBuilder();
-                    line = outputLines[i + messagelinestart];
+                    line = commitLines[i + messagelinestart];
                     int count = messagelinestart;
                     while (!line.StartsWith("commit"))
                     {
                         message.Append(line);
                         count++;
-                        if ((i + count) < this.outputLines.Count)
-                            line = outputLines[i + count];
+                        if ((i + count) < commitLines.Count)
+                            line = commitLines[i + count];
                         else
                             break;
                     }
@@ -116,24 +115,126 @@ namespace CodebaseView
         }
 
 
-        public bool doUpdate(string commit)
+        private bool doUpdate()
         {
-            return !commits[0].commit_id.Equals(commit);
+            //query db to see if it contains newestCommitID
+            string query = new SELECTQueryBuilder()
+                .setColumns("commit_id").setTables("Commit").build();
+
+            DataTable dt = SQL.execute(query);
+
+            return !dt.Columns.Contains(newestCommitID);
         }
 
-        public void updateDatabase(string startingCommitID)
+        public void updateDatabase()
         {
-            foreach (Commit commit in this.commits)
+            if (doUpdate())
             {
-                if (commit.commit_id.Equals(startingCommitID)) return;
+                // REPOSITORY TABLE UPDATING
+                //figure out what the hell repo we're in
+                string repoURL = runGitCommandProcess("config --get remote.origin.url")[0];
+                //see if that repo is in the db
+                //if not, insert it
+                bool repoExists = SQL.execute(new SELECTQueryBuilder()
+                    .setTables("Repository").setColumns("*").setConditionals("repoURL = '" + repoURL + "'").build()).Rows.Count > 0;
+                if (!repoExists)
+                {
+                    INSERTQueryBuilder repoInsert = new INSERTQueryBuilder().setTable("Repository");
+                    repoInsert.addColumnValue("repoURL", repoURL);
+                    SQL.execute(repoInsert.build());
+                }
+                //retrieve repo id
+                string queryRepoID = new SELECTQueryBuilder().setTables("Repository")
+                    .setColumns("repo_id").setConditionals("repoURL = '" + repoURL + "'").build();
+                int repo_id = (int)SQL.execute(queryRepoID).Rows[0]["repo_id"];
 
-                INSERTQueryBuilder insertQuery = new INSERTQueryBuilder().setTable("commit");
-                insertQuery.addColumnValue("commit_id", commit.commit_id);
-                insertQuery.addColumnValue("email", commit.email);
-                insertQuery.addColumnValue("author", commit.author);
-                insertQuery.addColumnValue("message", commit.message);
-                SQL.execute(insertQuery.build());
+                // COMMIT TABLE UPDATING
+                foreach (Commit commit in this.commits)
+                {
+                    // AUTHOR TABLE UPDATING
+                    //if there's a new author not in the db, update the author table
+                    bool authorExists = SQL.execute(new SELECTQueryBuilder()
+                    .setTables("Author").setColumns("*").setConditionals("email = '" + commit.authorEmail + "'").build()).Rows.Count > 0;
+                    if (!authorExists)
+                    {
+                        INSERTQueryBuilder authorInsert = new INSERTQueryBuilder().setTable("Author");
+                        authorInsert.addColumnValue("name", commit.authorName);
+                        authorInsert.addColumnValue("email", commit.authorEmail);
+                        SQL.execute(authorInsert.build());
+                    }
+
+                    //query author id by email
+                    string queryAuthorID = new SELECTQueryBuilder().setTables("Author")
+                    .setColumns("author_id").setConditionals("email = '" + commit.authorEmail + "'").build();
+                    int author_id = (int)SQL.execute(queryAuthorID).Rows[0]["author_id"];
+
+                    //check if commit is in db first?
+                    bool commitExists = SQL.execute(new SELECTQueryBuilder().setTables("Commit")
+                        .setColumns("*").setConditionals("commit_hash = '" + commit.commit_hash + "'").build()).Rows.Count > 0;
+                    if (!commitExists)
+                    {
+                        INSERTQueryBuilder commitInsert = new INSERTQueryBuilder().setTable("commit");
+                        commitInsert.addColumnValue("commit_hash", commit.commit_hash);
+                        commitInsert.addColumnValue("author_id", author_id + "");
+                        commitInsert.addColumnValue("message", commit.message);
+                        commitInsert.addColumnValue("datetime", commit.timestamp.ToString());
+                        commitInsert.addColumnValue("repo_id", repo_id + "");
+                        string commitInsertQuery = commitInsert.build();
+                        SQL.execute(commitInsertQuery);
+
+                        string queryCommitID = new SELECTQueryBuilder().setTables("Commit")
+                            .setColumns("commit_id").setConditionals("commit_hash = '" + commit.commit_hash + "'").build();
+                        int commit_id = (int)SQL.execute(queryCommitID).Rows[0]["commit_id"];
+
+                        // FILE TABLE UDPDATING
+                        // run command for each commit hash to see which files it affected
+                        // for each file, create and execute insert on file table
+                        foreach (string file in getFiles(commit.commit_hash))
+                        {
+                            // check if file is in db
+                            bool fileExists = SQL.execute(new SELECTQueryBuilder().setTables("File")
+                                .setColumns("*").setConditionals("filename = '" + file).build() + "'").Rows.Count > 0;
+                            int fileNameEnd = file.LastIndexOf('.');
+                            if (!fileExists)
+                            {
+                                INSERTQueryBuilder fileInsert = new INSERTQueryBuilder().setTable("file");
+                                fileInsert.addColumnValue("filename", file.Substring(0, fileNameEnd));
+                                fileInsert.addColumnValue("file_extension", file.Substring(fileNameEnd));
+                                fileInsert.addColumnValue("repo_id", repo_id + "");
+                                string fileInsertQuery = fileInsert.build();
+                                SQL.execute(fileInsertQuery);
+                            }
+                            // query file id
+                            string queryFileID = new SELECTQueryBuilder().setTables("File")
+                            .setColumns("file_id").setConditionals("filename = '" + file.Substring(0, fileNameEnd) + "'", "repo_id = '" + repo_id + "'").build();
+                            int file_id = (int)SQL.execute(queryFileID).Rows[0]["file_id"];
+
+                            // FILE_MAP_COMMIT UPDATING
+                            INSERTQueryBuilder fileCommitMapInsert = new INSERTQueryBuilder();
+                            fileCommitMapInsert.addColumnValue("file_id", file_id + "");
+                            fileCommitMapInsert.addColumnValue("commit_id", commit_id + "");
+                        }
+                    }
+                }
             }
+        }
+
+        private List<string> getFiles(string commit_hash)
+        {
+            List<string> files = runGitCommandProcess("diff-tree --no-commit-id --name-only -r " + commit_hash);
+            List<string> returnFiles = new List<string>();
+            foreach (string file in files)
+            {
+                if (!file.Contains('.'))
+                {
+                    returnFiles.Add(file + ".FILE");
+                }
+                else
+                {
+                    returnFiles.Add(file);
+                }
+            }
+            return returnFiles;
         }
     }
 }

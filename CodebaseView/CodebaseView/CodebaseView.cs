@@ -38,6 +38,12 @@ namespace CodebaseView
             this.commitsDataGrid.DataSource = dt;
         }
 
+        private void populateFiles(string query)
+        {
+            DataTable dt = SQL.execute(query);
+            
+        }
+
         private void Form1_Load(object sender, EventArgs e)
         {
 
