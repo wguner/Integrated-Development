@@ -142,7 +142,7 @@ namespace CodebaseView
                     insertQuery.addColumnValue("repoName", commit.repoName);
                     if (!SQL.executeInsert(insertQuery.build())) break;
 
-                    // run command for each commit hash to see which files it affected
+                    /*// run command for each commit hash to see which files it affected
                     // for each file, create and execute insert on file table
                     foreach (string file in getFiles(commit.commit_hash))
                     {
@@ -157,7 +157,7 @@ namespace CodebaseView
 
                         // insert file id and 
                         
-                    }
+                    }*/
                 }
             }
         }

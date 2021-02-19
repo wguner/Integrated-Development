@@ -23,17 +23,15 @@ CREATE TABLE File (
 CREATE TABLE Commit(
     commit_id SERIAL,
     commit_hash VARCHAR,
-    email VARCHAR, 
-    author VARCHAR, 
+    author_id INTEGER, 
     message VARCHAR,
     datetime TIMESTAMP,
 	repo_id INTEGER,
-	FOREIGN KEY(repo_id) REFERENCES Repository(repo_id),
-	
-    PRIMARY KEY(commit_id)
+    PRIMARY KEY(commit_id),
+	FOREIGN KEY(repo_id) REFERENCES Repository(repo_id)
 );
 
-CREATE TABLE FILE_MAP_COMMIT (
+CREATE TABLE File_Map_Commit (
     file_id INTEGER,
     commit_id INTEGER,
     FOREIGN KEY (file_id) REFERENCES File(file_id),
