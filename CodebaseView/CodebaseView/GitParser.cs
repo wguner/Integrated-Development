@@ -133,7 +133,7 @@ namespace CodebaseView
                 foreach (Commit commit in this.commits)
                 {
                     INSERTQueryBuilder insertQuery = new INSERTQueryBuilder().setTable("commit");
-                    //insertQuery.addColumnValue("commit_id", commit.commit_id);
+                    
                     insertQuery.addColumnValue("commit_hash", commit.commit_hash);
                     insertQuery.addColumnValue("email", commit.email);
                     insertQuery.addColumnValue("author", commit.author);
@@ -151,6 +151,12 @@ namespace CodebaseView
                         fileInsert.addColumnValue("filename", file.Substring(0, fileNameEnd));
                         fileInsert.addColumnValue("file_extension", file.Substring(fileNameEnd));
                         SQL.executeInsert(fileInsert.build());
+
+                        // query file id
+
+
+                        // insert file id and 
+                        
                     }
                 }
             }
@@ -158,7 +164,7 @@ namespace CodebaseView
 
         private List<string> getFiles(string commit_hash)
         {
-            return runGitCommandProcess("git diff-tree --no-commit-id --name-only -r " + commit_hash);
+            return runGitCommandProcess("diff-tree --no-commit-id --name-only -r " + commit_hash);
         }
     }
 }
