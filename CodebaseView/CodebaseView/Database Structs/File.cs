@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Npgsql;
 namespace CodebaseView
 {
-    public class file
+    public class File
     {
         public string commit_id { get; set; }
         public string filename { get; set; }

@@ -98,23 +98,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Author.cs" />
+    <Compile Include="Database Structs\Author.cs" />
     <Compile Include="GitParser.cs" />
-    <Compile Include="TimeStamp.cs" />
-    <Compile Include="Commit.cs" />
-    <Compile Include="Date.cs" />
-    <Compile Include="file.cs" />
-    <Compile Include="INSERTQueryBuilder.cs" />
+    <Compile Include="Database Structs\TimeStamp.cs" />
+    <Compile Include="Database Structs\Commit.cs" />
+    <Compile Include="Database Structs\File.cs" />
+    <Compile Include="SQL\INSERTQueryBuilder.cs" />
     <Compile Include="MessageBox.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MessageBox.Designer.cs">
       <DependentUpon>MessageBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="QueryBuilder.cs" />
-    <Compile Include="QueryExecuter.cs" />
-    <Compile Include="SELECTQueryBuilder.cs" />
-    <Compile Include="SQL.cs" />
+    <Compile Include="SQL\QueryBuilder.cs" />
+    <Compile Include="SQL\SELECTQueryBuilder.cs" />
+    <Compile Include="SQL\SQL.cs" />
     <Compile Include="CodebaseView.cs">
       <SubType>Form</SubType>
     </Compile>

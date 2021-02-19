@@ -44,7 +44,14 @@ namespace CodebaseView
             query += ") VALUES (";
             foreach (string value in this.values)
             {
-                query += "'" + cleanforsql(value) + "',";
+                if (value.StartsWith("TO_TIMESTAMP"))
+                {
+                    query += value + ",";
+                }
+                else
+                {
+                    query += "'" + cleanforsql(value) + "',";
+                }
             }
             query = query.Trim(',');
             query += ")";

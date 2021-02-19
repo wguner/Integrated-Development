@@ -80,8 +80,8 @@ namespace CodebaseView
             if (this.conditionals.Count > 0)
             {
                 query += " WHERE ";
-                foreach (string conditional in this.conditionals) { query += conditional + ","; }
-                query = query.Trim(',');
+                foreach (string conditional in this.conditionals) { query += conditional + " AND "; }
+                query = query.Remove(query.LastIndexOf('A'), 4);
             }
             if (this.groupBy.Count > 0)
             {
