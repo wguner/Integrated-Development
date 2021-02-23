@@ -213,6 +213,7 @@ namespace CodebaseView
                             INSERTQueryBuilder fileCommitMapInsert = new INSERTQueryBuilder();
                             fileCommitMapInsert.addColumnValue("file_id", file_id + "");
                             fileCommitMapInsert.addColumnValue("commit_id", commit_id + "");
+                            //blah
                         }
                     }
                 }
