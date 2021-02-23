@@ -210,10 +210,11 @@ namespace CodebaseView
                             int file_id = (int)SQL.execute(queryFileID).Rows[0]["file_id"];
 
                             // FILE_MAP_COMMIT UPDATING
-                            INSERTQueryBuilder fileCommitMapInsert = new INSERTQueryBuilder();
+                            INSERTQueryBuilder fileCommitMapInsert = new INSERTQueryBuilder().setTable("File_Map_Commit");
                             fileCommitMapInsert.addColumnValue("file_id", file_id + "");
                             fileCommitMapInsert.addColumnValue("commit_id", commit_id + "");
-                            //blah
+                            string insertFileCommitMap = fileCommitMapInsert.build();
+                            SQL.execute(insertFileCommitMap);
                         }
                     }
                 }
