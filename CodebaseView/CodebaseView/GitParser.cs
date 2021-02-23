@@ -100,6 +100,7 @@ namespace CodebaseView
                     int count = messagelinestart;
                     while (!line.StartsWith("commit"))
                     {
+                        line = line.Trim(' ');
                         message.Append(line);
                         count++;
                         if ((i + count) < commitLines.Count)
