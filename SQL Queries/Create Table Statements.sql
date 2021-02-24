@@ -37,3 +37,12 @@ CREATE TABLE File_Map_Commit (
     FOREIGN KEY (file_id) REFERENCES File(file_id),
     FOREIGN KEY(commit_id) REFERENCES Commit(commit_id)
 );
+
+
+-----WORK IN PROGRESS--
+CREATE TABLE Author_Map_Repo (
+    author_id INTEGER,
+    repo_id INTEGER,
+    FOREIGN KEY(author_id)  REFERENCES Author(author_id),
+    FOREIGN KEY(repo_id) REFERENCES Repository(repo_id)
+);
