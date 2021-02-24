@@ -71,6 +71,15 @@ namespace CodebaseView
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
+            this.richTextBoxCodeChanges.Text = "";
+            string datetime = this.dateTimePicker1.Text;
+            TimeStamp dateTime = new TimeStamp(datetime);
+            SELECTQueryBuilder qe = new SELECTQueryBuilder();
+           // string currentDate = dateTimePicker1.Value.ToString();
+            string sqlstr = qe.setColumns("message", "author_id").setTables("commit").setConditionals("datetime = '"
+                + dateTime.ToString() + "'").build();
+            DataTable authorCommit = SQL.execute(sqlstr);
+            textBoxCommitMessage.Text = authorCommit.Rows[0]["message"].ToString();
 
         }
 

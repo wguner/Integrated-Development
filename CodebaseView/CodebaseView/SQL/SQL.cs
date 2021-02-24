@@ -11,7 +11,7 @@ namespace CodebaseView
 {
     public static class SQL
     {
-        public static readonly string connectionString = "Host = localhost; Port = 5435; Username = postgres; Database = 421Db; password = password";
+        public static readonly string connectionString = "Host = localhost; Port = 5432; Username = postgres; Database = 421Db; password = password";
 
         public static DataTable execute(string sqlstr)
         {

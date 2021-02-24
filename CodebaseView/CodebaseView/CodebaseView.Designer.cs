@@ -48,12 +48,12 @@
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.CodeChanges = new System.Windows.Forms.GroupBox();
+            this.richTextBoxCodeChanges = new System.Windows.Forms.RichTextBox();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.richTextBoxCodeChanges = new System.Windows.Forms.RichTextBox();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.commitsDataGrid)).BeginInit();
@@ -256,7 +256,7 @@
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.CustomFormat = "MM/dd/yyyy hh:mm";
+            this.dateTimePicker2.CustomFormat = "yyyy/MM/dd hh:mm:ss";
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker2.Location = new System.Drawing.Point(6, 89);
             this.dateTimePicker2.Name = "dateTimePicker2";
@@ -265,12 +265,13 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.CustomFormat = "MM/dd/yyyy hh:mm";
+            this.dateTimePicker1.CustomFormat = "yyyy/MM/dd hh:mm:ss";
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker1.Location = new System.Drawing.Point(6, 34);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(213, 20);
             this.dateTimePicker1.TabIndex = 0;
+            this.dateTimePicker1.Value = new System.DateTime(2021, 2, 24, 0, 0, 0, 0);
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // CodeChanges
@@ -283,6 +284,17 @@
             this.CodeChanges.TabIndex = 2;
             this.CodeChanges.TabStop = false;
             this.CodeChanges.Text = "Code / Changes";
+            // 
+            // richTextBoxCodeChanges
+            // 
+            this.richTextBoxCodeChanges.BackColor = System.Drawing.SystemColors.Menu;
+            this.richTextBoxCodeChanges.Location = new System.Drawing.Point(0, 12);
+            this.richTextBoxCodeChanges.Name = "richTextBoxCodeChanges";
+            this.richTextBoxCodeChanges.ReadOnly = true;
+            this.richTextBoxCodeChanges.Size = new System.Drawing.Size(868, 416);
+            this.richTextBoxCodeChanges.TabIndex = 0;
+            this.richTextBoxCodeChanges.Text = "";
+            this.richTextBoxCodeChanges.WordWrap = false;
             // 
             // folderBrowserDialog1
             // 
@@ -313,19 +325,8 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.fileToolStripMenuItem.Text = "Add Repository";
-            // 
-            // richTextBoxCodeChanges
-            // 
-            this.richTextBoxCodeChanges.BackColor = System.Drawing.SystemColors.Menu;
-            this.richTextBoxCodeChanges.Location = new System.Drawing.Point(0, 12);
-            this.richTextBoxCodeChanges.Name = "richTextBoxCodeChanges";
-            this.richTextBoxCodeChanges.ReadOnly = true;
-            this.richTextBoxCodeChanges.Size = new System.Drawing.Size(868, 416);
-            this.richTextBoxCodeChanges.TabIndex = 0;
-            this.richTextBoxCodeChanges.Text = "";
-            this.richTextBoxCodeChanges.WordWrap = false;
             // 
             // CodebaseView
             // 
