@@ -28,7 +28,7 @@ namespace CodebaseView
 
         private void InitPopulate()
         {
-            string query = new SELECTQueryBuilder().setColumns("commit_id").setTables("commit").build();
+            string query = new SELECTQueryBuilder().setColumns("commit_hash").setTables("commit").build();
             populateCommits(query);
         }
 
@@ -100,16 +100,57 @@ namespace CodebaseView
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            this.richTextBoxCodeChanges.Text = "";
             int row = e.RowIndex;
-            string commitId = this.commitsDataGrid.Rows[row].Cells[0].Value.ToString();
-            string sqlstr = new SELECTQueryBuilder().setColumns("message", "author")
-                                .setTables("commit").setConditionals("commit_id = '" + commitId + "'").build();
+            string commitHash = this.commitsDataGrid.Rows[row].Cells[0].Value.ToString();
+            string sqlstr = new SELECTQueryBuilder().setColumns("message", "author_id")
+                                .setTables("commit").setConditionals("commit_hash = '" + commitHash + "'").build();
             DataTable commitinfo = SQL.execute(sqlstr);
-            // textBox2.Text = commitinfo.Rows[0]["message"].ToString();
-           // textBox3.Text = commitinfo.Rows[0]["author"].ToString();
+            
+            textBoxCommitMessage.Text = commitinfo.Rows[0]["message"].ToString();
 
+
+
+            string author_id = commitinfo.Rows[0]["author_id"].ToString();
+            string authorStr = new SELECTQueryBuilder().setColumns("*").setTables("Author").setConditionals("author_id = " + author_id).build();
+            DataTable authortable = SQL.execute(authorStr);
+
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("Name: " + authortable.Rows[0]["name"].ToString());
+            builder.AppendLine("ID: " + authortable.Rows[0]["author_id"].ToString());
+            builder.AppendLine("Email: " + authortable.Rows[0]["email"].ToString());
+            textBoxAuthorCommitInfo.Text = builder.ToString();
+
+
+
+            GitParser parser = new GitParser();
+            List<string> changes = parser.initCodeChanges(commitHash);
+
+            
+            foreach (string line in changes)
+            {
+               if (line.StartsWith("+"))
+               {
+                    appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Green);
+               }
+               else if (line.StartsWith("-"))
+               {
+                    appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Red);
+               }
+               else
+               {
+                    appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Black);
+               }
+                
+            }
         }
 
+        private void appendTextToCodeChangesBox(RichTextBox box, string line, Color color)
+        {
+            box.SelectionColor = color;
+            box.AppendText(line + "\n");
+            box.SelectionColor = box.ForeColor;
+        }
     }
 }
 

@@ -27,6 +27,11 @@ namespace CodebaseView
             initNewestCommit();
         }
 
+        public List<string> initCodeChanges(string commit_hash)
+        {
+            return runGitCommandProcess("show " + commit_hash);
+        }
+
         private List<string> runGitCommandProcess(string args)
         {
             var proc = new Process
@@ -239,5 +244,6 @@ namespace CodebaseView
             }
             return returnFiles;
         }
+
     }
 }
