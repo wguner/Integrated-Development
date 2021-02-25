@@ -163,7 +163,7 @@ namespace CodebaseView
 
         private void CommithashBox_TextChanged(object sender, EventArgs e)
         {
-            
+            richTextBoxCodeChanges.Clear();
             string commitHash = CommithashBox.Text;
             string sqlStr = new SELECTQueryBuilder().setColumns("message", "author_id").setTables("commit").
                 setConditionals("commit_hash = '" + commitHash + "'").build();
@@ -172,12 +172,6 @@ namespace CodebaseView
             string authorStr = new SELECTQueryBuilder().setColumns("author_id", "name", "email").setTables("author")
                 .setConditionals("author_id = '" + authorID + "'").build();
             DataTable authorTable = SQL.execute(authorStr);
-            //  string authorName = commitHashes.Rows[1]["author_id"].ToString();
-            /*StringBuilder builder = new StringBuilder();
-            builder.AppendLine("Commit Hash: " + commitHashes.Rows[0]["commit_hash"].ToString());
-            builder.AppendLine("ID: " + commitHashes.Rows[0]["author_id"].ToString());
-            */
-            // textBoxAuthorCommitInfo.Text = builder.ToString();
             StringBuilder authorInfo = new StringBuilder();
             authorInfo.AppendLine("ID: " + authorTable.Rows[0]["author_id"].ToString());
             authorInfo.AppendLine("Name: " + authorTable.Rows[0]["name"].ToString());
@@ -188,6 +182,32 @@ namespace CodebaseView
             textBoxCommitMessage.Text = builder.ToString();
 
 
+            GitParser parser = new GitParser();
+            List<string> changes = parser.initCodeChanges(commitHash);
+
+            
+            foreach (string line in changes)
+            {
+                if (line.StartsWith("+"))
+                {
+                    appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Green);
+                }
+                else if (line.StartsWith("-"))
+                {
+                    appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Red);
+                }
+                else
+                {
+                    appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Black);
+                }
+
+            }
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string sqlstr = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
+            DataTable authorsTable = SQL.execute(sqlstr);
 
         }
     }
