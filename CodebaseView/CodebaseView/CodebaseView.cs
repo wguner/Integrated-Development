@@ -160,6 +160,35 @@ namespace CodebaseView
             box.AppendText(line + "\n");
             box.SelectionColor = box.ForeColor;
         }
+
+        private void CommithashBox_TextChanged(object sender, EventArgs e)
+        {
+            
+            string commitHash = CommithashBox.Text;
+            string sqlStr = new SELECTQueryBuilder().setColumns("message", "author_id").setTables("commit").
+                setConditionals("commit_hash = '" + commitHash + "'").build();
+            DataTable commitHashes = SQL.execute(sqlStr);
+            string authorID = commitHashes.Rows[0]["author_id"].ToString();
+            string authorStr = new SELECTQueryBuilder().setColumns("author_id", "name", "email").setTables("author")
+                .setConditionals("author_id = '" + authorID + "'").build();
+            DataTable authorTable = SQL.execute(authorStr);
+            //  string authorName = commitHashes.Rows[1]["author_id"].ToString();
+            /*StringBuilder builder = new StringBuilder();
+            builder.AppendLine("Commit Hash: " + commitHashes.Rows[0]["commit_hash"].ToString());
+            builder.AppendLine("ID: " + commitHashes.Rows[0]["author_id"].ToString());
+            */
+            // textBoxAuthorCommitInfo.Text = builder.ToString();
+            StringBuilder authorInfo = new StringBuilder();
+            authorInfo.AppendLine("ID: " + authorTable.Rows[0]["author_id"].ToString());
+            authorInfo.AppendLine("Name: " + authorTable.Rows[0]["name"].ToString());
+            authorInfo.AppendLine("Email: " + authorTable.Rows[0]["email"].ToString());
+            textBoxAuthorCommitInfo.Text = authorInfo.ToString();
+            StringBuilder builder = new StringBuilder();
+            builder.AppendLine("Message: " + commitHashes.Rows[0]["message"].ToString());
+            textBoxCommitMessage.Text = builder.ToString();
+
+
+
+        }
     }
 }
-

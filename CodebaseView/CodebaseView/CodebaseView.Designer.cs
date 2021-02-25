@@ -37,7 +37,7 @@
             this.commitsDataGrid = new System.Windows.Forms.DataGridView();
             this.Options = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.CommithashBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
@@ -153,7 +153,7 @@
             // 
             this.Options.AutoSize = true;
             this.Options.Controls.Add(this.label7);
-            this.Options.Controls.Add(this.textBox1);
+            this.Options.Controls.Add(this.CommithashBox);
             this.Options.Controls.Add(this.label3);
             this.Options.Controls.Add(this.comboBox1);
             this.Options.Controls.Add(this.button2);
@@ -180,12 +180,13 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Filter By Commit Hash";
             // 
-            // textBox1
+            // CommithashBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(7, 228);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(211, 20);
-            this.textBox1.TabIndex = 11;
+            this.CommithashBox.Location = new System.Drawing.Point(7, 228);
+            this.CommithashBox.Name = "CommithashBox";
+            this.CommithashBox.Size = new System.Drawing.Size(211, 20);
+            this.CommithashBox.TabIndex = 11;
+            this.CommithashBox.TextChanged += new System.EventHandler(this.CommithashBox_TextChanged);
             // 
             // label3
             // 
@@ -378,7 +379,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox CommithashBox;
         private System.Windows.Forms.TextBox textBoxCommitMessage;
         private System.Windows.Forms.TextBox textBoxAuthorCommitInfo;
         private System.Windows.Forms.MenuStrip menuStrip1;
