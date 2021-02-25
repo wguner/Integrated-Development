@@ -2241,6 +2241,11 @@
             Set PostgreSQL configuration parameter default values for the connection.
             </summary>
         </member>
+        <member name="P:Npgsql.NpgsqlConnectionStringBuilder.ArrayNullabilityMode">
+            <summary>
+            Configure the way arrays of value types are returned when requested as object instances.
+            </summary>
+        </member>
         <member name="P:Npgsql.NpgsqlConnectionStringBuilder.Multiplexing">
             <summary>
             Enables multiplexing, which allows more efficient use of connections.
@@ -2398,6 +2403,35 @@
             <summary>
             Fail the connection if the server doesn't support SSL.
             </summary>
+        </member>
+        <member name="T:Npgsql.ArrayNullabilityMode">
+            <summary>
+            Specifies how the mapping of arrays of
+            <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/builtin-types/value-types">value types</a>
+            behaves with respect to nullability when they are requested via an API returning an <see cref="T:System.Object"/>.
+            </summary>
+        </member>
+        <member name="F:Npgsql.ArrayNullabilityMode.Never">
+            <summary>
+            Arrays of value types are always returned as non-nullable arrays (e.g. <c>int[]</c>).
+            If the PostgreSQL array contains a NULL value, an exception is thrown. This is the default mode.
+            </summary>
+        </member>
+        <member name="F:Npgsql.ArrayNullabilityMode.Always">
+            <summary>
+            Arrays of value types are always returned as nullable arrays (e.g. <c>int?[]</c>).
+            </summary>
+        </member>
+        <member name="F:Npgsql.ArrayNullabilityMode.PerInstance">
+            <summary>
+            The type of array that gets returned is determined at runtime.
+            Arrays of value types are returned as non-nullable arrays (e.g. <c>int[]</c>)
+            if the actual instance that gets returned doesn't contain null values
+            and as nullable arrays (e.g. <c>int?[]</c>) if it does.
+            </summary>
+            <remarks>When using this setting, make sure that your code is prepared to the fact
+            that the actual type of array instances returned from APIs like <see cref="M:Npgsql.NpgsqlDataReader.GetValue(System.Int32)"/>
+            may change on a row by row base.</remarks>
         </member>
         <member name="T:Npgsql.ReplicationMode">
             <summary>
@@ -6564,6 +6598,16 @@
             Wraps a replication slot that uses physical replication.
             </summary>
         </member>
+        <member name="M:Npgsql.Replication.PhysicalReplicationSlot.#ctor(System.String)">
+            <summary>
+            Creates a new <see cref="T:Npgsql.Replication.PhysicalReplicationSlot"/> instance.
+            </summary>
+            <remarks>
+            Create a <see cref="T:Npgsql.Replication.PhysicalReplicationSlot"/> instance with this constructor to wrap an existing PostgreSQL replication slot
+            that has been initialized for physical replication.
+            </remarks>
+            <param name="slotName">The name of the existing replication slot</param>
+        </member>
         <member name="T:Npgsql.Replication.ReplicationConnection">
             <summary>
             Defines the core behavior of replication connections and provides the base class for
@@ -7120,7 +7164,7 @@
         <member name="P:Npgsql.Schema.NpgsqlDbColumn.Item(System.String)">
             <inheritdoc />
         </member>
-        <member name="M:Npgsql.SqlQueryParser.ParseRawQuery(System.String,Npgsql.NpgsqlParameterCollection,System.Collections.Generic.List{Npgsql.NpgsqlStatement},System.Boolean)">
+        <member name="M:Npgsql.SqlQueryParser.ParseRawQuery(System.String,Npgsql.NpgsqlParameterCollection,System.Collections.Generic.List{Npgsql.NpgsqlStatement},System.Boolean,System.Boolean)">
             <summary>
             Receives a raw SQL query as passed in by the user, and performs some processing necessary
             before sending to the backend.
@@ -7128,10 +7172,16 @@
             up by semicolons if needed (SELECT 1; SELECT 2)
             </summary>
             <param name="sql">Raw user-provided query.</param>
-            <param name="parameters">The parameters configured on the <see cref="T:Npgsql.NpgsqlCommand"/> of this query
-            or an empty <see cref="T:Npgsql.NpgsqlParameterCollection"/> if deriveParameters is set to true.</param>
-            <param name="statements">An empty list to be populated with the statements parsed by this method</param>
-            <param name="deriveParameters">A bool indicating whether parameters contains a list of preconfigured parameters or an empty list to be filled with derived parameters.</param>
+            <param name="parameters">
+            The parameters configured on the <see cref="T:Npgsql.NpgsqlCommand"/> of this query or an empty <see cref="T:Npgsql.NpgsqlParameterCollection"/>
+            if deriveParameters is set to true.
+            </param>
+            <param name="statements">An empty list to be populated with the statements parsed by this method.</param>
+            <param name="standardConformingStrings">Whether PostgreSQL standards-conforming are used.</param>
+            <param name="deriveParameters">
+            A bool indicating whether parameters contains a list of preconfigured parameters or an empty list to be filled with derived
+            parameters.
+            </param>
         </member>
         <member name="M:Npgsql.TaskExtensions.WithTimeout``1(System.Threading.Tasks.Task{``0},Npgsql.Util.NpgsqlTimeout)">
             <summary>
@@ -7182,10 +7232,10 @@
              Use it at your own risk.
              </remarks>
         </member>
-        <member name="M:Npgsql.TypeHandlers.ArrayHandler.#ctor(Npgsql.PostgresTypes.PostgresType,Npgsql.TypeHandling.NpgsqlTypeHandler,System.Int32)">
+        <member name="M:Npgsql.TypeHandlers.ArrayHandler.#ctor(Npgsql.PostgresTypes.PostgresType,Npgsql.TypeHandling.NpgsqlTypeHandler,Npgsql.ArrayNullabilityMode,System.Int32)">
             <inheritdoc />
         </member>
-        <member name="M:Npgsql.TypeHandlers.ArrayHandler.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType)">
+        <member name="M:Npgsql.TypeHandlers.ArrayHandler.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType,Npgsql.ArrayNullabilityMode)">
             <inheritdoc />
         </member>
         <member name="M:Npgsql.TypeHandlers.ArrayHandler.CreateRangeHandler(Npgsql.PostgresTypes.PostgresType)">
@@ -7197,7 +7247,7 @@
         <member name="M:Npgsql.TypeHandlers.ArrayHandler.Read``1(Npgsql.NpgsqlReadBuffer,System.Int32,System.Boolean,Npgsql.BackendMessages.FieldDescription)">
             <inheritdoc />
         </member>
-        <member name="M:Npgsql.TypeHandlers.ArrayHandler.ReadArray``1(Npgsql.NpgsqlReadBuffer,System.Boolean,System.Int32)">
+        <member name="M:Npgsql.TypeHandlers.ArrayHandler.ReadArray``1(Npgsql.NpgsqlReadBuffer,System.Boolean,System.Int32,System.Boolean)">
             <summary>
             Reads an array of element type <typeparamref name="TRequestedElement"/> from the given buffer <paramref name="buf"/>.
             </summary>
@@ -7219,7 +7269,7 @@
              Use it at your own risk.
              </remarks>
         </member>
-        <member name="M:Npgsql.TypeHandlers.ArrayHandler`1.#ctor(Npgsql.PostgresTypes.PostgresType,Npgsql.TypeHandling.NpgsqlTypeHandler,System.Int32)">
+        <member name="M:Npgsql.TypeHandlers.ArrayHandler`1.#ctor(Npgsql.PostgresTypes.PostgresType,Npgsql.TypeHandling.NpgsqlTypeHandler,Npgsql.ArrayNullabilityMode,System.Int32)">
             <inheritdoc />
         </member>
         <member name="M:Npgsql.TypeHandlers.ArrayHandler`1.ValidateAndGetLength``1(``0,Npgsql.NpgsqlLengthCache@,Npgsql.NpgsqlParameter)">
@@ -7256,7 +7306,7 @@
         <member name="M:Npgsql.TypeHandlers.BitStringHandler.#ctor(Npgsql.PostgresTypes.PostgresType)">
             <inheritdoc />
         </member>
-        <member name="M:Npgsql.TypeHandlers.BitStringHandler.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType)">
+        <member name="M:Npgsql.TypeHandlers.BitStringHandler.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType,Npgsql.ArrayNullabilityMode)">
             <inheritdoc />
         </member>
         <member name="M:Npgsql.TypeHandlers.BitStringHandler.Read(Npgsql.NpgsqlReadBuffer,System.Int32,System.Boolean,Npgsql.BackendMessages.FieldDescription)">
@@ -7298,7 +7348,7 @@
             Use it at your own risk.
             </remarks>
         </member>
-        <member name="M:Npgsql.TypeHandlers.BitStringArrayHandler.#ctor(Npgsql.PostgresTypes.PostgresType,Npgsql.TypeHandlers.BitStringHandler)">
+        <member name="M:Npgsql.TypeHandlers.BitStringArrayHandler.#ctor(Npgsql.PostgresTypes.PostgresType,Npgsql.TypeHandlers.BitStringHandler,Npgsql.ArrayNullabilityMode)">
             <inheritdoc />
         </member>
         <member name="M:Npgsql.TypeHandlers.BitStringArrayHandler.Read``1(Npgsql.NpgsqlReadBuffer,System.Int32,System.Boolean,Npgsql.BackendMessages.FieldDescription)">
@@ -8725,7 +8775,7 @@
         <member name="M:Npgsql.TypeHandlers.RangeHandler`1.#ctor(Npgsql.PostgresTypes.PostgresType,Npgsql.TypeHandling.NpgsqlTypeHandler,System.Type[])">
             <inheritdoc />
         </member>
-        <member name="M:Npgsql.TypeHandlers.RangeHandler`1.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType)">
+        <member name="M:Npgsql.TypeHandlers.RangeHandler`1.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType,Npgsql.ArrayNullabilityMode)">
             <inheritdoc />
         </member>
         <member name="M:Npgsql.TypeHandlers.RangeHandler`1.CreateRangeHandler(Npgsql.PostgresTypes.PostgresType)">
@@ -9176,7 +9226,7 @@
             information relevant to the write process (e.g. <see cref="P:Npgsql.NpgsqlParameter.Size"/>).
             </param>
         </member>
-        <member name="M:Npgsql.TypeHandling.NpgsqlSimpleTypeHandlerWithPsv`2.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType)">
+        <member name="M:Npgsql.TypeHandling.NpgsqlSimpleTypeHandlerWithPsv`2.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType,Npgsql.ArrayNullabilityMode)">
             <inheeritdoc />
         </member>
         <member name="T:Npgsql.TypeHandling.NpgsqlTypeHandler">
@@ -9292,7 +9342,7 @@
             <param name="async">If I/O is required to read the full length of the value, whether it should be performed synchronously or asynchronously.</param>
             <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> that can be used to cancel the operation.</param>
         </member>
-        <member name="M:Npgsql.TypeHandling.NpgsqlTypeHandler.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType)">
+        <member name="M:Npgsql.TypeHandling.NpgsqlTypeHandler.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType,Npgsql.ArrayNullabilityMode)">
             <summary>
             Creates a type handler for arrays of this handler's type.
             </summary>
@@ -9435,7 +9485,7 @@
             Type handlers generally don't need to override this.
             </summary>
         </member>
-        <member name="M:Npgsql.TypeHandling.NpgsqlTypeHandler`1.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType)">
+        <member name="M:Npgsql.TypeHandling.NpgsqlTypeHandler`1.CreateArrayHandler(Npgsql.PostgresTypes.PostgresArrayType,Npgsql.ArrayNullabilityMode)">
             <inheritdoc />
         </member>
         <member name="M:Npgsql.TypeHandling.NpgsqlTypeHandler`1.CreateRangeHandler(Npgsql.PostgresTypes.PostgresType)">
