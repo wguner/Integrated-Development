@@ -128,7 +128,6 @@ namespace CodebaseView
             builder.AppendLine("Name: " + authortable.Rows[0]["name"].ToString());
             builder.AppendLine("ID: " + authortable.Rows[0]["author_id"].ToString());
             builder.AppendLine("Email: " + authortable.Rows[0]["email"].ToString());
-            builder.AppendLine("Date: " + commitinfo.Rows[0]["datetime"].ToString());
             textBoxAuthorCommitInfo.Text = builder.ToString();
 
 
@@ -180,7 +179,6 @@ namespace CodebaseView
             authorInfo.AppendLine("Name: " + authorTable.Rows[0]["name"].ToString());
             authorInfo.AppendLine("ID: " + authorTable.Rows[0]["author_id"].ToString());
             authorInfo.AppendLine("Email: " + authorTable.Rows[0]["email"].ToString());
-            authorInfo.AppendLine("Date: " + commitHashes.Rows[0]["datetime"].ToString());
             textBoxAuthorCommitInfo.Text = authorInfo.ToString();
 
 
