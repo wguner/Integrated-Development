@@ -37,3 +37,7 @@ CREATE TABLE File_Map_Commit (
     FOREIGN KEY (file_id) REFERENCES File(file_id),
     FOREIGN KEY(commit_id) REFERENCES Commit(commit_id)
 );
+
+CREATE VIEW Author_Map_Repo AS
+	SELECT DISTINCT author_id, repo_id
+	FROM Commit
