@@ -28,7 +28,7 @@ namespace CodebaseView
 
         private void InitPopulate()
         {
-            string query = new SELECTQueryBuilder().setColumns("commit_hash").setTables("commit").build();
+            string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime").setTables("commit").setOrderBy("datetime").build();
             populateCommits(query);
         }
 
@@ -112,11 +112,11 @@ namespace CodebaseView
             this.richTextBoxCodeChanges.Text = "";
             int row = e.RowIndex;
             string commitHash = this.commitsDataGrid.Rows[row].Cells[0].Value.ToString();
-            string sqlstr = new SELECTQueryBuilder().setColumns("message", "author_id")
+            string sqlstr = new SELECTQueryBuilder().setColumns("message", "author_id", "datetime")
                                 .setTables("commit").setConditionals("commit_hash = '" + commitHash + "'").build();
             DataTable commitinfo = SQL.execute(sqlstr);
             
-            textBoxCommitMessage.Text = commitinfo.Rows[0]["message"].ToString();
+            textBoxCommitMessage.Text = "Message: " + commitinfo.Rows[0]["message"].ToString();
 
 
 
@@ -128,6 +128,7 @@ namespace CodebaseView
             builder.AppendLine("Name: " + authortable.Rows[0]["name"].ToString());
             builder.AppendLine("ID: " + authortable.Rows[0]["author_id"].ToString());
             builder.AppendLine("Email: " + authortable.Rows[0]["email"].ToString());
+            builder.AppendLine("Date: " + commitinfo.Rows[0]["datetime"].ToString());
             textBoxAuthorCommitInfo.Text = builder.ToString();
 
 
@@ -163,20 +164,27 @@ namespace CodebaseView
 
         private void CommithashBox_TextChanged(object sender, EventArgs e)
         {
+            
             richTextBoxCodeChanges.Clear();
             string commitHash = CommithashBox.Text;
-            string sqlStr = new SELECTQueryBuilder().setColumns("message", "author_id").setTables("commit").
+            string sqlStr = new SELECTQueryBuilder().setColumns("message", "author_id", "datetime").setTables("commit").
                 setConditionals("commit_hash = '" + commitHash + "'").build();
             DataTable commitHashes = SQL.execute(sqlStr);
             string authorID = commitHashes.Rows[0]["author_id"].ToString();
             string authorStr = new SELECTQueryBuilder().setColumns("author_id", "name", "email").setTables("author")
                 .setConditionals("author_id = '" + authorID + "'").build();
+
+
             DataTable authorTable = SQL.execute(authorStr);
             StringBuilder authorInfo = new StringBuilder();
-            authorInfo.AppendLine("ID: " + authorTable.Rows[0]["author_id"].ToString());
             authorInfo.AppendLine("Name: " + authorTable.Rows[0]["name"].ToString());
+            authorInfo.AppendLine("ID: " + authorTable.Rows[0]["author_id"].ToString());
             authorInfo.AppendLine("Email: " + authorTable.Rows[0]["email"].ToString());
+            authorInfo.AppendLine("Date: " + commitHashes.Rows[0]["datetime"].ToString());
             textBoxAuthorCommitInfo.Text = authorInfo.ToString();
+
+
+
             StringBuilder builder = new StringBuilder();
             builder.AppendLine("Message: " + commitHashes.Rows[0]["message"].ToString());
             textBoxCommitMessage.Text = builder.ToString();
