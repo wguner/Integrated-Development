@@ -42,7 +42,7 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
             this.selected_file_clicked = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Filter_Button = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
@@ -158,7 +158,7 @@
             this.Options.Controls.Add(this.comboBox1);
             this.Options.Controls.Add(this.button2);
             this.Options.Controls.Add(this.selected_file_clicked);
-            this.Options.Controls.Add(this.button1);
+            this.Options.Controls.Add(this.Filter_Button);
             this.Options.Controls.Add(this.label2);
             this.Options.Controls.Add(this.label1);
             this.Options.Controls.Add(this.dateTimePicker2);
@@ -228,15 +228,16 @@
             this.selected_file_clicked.UseVisualStyleBackColor = true;
             this.selected_file_clicked.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button1
+            // Filter_Button
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(6, 536);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(213, 40);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Filter";
-            this.button1.UseVisualStyleBackColor = true;
+            this.Filter_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Filter_Button.Location = new System.Drawing.Point(6, 536);
+            this.Filter_Button.Name = "Filter_Button";
+            this.Filter_Button.Size = new System.Drawing.Size(213, 40);
+            this.Filter_Button.TabIndex = 4;
+            this.Filter_Button.Text = "Filter";
+            this.Filter_Button.UseVisualStyleBackColor = true;
+            this.Filter_Button.Click += new System.EventHandler(this.button1_Click);
             // 
             // label2
             // 
@@ -369,7 +370,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Filter_Button;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
         private System.Windows.Forms.Button selected_file_clicked;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
