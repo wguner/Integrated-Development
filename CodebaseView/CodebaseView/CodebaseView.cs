@@ -81,18 +81,29 @@ namespace CodebaseView
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            this.richTextBoxCodeChanges.Text = "";
-            string dateTime = this.dateTimePicker1.Text;
-            TimeStamp date = TimeStamp.parseWinFormsTimeStamp(dateTime);
-            SELECTQueryBuilder qe = new SELECTQueryBuilder();
-            string currentDate = dateTimePicker1.Value.ToString();
-            string sqlstr = qe.setColumns("message", "author_id").setTables("commit").setConditionals("datetime = '"
-                + dateTime.ToString() + "'").build();
-            DataTable authorCommit = SQL.execute(sqlstr);
-            textBoxCommitMessage.Text = authorCommit.Rows[0]["message"].ToString();
+            
+            
 
         }
 
+        private void test()
+        {
+            this.richTextBoxCodeChanges.Text = "";
+            string dateTime = this.dateTimePicker1.Text;
+
+            TimeStamp date = new TimeStamp(this.dateTimePicker1.Value.Year.ToString(),
+                this.dateTimePicker1.Value.Month.ToString(),
+                this.dateTimePicker1.Value.Day.ToString(),
+                this.dateTimePicker1.Value.TimeOfDay.ToString());
+
+            SELECTQueryBuilder qe = new SELECTQueryBuilder();
+            string currentDate = dateTimePicker1.Value.ToString();
+            string sqlstr = qe.setColumns("message", "author_id").setTables("commit").setConditionals("datetime = '"
+                + date.ToString() + "'").build();
+            DataTable authorCommit = SQL.execute(sqlstr);
+
+            textBoxCommitMessage.Text = authorCommit.Rows[0]["message"].ToString();
+        }
         private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
         {
 
@@ -229,10 +240,7 @@ namespace CodebaseView
 
         private void Filter_Button_Click(object sender, EventArgs e)
         {
-            //if (CommithashBox.T)
-           // {
-
-            //}
+            this.test();
         }
     }
 }
