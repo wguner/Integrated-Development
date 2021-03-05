@@ -82,14 +82,14 @@ namespace CodebaseView
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             this.richTextBoxCodeChanges.Text = "";
-            string datetime = this.dateTimePicker1.Text;
-            // TimeStamp dateTime = new TimeStamp(datetime);
+            string dateTime = this.dateTimePicker1.Text;
+            TimeStamp date = TimeStamp.parseWinFormsTimeStamp(dateTime);
             SELECTQueryBuilder qe = new SELECTQueryBuilder();
-           // string currentDate = dateTimePicker1.Value.ToString();
-           // string sqlstr = qe.setColumns("message", "author_id").setTables("commit").setConditionals("datetime = '"
-            //    + dateTime.ToString() + "'").build();
-           // DataTable authorCommit = SQL.execute(sqlstr);
-            //textBoxCommitMessage.Text = authorCommit.Rows[0]["message"].ToString();
+            string currentDate = dateTimePicker1.Value.ToString();
+            string sqlstr = qe.setColumns("message", "author_id").setTables("commit").setConditionals("datetime = '"
+                + dateTime.ToString() + "'").build();
+            DataTable authorCommit = SQL.execute(sqlstr);
+            textBoxCommitMessage.Text = authorCommit.Rows[0]["message"].ToString();
 
         }
 
@@ -140,28 +140,27 @@ namespace CodebaseView
             builder.AppendLine("Email: " + authortable.Rows[0]["email"].ToString());
             textBoxAuthorCommitInfo.Text = builder.ToString();
 
-
-
             GitParser parser = new GitParser();
             List<string> changes = parser.initCodeChanges(commitHash);
 
-            
+
             foreach (string line in changes)
             {
-               if (line.StartsWith("+"))
-               {
+                if (line.StartsWith("+"))
+                {
                     appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Green);
-               }
-               else if (line.StartsWith("-"))
-               {
+                }
+                else if (line.StartsWith("-"))
+                {
                     appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Red);
-               }
-               else
-               {
+                }
+                else
+                {
                     appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Black);
-               }
-                
+                }
+
             }
+
         }
 
         private void appendTextToCodeChangesBox(RichTextBox box, string line, Color color)
@@ -228,5 +227,12 @@ namespace CodebaseView
 
         }
 
+        private void Filter_Button_Click(object sender, EventArgs e)
+        {
+            //if (CommithashBox.T)
+           // {
+
+            //}
+        }
     }
 }
