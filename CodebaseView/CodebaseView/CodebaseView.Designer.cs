@@ -36,6 +36,7 @@
             this.Commits = new System.Windows.Forms.GroupBox();
             this.dataGridViewCommitHashBox = new System.Windows.Forms.DataGridView();
             this.Options = new System.Windows.Forms.GroupBox();
+            this.labelShowFileName = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.textBoxCommitHash = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
@@ -54,7 +55,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.labelShowFileName = new System.Windows.Forms.Label();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).BeginInit();
@@ -146,9 +146,11 @@
             this.dataGridViewCommitHashBox.ReadOnly = true;
             this.dataGridViewCommitHashBox.RowHeadersVisible = false;
             this.dataGridViewCommitHashBox.RowHeadersWidth = 100;
-            this.dataGridViewCommitHashBox.Size = new System.Drawing.Size(349, 440);
+            this.dataGridViewCommitHashBox.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewCommitHashBox.Size = new System.Drawing.Size(349, 429);
             this.dataGridViewCommitHashBox.TabIndex = 2;
             this.dataGridViewCommitHashBox.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridViewCommitHashBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.commitHashBox_mouseClick);
             // 
             // Options
             // 
@@ -172,6 +174,14 @@
             this.Options.TabStop = false;
             this.Options.Text = "Options";
             this.Options.Enter += new System.EventHandler(this.Options_Enter);
+            // 
+            // labelShowFileName
+            // 
+            this.labelShowFileName.AutoSize = true;
+            this.labelShowFileName.Location = new System.Drawing.Point(6, 482);
+            this.labelShowFileName.Name = "labelShowFileName";
+            this.labelShowFileName.Size = new System.Drawing.Size(0, 13);
+            this.labelShowFileName.TabIndex = 13;
             // 
             // label7
             // 
@@ -331,14 +341,6 @@
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.fileToolStripMenuItem.Text = "Add Repository";
-            // 
-            // labelShowFileName
-            // 
-            this.labelShowFileName.AutoSize = true;
-            this.labelShowFileName.Location = new System.Drawing.Point(6, 482);
-            this.labelShowFileName.Name = "labelShowFileName";
-            this.labelShowFileName.Size = new System.Drawing.Size(0, 13);
-            this.labelShowFileName.TabIndex = 13;
             // 
             // CodebaseView
             // 

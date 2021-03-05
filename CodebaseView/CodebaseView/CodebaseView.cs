@@ -28,10 +28,14 @@ namespace CodebaseView
 
         private void InitPopulate()
         {
-            string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime").setTables("commit").setOrderBy("datetime").build();
+            string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime", "message").setTables("commit").setOrderBy("datetime").build();
             string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
+            
+            
             populateCommits(query);
             populateAuthorBox(authorNames);
+
+            this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
         }
 
         private void populateCommits(string query)
@@ -119,6 +123,7 @@ namespace CodebaseView
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+           
             this.richTextBoxCodeChanges.Text = "";
             int row = e.RowIndex;
             string commitHash = this.dataGridViewCommitHashBox.Rows[row].Cells[0].Value.ToString();
@@ -236,7 +241,7 @@ namespace CodebaseView
         private void Filter_Button_Click(object sender, EventArgs e)
         {
             SELECTQueryBuilder selectQueryBuilder = new SELECTQueryBuilder();
-            selectQueryBuilder.setColumns("commit_hash");
+            selectQueryBuilder.setColumns("commit_hash", "datetime", "message");
             selectQueryBuilder.setTables("commit");
 
             string timeAfter = this.GetTimeStamp(this.dateTimePicker1);
@@ -245,6 +250,7 @@ namespace CodebaseView
             GitParser parser = new GitParser();
             string repoURL = parser.retrieveRepoURL();
 
+            //get repo_id
             if (repoURL != null || repoURL != string.Empty)
             {
                 SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
@@ -259,8 +265,6 @@ namespace CodebaseView
                     selectQueryBuilder.setConditionals("repo_id = " + repo_id);
                 }
             }
-
-            selectQueryBuilder.setConditionals("repo_id = " + 1);
             selectQueryBuilder.setConditionals("datetime >= '" + timeAfter + "' and datetime <= '" + timeBefore + "'");
 
             //get author id
@@ -361,5 +365,26 @@ namespace CodebaseView
 
             return finalFileName;
         }
+
+        private void commitHashBox_mouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                ContextMenu menu = new ContextMenu();
+                menu.MenuItems.Add(new MenuItem("Copy commit hash"));
+
+                int selectRow = this.dataGridViewCommitHashBox.HitTest(e.X, e.Y).RowIndex;
+                this.dataGridViewCommitHashBox.Rows[selectRow].Selected = true;
+                menu.Show(this.dataGridViewCommitHashBox, new Point(e.X, e.Y));
+
+                if (this.dataGridViewCommitHashBox.GetCellCount(DataGridViewElementStates.Selected) > 0)
+                {
+                    string text = this.dataGridViewCommitHashBox.Rows[selectRow].Cells[0].Value.ToString();
+                    Clipboard.SetText(text);
+                }
+            }
+        }
+
+        
     }
 }
