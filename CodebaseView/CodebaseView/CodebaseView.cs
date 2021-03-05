@@ -190,6 +190,11 @@ namespace CodebaseView
             string sqlStr = new SELECTQueryBuilder().setColumns("message", "author_id", "datetime").setTables("commit").
                 setConditionals("commit_hash = '" + commitHash + "'").build();
             DataTable commitHashes = SQL.execute(sqlStr);
+            if (commitHashes.Rows.Count == 0)
+            {
+                richTextBoxCodeChanges.Text = "";
+                return;
+            }
             if (commitHashes.Rows.Count != 0)
             {
                 string authorID = commitHashes.Rows[0]["author_id"].ToString();
