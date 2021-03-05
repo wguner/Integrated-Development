@@ -97,7 +97,7 @@ namespace CodebaseView
                     commit.authorEmail = authorEmail.Substring(emailStart, emailEnd - emailStart);
                     commit.authorName = authorEmail.Substring(0, emailStart - 2);
 
-                    TimeStamp timestamp = new TimeStamp(dateline.Substring(12, 21));
+                    TimeStamp timestamp = TimeStamp.parseSQLTimeStamp(dateline.Substring(12, 21));
                     commit.timestamp = timestamp;
 
                     StringBuilder message = new StringBuilder();
