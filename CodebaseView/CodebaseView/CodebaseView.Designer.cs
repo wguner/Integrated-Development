@@ -76,7 +76,6 @@
             this.CommitBox.TabIndex = 0;
             this.CommitBox.TabStop = false;
             this.CommitBox.Text = "Commit Info";
-            this.CommitBox.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // textBoxAuthorCommitInfo
             // 
@@ -128,7 +127,6 @@
             this.Commits.TabIndex = 4;
             this.Commits.TabStop = false;
             this.Commits.Text = "Commits";
-            this.Commits.Enter += new System.EventHandler(this.Commits_Enter);
             // 
             // dataGridViewCommitHashBox
             // 
@@ -173,7 +171,6 @@
             this.Options.TabIndex = 1;
             this.Options.TabStop = false;
             this.Options.Text = "Options";
-            this.Options.Enter += new System.EventHandler(this.Options_Enter);
             // 
             // labelShowFileName
             // 
@@ -198,7 +195,6 @@
             this.textBoxCommitHash.Name = "textBoxCommitHash";
             this.textBoxCommitHash.Size = new System.Drawing.Size(211, 20);
             this.textBoxCommitHash.TabIndex = 11;
-            this.textBoxCommitHash.TextChanged += new System.EventHandler(this.CommithashBox_TextChanged);
             // 
             // label3
             // 
@@ -216,7 +212,6 @@
             this.comboBoxSelectAuthor.Name = "comboBoxSelectAuthor";
             this.comboBoxSelectAuthor.Size = new System.Drawing.Size(213, 21);
             this.comboBoxSelectAuthor.TabIndex = 9;
-            this.comboBoxSelectAuthor.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // button2
             // 
@@ -286,7 +281,6 @@
             this.dateTimePicker1.Size = new System.Drawing.Size(213, 20);
             this.dateTimePicker1.TabIndex = 0;
             this.dateTimePicker1.Value = new System.DateTime(2021, 2, 24, 0, 0, 0, 0);
-            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // CodeChanges
             // 
@@ -309,10 +303,6 @@
             this.richTextBoxCodeChanges.TabIndex = 0;
             this.richTextBoxCodeChanges.Text = "";
             this.richTextBoxCodeChanges.WordWrap = false;
-            // 
-            // folderBrowserDialog1
-            // 
-            this.folderBrowserDialog1.HelpRequest += new System.EventHandler(this.folderBrowserDialog1_HelpRequest);
             // 
             // openFileDialog1
             // 
@@ -339,7 +329,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.fileToolStripMenuItem.Text = "Add Repository";
             // 
             // CodebaseView

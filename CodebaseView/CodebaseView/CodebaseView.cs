@@ -63,32 +63,7 @@ namespace CodebaseView
 
         }
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Options_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Commits_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
-        {
-            
-            
-
-        }
+        
 
         private void test()
         {
@@ -108,25 +83,19 @@ namespace CodebaseView
 
             textBoxCommitMessage.Text = authorCommit.Rows[0]["message"].ToString();
         }
-        private void folderBrowserDialog1_HelpRequest(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        
-        
+       
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-           
-            this.richTextBoxCodeChanges.Text = "";
             int row = e.RowIndex;
             string commitHash = this.dataGridViewCommitHashBox.Rows[row].Cells[0].Value.ToString();
+
+            if (commitHash == null || commitHash == string.Empty)
+            {
+                this.dataGridViewCommitHashBox.Rows[row].Selected = false;
+                return;
+            }
+
             string sqlstr = new SELECTQueryBuilder().setColumns("message", "author_id", "datetime")
                                 .setTables("commit").setConditionals("commit_hash = '" + commitHash + "'").build();
             DataTable commitinfo = SQL.execute(sqlstr);
@@ -148,6 +117,7 @@ namespace CodebaseView
             GitParser parser = new GitParser();
             List<string> changes = parser.initCodeChanges(commitHash);
 
+            this.richTextBoxCodeChanges.Text = "";
 
             foreach (string line in changes)
             {
@@ -175,68 +145,8 @@ namespace CodebaseView
             box.SelectionColor = box.ForeColor;
         }
 
-        private void CommithashBox_TextChanged(object sender, EventArgs e)
-        {
-            /*
-            richTextBoxCodeChanges.Clear();
-          
-            
-            string commitHash = textBoxCommitHash.Text;
-            string sqlStr = new SELECTQueryBuilder().setColumns("message", "author_id", "datetime").setTables("commit").
-                setConditionals("commit_hash = '" + commitHash + "'").build();
-            DataTable commitHashes = SQL.execute(sqlStr);
-            /*if (commitHashes.Rows.Count == 0)
-            {
-                richTextBoxCodeChanges.Text = "";
-                return;
-            }
-            if (commitHashes.Rows.Count != 0)
-            {
-                string authorID = commitHashes.Rows[0]["author_id"].ToString();
-                string authorStr = new SELECTQueryBuilder().setColumns("author_id", "name", "email").setTables("author")
-                    .setConditionals("author_id = '" + authorID + "'").build();
-
-                DataTable authorTable = SQL.execute(authorStr);
-                StringBuilder authorInfo = new StringBuilder();
-                authorInfo.AppendLine("Name: " + authorTable.Rows[0]["name"].ToString());
-                authorInfo.AppendLine("ID: " + authorTable.Rows[0]["author_id"].ToString());
-                authorInfo.AppendLine("Email: " + authorTable.Rows[0]["email"].ToString());
-                textBoxAuthorCommitInfo.Text = authorInfo.ToString();
-
-                StringBuilder builder = new StringBuilder();
-                builder.AppendLine("Message: " + commitHashes.Rows[0]["message"].ToString());
-                textBoxCommitMessage.Text = builder.ToString();
-            }
-            
-
-
-            GitParser parser = new GitParser();
-            List<string> changes = parser.initCodeChanges(commitHash);
-
-            
-            foreach (string line in changes)
-            {
-                if (line.StartsWith("+"))
-                {
-                    appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Green);
-                }
-                else if (line.StartsWith("-"))
-                {
-                    appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Red);
-                }
-                else
-                {
-                    appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Black);
-                }
-
-            }*/
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-
-        }
+       
+        
 
         private void Filter_Button_Click(object sender, EventArgs e)
         {
