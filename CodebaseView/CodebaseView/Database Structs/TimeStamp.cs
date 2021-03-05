@@ -39,7 +39,13 @@ namespace CodebaseView
 
         
 
-        public override string ToString()
+        public string ToInsertString()
+        {
+            return "TO_TIMESTAMP('" + year + "-" + month + "-" + day + " " + time + 
+                "', 'YYYY-MON-DD HH24:MI:SS')";
+        }
+
+        public string ToSelectString()
         {
             return year + "-" + month + "-" + day + " " + time;
         }

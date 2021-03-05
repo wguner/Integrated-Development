@@ -37,14 +37,14 @@ namespace CodebaseView
         private void populateCommits(string query)
         {
             DataTable dt = SQL.execute(query);
-            this.commitsDataGrid.DataSource = dt;
+            this.dataGridViewCommitHashBox.DataSource = dt;
         }
         private void populateAuthorBox(string sql)
         {
             DataTable dt = SQL.execute(sql);
             for (int i = 0; i < dt.Rows.Count; i++)
             {
-                this.comboBox1.Items.Add(dt.Rows[i]["name"].ToString());
+                this.comboBoxSelectAuthor.Items.Add(dt.Rows[i]["name"].ToString());
             }
         }
 
@@ -99,7 +99,7 @@ namespace CodebaseView
             SELECTQueryBuilder qe = new SELECTQueryBuilder();
             string currentDate = dateTimePicker1.Value.ToString();
             string sqlstr = qe.setColumns("message", "author_id").setTables("commit").setConditionals("datetime = '"
-                + date.ToString() + "'").build();
+                + date.ToSelectString() + "'").build();
             DataTable authorCommit = SQL.execute(sqlstr);
 
             textBoxCommitMessage.Text = authorCommit.Rows[0]["message"].ToString();
@@ -111,28 +111,17 @@ namespace CodebaseView
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (openFileDialog1.ShowDialog() == DialogResult.OK)
-            {
-                Console.WriteLine(openFileDialog1.FileNames[0]);
-                //textBox1.Text = folderBrowserDialog1.SelectedPath;
-            }
+            
         }
 
-        private void button2_Click_1(object sender, EventArgs e)
-        {
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
-            {
-                Console.WriteLine(folderBrowserDialog1.SelectedPath);
-
-            }
-        }
+        
         
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             this.richTextBoxCodeChanges.Text = "";
             int row = e.RowIndex;
-            string commitHash = this.commitsDataGrid.Rows[row].Cells[0].Value.ToString();
+            string commitHash = this.dataGridViewCommitHashBox.Rows[row].Cells[0].Value.ToString();
             string sqlstr = new SELECTQueryBuilder().setColumns("message", "author_id", "datetime")
                                 .setTables("commit").setConditionals("commit_hash = '" + commitHash + "'").build();
             DataTable commitinfo = SQL.execute(sqlstr);
@@ -183,14 +172,15 @@ namespace CodebaseView
 
         private void CommithashBox_TextChanged(object sender, EventArgs e)
         {
-            
+            /*
             richTextBoxCodeChanges.Clear();
           
-            string commitHash = CommithashBox.Text;
+            
+            string commitHash = textBoxCommitHash.Text;
             string sqlStr = new SELECTQueryBuilder().setColumns("message", "author_id", "datetime").setTables("commit").
                 setConditionals("commit_hash = '" + commitHash + "'").build();
             DataTable commitHashes = SQL.execute(sqlStr);
-            if (commitHashes.Rows.Count == 0)
+            /*if (commitHashes.Rows.Count == 0)
             {
                 richTextBoxCodeChanges.Text = "";
                 return;
@@ -234,7 +224,7 @@ namespace CodebaseView
                     appendTextToCodeChangesBox(this.richTextBoxCodeChanges, line, Color.Black);
                 }
 
-            }
+            }*/
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -245,7 +235,99 @@ namespace CodebaseView
 
         private void Filter_Button_Click(object sender, EventArgs e)
         {
-            this.test();
+            SELECTQueryBuilder selectQueryBuilder = new SELECTQueryBuilder();
+            selectQueryBuilder.setColumns("commit_hash");
+            selectQueryBuilder.setTables("commit");
+
+            string timeAfter = this.GetTimeStamp(this.dateTimePicker1);
+            string timeBefore = this.GetTimeStamp(this.dateTimePicker2);
+
+            GitParser parser = new GitParser();
+            string repoURL = parser.retrieveRepoURL();
+
+            if (repoURL != null || repoURL != string.Empty)
+            {
+                SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
+                tempQueryBuilder.setTables("Repository").setColumns("repo_id").setConditionals("repoURL = '" + repoURL + "'");
+
+                string tempSqlStr = tempQueryBuilder.build();
+                DataTable tempRepoID = SQL.execute(tempSqlStr);
+
+                if (tempRepoID.Rows.Count > 0)
+                {
+                    string repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
+                    selectQueryBuilder.setConditionals("repo_id = " + repo_id);
+                }
+            }
+
+            selectQueryBuilder.setConditionals("repo_id = " + 1);
+            selectQueryBuilder.setConditionals("datetime >= '" + timeAfter + "' and datetime <= '" + timeBefore + "'");
+
+            //get author id
+            if (this.comboBoxSelectAuthor.SelectedIndex > -1)
+            {
+                string name = this.comboBoxSelectAuthor.SelectedItem.ToString();
+                SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
+                tempQueryBuilder.setTables("Author").setColumns("author_id").setConditionals("name = '" + name + "'");
+
+                string tempSqlStr = tempQueryBuilder.build();
+                DataTable tempAuthorID = SQL.execute(tempSqlStr);
+
+                if (tempAuthorID.Rows.Count > 0)
+                {
+                    string author_id = tempAuthorID.Rows[0]["author_id"].ToString();
+                    selectQueryBuilder.setConditionals("author_id = " + author_id);
+                }
+            }
+
+            //get commit hash
+            if (this.textBoxCommitHash.Text != string.Empty)
+            {
+                string commitHash = this.textBoxCommitHash.Text;
+                selectQueryBuilder.setConditionals("commit_hash = '" + commitHash + "'");
+            }
+
+            string selectQueryString = selectQueryBuilder.build();
+            DataTable commitTable = SQL.execute(selectQueryString);
+
+            this.dataGridViewCommitHashBox.DataSource = commitTable;
+
+            //TODO: get file
+
+            //TODO: get directory
+        }
+
+        private string GetTimeStamp(DateTimePicker dateTimePicker)
+        {
+            string year = dateTimePicker.Value.Year.ToString();
+            string month = dateTimePicker.Value.Month.ToString();
+            string day = dateTimePicker.Value.Day.ToString();
+            string time = dateTimePicker.Value.TimeOfDay.ToString();
+
+            TimeStamp date = new TimeStamp(year, month, day, time);
+            
+            return date.ToSelectString();
+        }
+
+       
+
+        private void selectFileButton_clicked(object sender, EventArgs e)
+        {
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = openFileDialog1.SafeFileName.ToString();
+                string directory = openFileDialog1.FileName.ToString();
+      
+                this.labelShowFileName.Text = fileName;
+
+
+            }
+        }
+
+        
+        private string GetRepoFileNameFromTrueDirectory(string directory)
+        {
+            return "";
         }
     }
 }

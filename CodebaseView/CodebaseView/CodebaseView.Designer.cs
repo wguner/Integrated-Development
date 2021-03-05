@@ -34,14 +34,14 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.Commits = new System.Windows.Forms.GroupBox();
-            this.commitsDataGrid = new System.Windows.Forms.DataGridView();
+            this.dataGridViewCommitHashBox = new System.Windows.Forms.DataGridView();
             this.Options = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.CommithashBox = new System.Windows.Forms.TextBox();
+            this.textBoxCommitHash = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.comboBoxSelectAuthor = new System.Windows.Forms.ComboBox();
             this.button2 = new System.Windows.Forms.Button();
-            this.selected_file_clicked = new System.Windows.Forms.Button();
+            this.buttonSelectFile = new System.Windows.Forms.Button();
             this.Filter_Button = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -54,9 +54,10 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.labelShowFileName = new System.Windows.Forms.Label();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.commitsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).BeginInit();
             this.Options.SuspendLayout();
             this.CodeChanges.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -120,7 +121,7 @@
             // Commits
             // 
             this.Commits.AutoSize = true;
-            this.Commits.Controls.Add(this.commitsDataGrid);
+            this.Commits.Controls.Add(this.dataGridViewCommitHashBox);
             this.Commits.Location = new System.Drawing.Point(889, 27);
             this.Commits.Name = "Commits";
             this.Commits.Size = new System.Drawing.Size(355, 459);
@@ -129,35 +130,36 @@
             this.Commits.Text = "Commits";
             this.Commits.Enter += new System.EventHandler(this.Commits_Enter);
             // 
-            // commitsDataGrid
+            // dataGridViewCommitHashBox
             // 
-            this.commitsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.commitsDataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.commitsDataGrid.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-            this.commitsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.commitsDataGrid.ColumnHeadersVisible = false;
-            this.commitsDataGrid.Dock = System.Windows.Forms.DockStyle.Top;
-            this.commitsDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.commitsDataGrid.GridColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.commitsDataGrid.Location = new System.Drawing.Point(3, 16);
-            this.commitsDataGrid.MultiSelect = false;
-            this.commitsDataGrid.Name = "commitsDataGrid";
-            this.commitsDataGrid.ReadOnly = true;
-            this.commitsDataGrid.RowHeadersVisible = false;
-            this.commitsDataGrid.RowHeadersWidth = 100;
-            this.commitsDataGrid.Size = new System.Drawing.Size(349, 440);
-            this.commitsDataGrid.TabIndex = 2;
-            this.commitsDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridViewCommitHashBox.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewCommitHashBox.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewCommitHashBox.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.dataGridViewCommitHashBox.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewCommitHashBox.ColumnHeadersVisible = false;
+            this.dataGridViewCommitHashBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dataGridViewCommitHashBox.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dataGridViewCommitHashBox.GridColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dataGridViewCommitHashBox.Location = new System.Drawing.Point(3, 16);
+            this.dataGridViewCommitHashBox.MultiSelect = false;
+            this.dataGridViewCommitHashBox.Name = "dataGridViewCommitHashBox";
+            this.dataGridViewCommitHashBox.ReadOnly = true;
+            this.dataGridViewCommitHashBox.RowHeadersVisible = false;
+            this.dataGridViewCommitHashBox.RowHeadersWidth = 100;
+            this.dataGridViewCommitHashBox.Size = new System.Drawing.Size(349, 440);
+            this.dataGridViewCommitHashBox.TabIndex = 2;
+            this.dataGridViewCommitHashBox.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
             // 
             // Options
             // 
             this.Options.AutoSize = true;
+            this.Options.Controls.Add(this.labelShowFileName);
             this.Options.Controls.Add(this.label7);
-            this.Options.Controls.Add(this.CommithashBox);
+            this.Options.Controls.Add(this.textBoxCommitHash);
             this.Options.Controls.Add(this.label3);
-            this.Options.Controls.Add(this.comboBox1);
+            this.Options.Controls.Add(this.comboBoxSelectAuthor);
             this.Options.Controls.Add(this.button2);
-            this.Options.Controls.Add(this.selected_file_clicked);
+            this.Options.Controls.Add(this.buttonSelectFile);
             this.Options.Controls.Add(this.Filter_Button);
             this.Options.Controls.Add(this.label2);
             this.Options.Controls.Add(this.label1);
@@ -165,7 +167,7 @@
             this.Options.Controls.Add(this.dateTimePicker1);
             this.Options.Location = new System.Drawing.Point(1264, 27);
             this.Options.Name = "Options";
-            this.Options.Size = new System.Drawing.Size(225, 595);
+            this.Options.Size = new System.Drawing.Size(226, 595);
             this.Options.TabIndex = 1;
             this.Options.TabStop = false;
             this.Options.Text = "Options";
@@ -180,13 +182,13 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Filter By Commit Hash";
             // 
-            // CommithashBox
+            // textBoxCommitHash
             // 
-            this.CommithashBox.Location = new System.Drawing.Point(7, 228);
-            this.CommithashBox.Name = "CommithashBox";
-            this.CommithashBox.Size = new System.Drawing.Size(211, 20);
-            this.CommithashBox.TabIndex = 11;
-            this.CommithashBox.TextChanged += new System.EventHandler(this.CommithashBox_TextChanged);
+            this.textBoxCommitHash.Location = new System.Drawing.Point(7, 228);
+            this.textBoxCommitHash.Name = "textBoxCommitHash";
+            this.textBoxCommitHash.Size = new System.Drawing.Size(211, 20);
+            this.textBoxCommitHash.TabIndex = 11;
+            this.textBoxCommitHash.TextChanged += new System.EventHandler(this.CommithashBox_TextChanged);
             // 
             // label3
             // 
@@ -197,36 +199,35 @@
             this.label3.TabIndex = 10;
             this.label3.Text = "Authors";
             // 
-            // comboBox1
+            // comboBoxSelectAuthor
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(6, 158);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(213, 21);
-            this.comboBox1.TabIndex = 9;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBoxSelectAuthor.FormattingEnabled = true;
+            this.comboBoxSelectAuthor.Location = new System.Drawing.Point(6, 158);
+            this.comboBoxSelectAuthor.Name = "comboBoxSelectAuthor";
+            this.comboBoxSelectAuthor.Size = new System.Drawing.Size(213, 21);
+            this.comboBoxSelectAuthor.TabIndex = 9;
+            this.comboBoxSelectAuthor.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // button2
             // 
             this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(6, 421);
+            this.button2.Location = new System.Drawing.Point(7, 346);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(213, 40);
             this.button2.TabIndex = 8;
             this.button2.Text = "Select Directory";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
-            // selected_file_clicked
+            // buttonSelectFile
             // 
-            this.selected_file_clicked.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selected_file_clicked.Location = new System.Drawing.Point(6, 477);
-            this.selected_file_clicked.Name = "selected_file_clicked";
-            this.selected_file_clicked.Size = new System.Drawing.Size(213, 40);
-            this.selected_file_clicked.TabIndex = 5;
-            this.selected_file_clicked.Text = "Select File";
-            this.selected_file_clicked.UseVisualStyleBackColor = true;
-            this.selected_file_clicked.Click += new System.EventHandler(this.button2_Click);
+            this.buttonSelectFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSelectFile.Location = new System.Drawing.Point(5, 440);
+            this.buttonSelectFile.Name = "buttonSelectFile";
+            this.buttonSelectFile.Size = new System.Drawing.Size(213, 40);
+            this.buttonSelectFile.TabIndex = 5;
+            this.buttonSelectFile.Text = "Select File";
+            this.buttonSelectFile.UseVisualStyleBackColor = true;
+            this.buttonSelectFile.Click += new System.EventHandler(this.selectFileButton_clicked);
             // 
             // Filter_Button
             // 
@@ -331,6 +332,14 @@
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.fileToolStripMenuItem.Text = "Add Repository";
             // 
+            // labelShowFileName
+            // 
+            this.labelShowFileName.AutoSize = true;
+            this.labelShowFileName.Location = new System.Drawing.Point(6, 482);
+            this.labelShowFileName.Name = "labelShowFileName";
+            this.labelShowFileName.Size = new System.Drawing.Size(0, 13);
+            this.labelShowFileName.TabIndex = 13;
+            // 
             // CodebaseView
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -349,7 +358,7 @@
             this.CommitBox.ResumeLayout(false);
             this.CommitBox.PerformLayout();
             this.Commits.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.commitsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).EndInit();
             this.Options.ResumeLayout(false);
             this.Options.PerformLayout();
             this.CodeChanges.ResumeLayout(false);
@@ -372,22 +381,23 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button Filter_Button;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        private System.Windows.Forms.Button selected_file_clicked;
+        private System.Windows.Forms.Button buttonSelectFile;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.DataGridView commitsDataGrid;
+        private System.Windows.Forms.DataGridView dataGridViewCommitHashBox;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox comboBoxSelectAuthor;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox CommithashBox;
+        private System.Windows.Forms.TextBox textBoxCommitHash;
         private System.Windows.Forms.TextBox textBoxCommitMessage;
         private System.Windows.Forms.TextBox textBoxAuthorCommitInfo;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.RichTextBox richTextBoxCodeChanges;
+        private System.Windows.Forms.Label labelShowFileName;
     }
 }
 

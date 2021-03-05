@@ -132,6 +132,12 @@ namespace CodebaseView
             return !dt.Columns.Contains(newestCommitID);
         }
 
+        public string retrieveRepoURL()
+        {
+
+            return runGitCommandProcess("config --get remote.origin.url")[0];
+        }
+
         public void updateDatabase()
         {
             if (doUpdate())
@@ -183,7 +189,7 @@ namespace CodebaseView
                         commitInsert.addColumnValue("commit_hash", commit.commit_hash);
                         commitInsert.addColumnValue("author_id", author_id + "");
                         commitInsert.addColumnValue("message", commit.message);
-                        commitInsert.addColumnValue("datetime", commit.timestamp.ToString());
+                        commitInsert.addColumnValue("datetime", commit.timestamp.ToInsertString());
                         commitInsert.addColumnValue("repo_id", repo_id + "");
                         string commitInsertQuery = commitInsert.build();
                         SQL.execute(commitInsertQuery);
