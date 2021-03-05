@@ -292,8 +292,12 @@ namespace CodebaseView
 
             this.dataGridViewCommitHashBox.DataSource = commitTable;
 
-            //TODO: get file
-
+            //TODO: get filename
+            if (this.labelShowFileName.Text != string.Empty)
+            {
+                string filename = this.labelShowFileName.Text;
+                //selectQueryBuilder.setConditionals("commit_hash = '" + commitHash + "'");
+            }
             //TODO: get directory
         }
 
@@ -318,16 +322,44 @@ namespace CodebaseView
                 string fileName = openFileDialog1.SafeFileName.ToString();
                 string directory = openFileDialog1.FileName.ToString();
       
-                this.labelShowFileName.Text = fileName;
-
-
+                string repoFileName = this.GetRepoFileNameFromTrueDirectory(directory);
+                this.labelShowFileName.Text = repoFileName;
             }
         }
 
         
         private string GetRepoFileNameFromTrueDirectory(string directory)
         {
-            return "";
+            GitParser parser = new GitParser();
+            char[] repoURL = parser.retrieveRepoURL().ToCharArray();
+
+            List<char> templist = new List<char>();
+
+            for (int i = repoURL.Length - 1; i >= 0; i--)
+            {
+                if (repoURL[i] == '/')
+                {
+                    break;
+                }
+                else 
+                {
+                    templist.Add(repoURL[i]);
+                }
+            }
+
+            char[] tempstarter = templist.ToArray();
+            Array.Reverse(tempstarter);
+
+            string startingGitDirectory = new string(tempstarter).Replace(".git", "");
+
+            int index = directory.IndexOf(startingGitDirectory);
+
+
+            int length = directory.Length - (index + startingGitDirectory.Length + 1);
+
+            string finalFileName = directory.Substring(index + startingGitDirectory.Length + 1, length);
+
+            return finalFileName;
         }
     }
 }
