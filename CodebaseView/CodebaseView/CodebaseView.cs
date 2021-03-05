@@ -36,6 +36,7 @@ namespace CodebaseView
             populateAuthorBox(authorNames);
 
             this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            this.labelShowFileName.Text = "";
         }
 
         private void populateCommits(string query)
@@ -135,6 +136,8 @@ namespace CodebaseView
                 }
 
             }
+            this.richTextBoxCodeChanges.BackColor = Color.White;
+
 
         }
 
@@ -212,6 +215,8 @@ namespace CodebaseView
                 string filename = this.labelShowFileName.Text;
                 //selectQueryBuilder.setConditionals("commit_hash = '" + commitHash + "'");
             }
+
+
             //TODO: get directory
         }
 
