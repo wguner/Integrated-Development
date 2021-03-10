@@ -94,6 +94,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddRepositoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddRepositoryForm.Designer.cs">
+      <DependentUpon>AddRepositoryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database Structs\Author.cs" />
     <Compile Include="GitParser.cs" />
     <Compile Include="Database Structs\TimeStamp.cs" />
@@ -117,6 +123,9 @@
     </Compile>
     <Compile Include="MainDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AddRepositoryForm.resx">
+      <DependentUpon>AddRepositoryForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="CodebaseView.resx">
       <DependentUpon>CodebaseView.cs</DependentUpon>
     </EmbeddedResource>

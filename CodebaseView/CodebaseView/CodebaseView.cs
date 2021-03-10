@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Microsoft.VisualBasic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -308,6 +309,10 @@ namespace CodebaseView
             }
         }
 
-        
+        private void AddRepositoryStrip_Click(object sender, EventArgs e)
+        {
+            AddRepositoryForm addRepo = new AddRepositoryForm();
+            addRepo.Show();
+        }
     }
 }

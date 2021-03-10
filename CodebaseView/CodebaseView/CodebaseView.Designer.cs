@@ -36,6 +36,10 @@
             this.Commits = new System.Windows.Forms.GroupBox();
             this.dataGridViewCommitHashBox = new System.Windows.Forms.DataGridView();
             this.Options = new System.Windows.Forms.GroupBox();
+            this.labelSelectRepository = new System.Windows.Forms.Label();
+            this.comboBoxSelectRepository = new System.Windows.Forms.ComboBox();
+            this.labelSelectBranch = new System.Windows.Forms.Label();
+            this.comboBoxSelectBranch = new System.Windows.Forms.ComboBox();
             this.labelShowFileName = new System.Windows.Forms.Label();
             this.labelFilterByCommitHash = new System.Windows.Forms.Label();
             this.textBoxCommitHash = new System.Windows.Forms.TextBox();
@@ -54,11 +58,7 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.comboBoxSelectBranch = new System.Windows.Forms.ComboBox();
-            this.labelSelectBranch = new System.Windows.Forms.Label();
-            this.comboBoxSelectRepository = new System.Windows.Forms.ComboBox();
-            this.labelSelectRepository = new System.Windows.Forms.Label();
+            this.AddRepositoryStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).BeginInit();
@@ -179,6 +179,40 @@
             this.Options.TabIndex = 1;
             this.Options.TabStop = false;
             this.Options.Text = "Options";
+            // 
+            // labelSelectRepository
+            // 
+            this.labelSelectRepository.Location = new System.Drawing.Point(3, 16);
+            this.labelSelectRepository.Name = "labelSelectRepository";
+            this.labelSelectRepository.Size = new System.Drawing.Size(222, 15);
+            this.labelSelectRepository.TabIndex = 17;
+            this.labelSelectRepository.Text = "Select Repository";
+            this.labelSelectRepository.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // comboBoxSelectRepository
+            // 
+            this.comboBoxSelectRepository.FormattingEnabled = true;
+            this.comboBoxSelectRepository.Location = new System.Drawing.Point(3, 34);
+            this.comboBoxSelectRepository.Name = "comboBoxSelectRepository";
+            this.comboBoxSelectRepository.Size = new System.Drawing.Size(222, 21);
+            this.comboBoxSelectRepository.TabIndex = 16;
+            // 
+            // labelSelectBranch
+            // 
+            this.labelSelectBranch.Location = new System.Drawing.Point(3, 75);
+            this.labelSelectBranch.Name = "labelSelectBranch";
+            this.labelSelectBranch.Size = new System.Drawing.Size(222, 17);
+            this.labelSelectBranch.TabIndex = 15;
+            this.labelSelectBranch.Text = "Select Branch";
+            this.labelSelectBranch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // comboBoxSelectBranch
+            // 
+            this.comboBoxSelectBranch.FormattingEnabled = true;
+            this.comboBoxSelectBranch.Location = new System.Drawing.Point(3, 95);
+            this.comboBoxSelectBranch.Name = "comboBoxSelectBranch";
+            this.comboBoxSelectBranch.Size = new System.Drawing.Size(222, 21);
+            this.comboBoxSelectBranch.TabIndex = 14;
             // 
             // labelShowFileName
             // 
@@ -331,50 +365,17 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.AddRepositoryStrip});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
             this.toolStripMenuItem1.Text = "File";
             // 
-            // fileToolStripMenuItem
+            // AddRepositoryStrip
             // 
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.fileToolStripMenuItem.Text = "Add Repository";
-            // 
-            // comboBoxSelectBranch
-            // 
-            this.comboBoxSelectBranch.FormattingEnabled = true;
-            this.comboBoxSelectBranch.Location = new System.Drawing.Point(3, 95);
-            this.comboBoxSelectBranch.Name = "comboBoxSelectBranch";
-            this.comboBoxSelectBranch.Size = new System.Drawing.Size(222, 21);
-            this.comboBoxSelectBranch.TabIndex = 14;
-            // 
-            // labelSelectBranch
-            // 
-            this.labelSelectBranch.Location = new System.Drawing.Point(3, 75);
-            this.labelSelectBranch.Name = "labelSelectBranch";
-            this.labelSelectBranch.Size = new System.Drawing.Size(222, 17);
-            this.labelSelectBranch.TabIndex = 15;
-            this.labelSelectBranch.Text = "Select Branch";
-            this.labelSelectBranch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // comboBoxSelectRepository
-            // 
-            this.comboBoxSelectRepository.FormattingEnabled = true;
-            this.comboBoxSelectRepository.Location = new System.Drawing.Point(3, 34);
-            this.comboBoxSelectRepository.Name = "comboBoxSelectRepository";
-            this.comboBoxSelectRepository.Size = new System.Drawing.Size(222, 21);
-            this.comboBoxSelectRepository.TabIndex = 16;
-            // 
-            // labelSelectRepository
-            // 
-            this.labelSelectRepository.Location = new System.Drawing.Point(3, 16);
-            this.labelSelectRepository.Name = "labelSelectRepository";
-            this.labelSelectRepository.Size = new System.Drawing.Size(222, 15);
-            this.labelSelectRepository.TabIndex = 17;
-            this.labelSelectRepository.Text = "Select Repository";
-            this.labelSelectRepository.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.AddRepositoryStrip.Name = "AddRepositoryStrip";
+            this.AddRepositoryStrip.Size = new System.Drawing.Size(180, 22);
+            this.AddRepositoryStrip.Text = "Add Repository";
+            this.AddRepositoryStrip.Click += new System.EventHandler(this.AddRepositoryStrip_Click);
             // 
             // CodebaseView
             // 
@@ -431,7 +432,7 @@
         private System.Windows.Forms.TextBox textBoxAuthorCommitInfo;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AddRepositoryStrip;
         private System.Windows.Forms.RichTextBox richTextBoxCodeChanges;
         private System.Windows.Forms.Label labelShowFileName;
         private System.Windows.Forms.Label labelSelectRepository;

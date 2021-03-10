@@ -31,7 +31,10 @@ namespace CodebaseView
         {
             return runGitCommandProcess("show " + commit_hash);
         }
-
+        public List<string> parseNewRepo(string args)
+        {
+            return this.runGitCommandProcess("clone " + args + " C:\\ProgramData\\codebaseviewtemp\\");
+        }
         private List<string> runGitCommandProcess(string args)
         {
             var proc = new Process
