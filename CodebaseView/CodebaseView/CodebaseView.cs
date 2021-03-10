@@ -30,11 +30,11 @@ namespace CodebaseView
         {
             string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime", "message").setTables("commit").setOrderBy("datetime").build();
             string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
-            
+            string repoName = new SELECTQueryBuilder().setColumns("repourl").setTables("repository").build();
             
             populateCommits(query);
             populateAuthorBox(authorNames);
-
+            populateRepositoryBox(repoName);
             this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             this.labelShowFileName.Text = "";
         }
@@ -43,6 +43,14 @@ namespace CodebaseView
         {
             DataTable dt = SQL.execute(query);
             this.dataGridViewCommitHashBox.DataSource = dt;
+        }
+        private void populateRepositoryBox(string sql)
+        {
+            DataTable dt = SQL.execute(sql);
+            for(int i = 0; i < dt.Rows.Count; i++)
+            {
+                this.comboBoxSelectRepository.Items.Add(dt.Rows[i]["repourl"].ToString());
+            }
         }
         private void populateAuthorBox(string sql)
         {
