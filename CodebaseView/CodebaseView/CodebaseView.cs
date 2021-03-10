@@ -312,7 +312,17 @@ namespace CodebaseView
         private void AddRepositoryStrip_Click(object sender, EventArgs e)
         {
             AddRepositoryForm addRepo = new AddRepositoryForm();
+            addRepo.executeRepoAdding += this.addRepository;
+            addRepo.Parent = Parent;
+            addRepo.StartPosition = FormStartPosition.CenterParent;
             addRepo.Show();
+        }
+        private void addRepository(object sender, EventArgs e)
+        {
+            TextBox addRepo = sender as TextBox;
+            GitParser gitParser = new GitParser();
+            gitParser.parseNewRepo(addRepo.Text);
+            
         }
     }
 }
