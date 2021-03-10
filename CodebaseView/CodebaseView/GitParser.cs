@@ -15,6 +15,9 @@ namespace CodebaseView
         //private List<file> files;
         private string newestCommitID;
 
+        public string fileDirectory;
+
+
         public GitParser()
         {
             this.commits = new List<Commit>();
@@ -31,10 +34,48 @@ namespace CodebaseView
         {
             return runGitCommandProcess("show " + commit_hash);
         }
-        public List<string> parseNewRepo(string args)
+        public List<string> cloneNewRepo(string args)
         {
-            return this.runGitCommandProcess("clone " + args + " C:\\ProgramData\\codebaseviewtemp\\");
+            this.parseNameFromURL(args);
+            return this.runGitCommandProcess("clone " + args + " " + this.fileDirectory);
         }
+
+        public string parseNameFromURL(string url)
+        {
+            char[] repoURL = url.ToCharArray();
+
+            List<char> templist = new List<char>();
+
+            for (int i = repoURL.Length - 1; i >= 0; i--)
+            {
+                if (repoURL[i] == '/')
+                {
+                    break;
+                }
+                else
+                {
+                    templist.Add(repoURL[i]);
+                }
+            }
+
+            char[] tempstarter = templist.ToArray();
+            Array.Reverse(tempstarter);
+
+            string repoName = new string(tempstarter).Replace(".git", "");
+            this.setRepoDirectory(repoName);
+            return repoName;
+        }
+
+        private void setRepoDirectory(string directory)
+        {   
+            this.fileDirectory = "C:\\ProgramData\\codebaseviewtemp\\" + directory;
+        }
+
+        public string getFileDirectory()
+        {
+            return this.fileDirectory;
+        }
+
         private List<string> runGitCommandProcess(string args)
         {
             var proc = new Process
@@ -66,9 +107,67 @@ namespace CodebaseView
 
         }
 
+
         private void initCommits()
         {
             List<string> commitLines = runGitCommandProcess("log --all");
+            for (int i = 0; i < commitLines.Count; i++)
+            {
+                string line = commitLines[i];
+                if (line.StartsWith("commit"))
+                {
+                    Commit commit = new Commit();
+                    commit.commit_hash = line.Substring(7, 40);
+
+                    string authorline;
+                    string dateline;
+                    int messagelinestart;
+
+                    if (commitLines[i + 1].StartsWith("Merge:"))
+                    {
+                        authorline = commitLines[i + 2];
+                        dateline = commitLines[i + 3];
+                        messagelinestart = 5;
+                    }
+                    else
+                    {
+                        authorline = commitLines[i + 1];
+                        dateline = commitLines[i + 2];
+                        messagelinestart = 4;
+                    }
+
+                    string authorEmail = authorline.Substring(8);
+                    int emailStart = authorEmail.IndexOf('<') + 1;
+                    int emailEnd = authorEmail.IndexOf('>');
+                    commit.authorEmail = authorEmail.Substring(emailStart, emailEnd - emailStart);
+                    commit.authorName = authorEmail.Substring(0, emailStart - 2);
+
+                    TimeStamp timestamp = TimeStamp.parseSQLTimeStamp(dateline.Substring(12, 21));
+                    commit.timestamp = timestamp;
+
+                    StringBuilder message = new StringBuilder();
+                    line = commitLines[i + messagelinestart];
+                    int count = messagelinestart;
+                    while (!line.StartsWith("commit"))
+                    {
+                        line = line.Trim(' ');
+                        message.Append(line);
+                        count++;
+                        if ((i + count) < commitLines.Count)
+                            line = commitLines[i + count];
+                        else
+                            break;
+                    }
+                    commit.message = message.ToString();
+
+                    this.commits.Add(commit);
+                }
+            }
+        }
+
+        public void initNewRepo(string param)
+        {
+            List<string> commitLines = runGitCommandProcess(param);
             for (int i = 0; i < commitLines.Count; i++)
             {
                 string line = commitLines[i];
@@ -147,7 +246,16 @@ namespace CodebaseView
             {
                 // REPOSITORY TABLE UPDATING
                 //figure out what the hell repo we're in
-                string repoURL = runGitCommandProcess("config --get remote.origin.url")[0];
+                string repoURL;
+                if (this.fileDirectory == null)
+                {
+                    repoURL = runGitCommandProcess("config --get remote.origin.url")[0];
+                }
+                else
+                {
+                    repoURL = runGitCommandProcess("config --get remote.origin.url " + this.fileDirectory)[0];
+                }
+                
                 //see if that repo is in the db
                 //if not, insert it
                 bool repoExists = SQL.execute(new SELECTQueryBuilder()

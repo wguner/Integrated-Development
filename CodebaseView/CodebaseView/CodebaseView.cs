@@ -321,7 +321,12 @@ namespace CodebaseView
         {
             TextBox addRepo = sender as TextBox;
             GitParser gitParser = new GitParser();
-            gitParser.parseNewRepo(addRepo.Text);
+            gitParser.cloneNewRepo(addRepo.Text);
+            
+            string directory = gitParser.getFileDirectory();
+            gitParser.initNewRepo("-C " + directory + " log --all");
+            gitParser.initNewestCommitNewRepo();
+            gitParser.updateDatabase();
             
         }
     }
