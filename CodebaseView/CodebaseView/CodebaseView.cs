@@ -325,8 +325,8 @@ namespace CodebaseView
             
             string directory = gitParser.getFileDirectory();
             gitParser.initNewRepo("-C " + directory + " log --all");
-            gitParser.initNewestCommitNewRepo();
-            gitParser.updateDatabase();
+            //gitParser.initNewestCommitNewRepo();
+            //gitParser.updateDatabase();
             
         }
     }
