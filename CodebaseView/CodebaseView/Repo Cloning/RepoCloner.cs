@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
+
 namespace CodebaseView.Repo_Cloning
 {
     public class RepoCloner
@@ -56,6 +57,8 @@ namespace CodebaseView.Repo_Cloning
             gitParser.cloneNewRepo(repoURL, directory);
             gitParser.initNewRepo("-C " + directory + " log --all");
             gitParser.updateDatabaseTemp(directory, repoURL);
+
+            Registry_Keys.RegistryHandler.writeFileLocation(repoURL, directory);
         }
 
     }

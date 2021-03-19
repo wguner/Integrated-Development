@@ -133,7 +133,9 @@ namespace CodebaseView
             textBoxAuthorCommitInfo.Text = builder.ToString();
 
             GitParser parser = new GitParser();
-            List<string> changes = parser.initCodeChanges(commitHash);
+            string repoURL = this.comboBoxSelectRepository.SelectedItem.ToString();
+            string repoFileDirectory = Registry_Keys.RegistryHandler.readFileLocation(repoURL);
+            List<string> changes = parser.initCodeChanges(commitHash, repoFileDirectory);
 
             this.richTextBoxCodeChanges.Text = "";
 

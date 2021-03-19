@@ -29,9 +29,9 @@ namespace CodebaseView
             initNewestCommit();
         }
 
-        public List<string> initCodeChanges(string commit_hash)
-        {
-            return runGitCommandProcess("show " + commit_hash);
+        public List<string> initCodeChanges(string commit_hash, string location)
+        { 
+            return runGitCommandProcess("-C " + location + " show " + commit_hash);
         }
         public List<string> cloneNewRepo(string url, string folderlocation)
         {
