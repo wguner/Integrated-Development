@@ -45,6 +45,8 @@ namespace CodebaseView.Repo_Cloning
 
         public static void cloneRepoIntoTemp(string repoURL)
         {
+            createTempDirectory();
+
             GitParser gitParser = new GitParser();
             string repoName = gitParser.parseNameFromURL(repoURL);
             string directory = Path.GetTempPath() + TEMP_FOLDER_NAME + "\\" + repoName;

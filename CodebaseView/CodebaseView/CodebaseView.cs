@@ -34,7 +34,6 @@ namespace CodebaseView
             string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
             string repoNames = new SELECTQueryBuilder().setColumns("repourl").setTables("repository").build();
             
-            populateCommits(query);
             populateAuthorBox(authorNames);
             populateRepositoryBox(repoNames);
             this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
@@ -42,9 +41,7 @@ namespace CodebaseView
 
             disableFilteringOptions();
             this.comboBoxSelectBranch.Items.Add("Test Branch");
-
-            //Temporary_Repo_Cloning.RepoCloner.createTempDirectory();
-
+            
         }
 
         private void populateCommits(string query)
@@ -63,6 +60,7 @@ namespace CodebaseView
         }
         private void populateAuthorBox(string sql)
         {
+            this.comboBoxSelectAuthor.Items.Clear();
             DataTable dt = SQL.execute(sql);
             for (int i = 0; i < dt.Rows.Count; i++)
             {
@@ -133,9 +131,27 @@ namespace CodebaseView
             textBoxAuthorCommitInfo.Text = builder.ToString();
 
             GitParser parser = new GitParser();
-            string repoURL = this.comboBoxSelectRepository.SelectedItem.ToString();
-            string repoFileDirectory = Registry_Keys.RegistryHandler.readFileLocation(repoURL);
-            List<string> changes = parser.initCodeChanges(commitHash, repoFileDirectory);
+
+            List<string> changes = new List<string>();
+
+            //this is hardcoded because of our app running directly in our repo so it's weird atm.
+            if (this.comboBoxSelectRepository.SelectedIndex > -1)
+            {
+                string repoURL = this.comboBoxSelectRepository.SelectedItem.ToString();
+
+                if (repoURL == "https://gitlab.eecs.wsu.edu/2019080728/cpts-421.git")
+                {
+                    changes = parser.initCodeChanges(commitHash);
+                }
+                else
+                {
+                    string repoFileDirectory = Registry_Keys.RegistryHandler.readFileLocation(repoURL);
+                    changes = parser.initCodeChanges(commitHash, repoFileDirectory);
+                }
+            }
+            
+            
+            
 
             this.richTextBoxCodeChanges.Text = "";
 
@@ -379,13 +395,17 @@ namespace CodebaseView
             string repoURL = sender as string;
             Repo_Cloning.RepoCloner.cloneRepoIntoTemp(repoURL);
             string repoNames = new SELECTQueryBuilder().setColumns("repourl").setTables("repository").build();
+            string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
+
             populateRepositoryBox(repoNames);
+            populateAuthorBox(authorNames);
 
 
         }
 
         private void enableFilteringOptions()
         {
+            this.CommitBox.Enabled = true;
             this.dateTimePicker1.Enabled = true;
             this.dateTimePicker2.Enabled = true;
             this.comboBoxSelectAuthor.Enabled = true;
@@ -397,6 +417,7 @@ namespace CodebaseView
 
         private void disableFilteringOptions()
         {
+            this.CommitBox.Enabled = false;
             this.dateTimePicker1.Enabled = false;
             this.dateTimePicker2.Enabled = false;
             this.comboBoxSelectAuthor.Enabled = false;

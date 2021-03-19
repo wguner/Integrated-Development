@@ -51,6 +51,7 @@ namespace CodebaseView.Registry_Keys
             }
             catch (Exception ex)  
             {
+                Console.WriteLine(ex.Message.ToString());
                 //IF THIS FAILS YOU PROBABLY DIDNT RUN VISUAL STUDIO OR THE PROGRAM AS ADMIN
                 return null;
             }

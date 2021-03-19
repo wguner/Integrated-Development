@@ -33,6 +33,11 @@ namespace CodebaseView
         { 
             return runGitCommandProcess("-C " + location + " show " + commit_hash);
         }
+
+        public List<string> initCodeChanges(string commit_hash)
+        {
+            return runGitCommandProcess("show " + commit_hash);
+        }
         public List<string> cloneNewRepo(string url, string folderlocation)
         {
             return this.runGitCommandProcess("clone " + url + " " + folderlocation);
