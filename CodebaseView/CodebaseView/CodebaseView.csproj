@@ -105,6 +105,7 @@
     <Compile Include="Database Structs\TimeStamp.cs" />
     <Compile Include="Database Structs\Commit.cs" />
     <Compile Include="Database Structs\File.cs" />
+    <Compile Include="Registry Keys\Registry.cs" />
     <Compile Include="SQL\INSERTQueryBuilder.cs" />
     <Compile Include="MessageBox.cs">
       <SubType>Form</SubType>
