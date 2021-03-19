@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Npgsql;
+using System.IO;
 
 namespace CodebaseView
 {
@@ -264,7 +265,21 @@ namespace CodebaseView
             }
         }
 
-        
+        private void buttonSelectDirectory_Click(object sender, EventArgs e)
+        {
+            using (var fbd = new FolderBrowserDialog())
+            {
+                DialogResult result = fbd.ShowDialog();
+
+                if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    string folder = fbd.SelectedPath;
+                    System.Windows.Forms.MessageBox.Show("Files found: " + folder, "Message");
+                }
+            }
+        }
+
+
         private string GetRepoFileNameFromTrueDirectory(string directory)
         {
             GitParser parser = new GitParser();
@@ -352,5 +367,7 @@ namespace CodebaseView
             //gitParser.updateDatabase();
             
         }
+
+        
     }
 }
