@@ -244,7 +244,7 @@ namespace CodebaseView
                                                     filename + "'");
 
             }
-
+            selectQueryBuilder.setDistinct();
             string selectQueryString = selectQueryBuilder.build();
             DataTable commitTable = SQL.execute(selectQueryString);
 

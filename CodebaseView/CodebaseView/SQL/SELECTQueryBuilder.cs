@@ -15,6 +15,7 @@ namespace CodebaseView
         private List<string> groupBy;
         private List<string> orderBy;
         private List<string> innerJoinBy;
+        private bool distinct = false;
 
         public SELECTQueryBuilder()
         {
@@ -80,9 +81,16 @@ namespace CodebaseView
             return this;
         }
 
+        public SELECTQueryBuilder setDistinct()
+        {
+            this.distinct = true;
+            return this;
+        }
+
         public string build()
         {
             string query = "SELECT ";
+            if (distinct){ query += " DISTINCT "; }
             foreach (string column in this.columns) { query += column + ","; }
             query = query.Trim(',');
             query += " FROM ";
