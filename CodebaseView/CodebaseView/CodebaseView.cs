@@ -42,6 +42,9 @@ namespace CodebaseView
 
             disableFilteringOptions();
             this.comboBoxSelectBranch.Items.Add("Test Repository");
+
+            //Temporary_Repo_Cloning.RepoCloner.createTempDirectory();
+
         }
 
         private void populateCommits(string query)
@@ -370,14 +373,10 @@ namespace CodebaseView
         }
         private void addRepository(object sender, EventArgs e)
         {
-            TextBox addRepo = sender as TextBox;
-            GitParser gitParser = new GitParser();
-            gitParser.cloneNewRepo(addRepo.Text);
+            string repoURL = sender as string;
+            Repo_Cloning.RepoCloner.cloneRepoIntoTemp(repoURL);
+
             
-            string directory = gitParser.getFileDirectory();
-            gitParser.initNewRepo("-C " + directory + " log --all");
-            //gitParser.initNewestCommitNewRepo();
-            //gitParser.updateDatabase();
             
         }
 

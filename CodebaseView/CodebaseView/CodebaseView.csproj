@@ -123,6 +123,7 @@
     </Compile>
     <Compile Include="MainDriver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repo Cloning\RepoCloner.cs" />
     <EmbeddedResource Include="AddRepositoryForm.resx">
       <DependentUpon>AddRepositoryForm.cs</DependentUpon>
     </EmbeddedResource>

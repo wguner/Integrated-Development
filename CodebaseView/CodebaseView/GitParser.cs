@@ -34,10 +34,9 @@ namespace CodebaseView
         {
             return runGitCommandProcess("show " + commit_hash);
         }
-        public List<string> cloneNewRepo(string args)
+        public List<string> cloneNewRepo(string url, string folderlocation)
         {
-            this.parseNameFromURL(args);
-            return this.runGitCommandProcess("clone " + args + " " + this.fileDirectory);
+            return this.runGitCommandProcess("clone " + url + " " + folderlocation);
         }
 
         public string parseNameFromURL(string url)
