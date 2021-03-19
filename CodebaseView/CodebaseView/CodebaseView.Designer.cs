@@ -265,6 +265,7 @@
             this.buttonSelectDirectory.TabIndex = 8;
             this.buttonSelectDirectory.Text = "Select Directory";
             this.buttonSelectDirectory.UseVisualStyleBackColor = true;
+            this.buttonSelectDirectory.Click += new System.EventHandler(this.buttonSelectDirectory_Click);
             // 
             // buttonSelectFile
             // 
