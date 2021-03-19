@@ -196,6 +196,7 @@
             this.comboBoxSelectRepository.Name = "comboBoxSelectRepository";
             this.comboBoxSelectRepository.Size = new System.Drawing.Size(222, 21);
             this.comboBoxSelectRepository.TabIndex = 16;
+            this.comboBoxSelectRepository.SelectedIndexChanged += new System.EventHandler(this.comboBoxSelectRepository_selectionChanged);
             // 
             // labelSelectBranch
             // 
@@ -213,6 +214,7 @@
             this.comboBoxSelectBranch.Name = "comboBoxSelectBranch";
             this.comboBoxSelectBranch.Size = new System.Drawing.Size(222, 21);
             this.comboBoxSelectBranch.TabIndex = 14;
+            this.comboBoxSelectBranch.SelectedIndexChanged += new System.EventHandler(this.comboBoxSelectBranch_selectionChanged);
             // 
             // labelShowFileName
             // 

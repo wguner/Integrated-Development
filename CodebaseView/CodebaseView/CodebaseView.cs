@@ -39,6 +39,9 @@ namespace CodebaseView
             populateRepositoryBox(repoName);
             this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             this.labelShowFileName.Text = "";
+
+            disableFilteringOptions();
+            this.comboBoxSelectBranch.Items.Add("Test Repository");
         }
 
         private void populateCommits(string query)
@@ -170,30 +173,40 @@ namespace CodebaseView
             string timeAfter = this.GetTimeStamp(this.dateTimePicker1);
             string timeBefore = this.GetTimeStamp(this.dateTimePicker2);
 
-            GitParser parser = new GitParser();
-            string repoURL = parser.retrieveRepoURL();
+            //GitParser parser = new GitParser();
+            //string repoURL = parser.retrieveRepoURL();
             
 
             //get repo_id
-            if (repoURL != null || repoURL != string.Empty)
+            if (this.comboBoxSelectRepository.SelectedIndex > -1)
             {
-                SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
-                tempQueryBuilder.setTables("Repository").setColumns("repo_id").setConditionals("repoURL = '" + repoURL + "'");
-
-                string tempSqlStr = tempQueryBuilder.build();
-                DataTable tempRepoID = SQL.execute(tempSqlStr);
-
-                if (tempRepoID.Rows.Count > 0)
+                string repoURL = this.comboBoxSelectRepository.SelectedItem.ToString();
+                if (repoURL != null || repoURL != string.Empty)
                 {
-                    string repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
-                    selectQueryBuilder.setConditionals("commit.repo_id = " + repo_id);
+
+                    SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
+                    tempQueryBuilder.setTables("Repository").setColumns("repo_id").setConditionals("repoURL = '" + repoURL + "'");
+
+                    string tempSqlStr = tempQueryBuilder.build();
+                    DataTable tempRepoID = SQL.execute(tempSqlStr);
+
+                    if (tempRepoID.Rows.Count > 0)
+                    {
+                        string repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
+                        selectQueryBuilder.setConditionals("commit.repo_id = " + repo_id);
+                    }
                 }
             }
-
-
-
+           
+            //get dates
             selectQueryBuilder.setConditionals("datetime >= '" + timeAfter + "' and datetime <= '" + timeBefore + "'");
 
+            //get branch id
+
+            if (this.comboBoxSelectBranch.SelectedIndex > -1)
+            {
+
+            }
 
             //get author id
             if (this.comboBoxSelectAuthor.SelectedIndex > -1)
@@ -219,7 +232,7 @@ namespace CodebaseView
                 selectQueryBuilder.setConditionals("commit_hash = '" + commitHash + "'");
             }
 
-            //TODO: get filename
+            //get filename
             if (this.labelShowFileName.Text != string.Empty)
             {
                 string filename = this.labelShowFileName.Text;
@@ -368,6 +381,45 @@ namespace CodebaseView
             
         }
 
-        
+        private void enableFilteringOptions()
+        {
+            this.dateTimePicker1.Enabled = true;
+            this.dateTimePicker2.Enabled = true;
+            this.comboBoxSelectAuthor.Enabled = true;
+            this.textBoxCommitHash.Enabled = true;
+            this.buttonSelectDirectory.Enabled = true;
+            this.buttonSelectFile.Enabled = true;
+            this.Filter_Button.Enabled = true;
+        }
+
+        private void disableFilteringOptions()
+        {
+            this.dateTimePicker1.Enabled = false;
+            this.dateTimePicker2.Enabled = false;
+            this.comboBoxSelectAuthor.Enabled = false;
+            this.textBoxCommitHash.Enabled = false;
+            this.buttonSelectDirectory.Enabled = false;
+            this.buttonSelectFile.Enabled = false;
+
+            this.Filter_Button.Enabled = false;
+        }
+
+        private void shouldEnableFiltering()
+        {
+            if (this.comboBoxSelectRepository.SelectedIndex > -1 && this.comboBoxSelectBranch.SelectedIndex > -1)
+            {
+                enableFilteringOptions();
+            }
+        }
+
+        private void comboBoxSelectRepository_selectionChanged(object sender, EventArgs e)
+        {
+            shouldEnableFiltering();
+        }
+
+        private void comboBoxSelectBranch_selectionChanged(object sender, EventArgs e)
+        {
+            shouldEnableFiltering();
+        }
     }
 }
