@@ -29,7 +29,8 @@ namespace CodebaseView
         {
             if (RepoURLBox.Text != string.Empty)
             {
-                executeRepoAdding?.Invoke(RepoURLBox.Text.ToString(), e);
+                string url = RepoURLBox.Text.ToString();
+                executeRepoAdding?.Invoke(url, e);
             }
             this.Close();
         }

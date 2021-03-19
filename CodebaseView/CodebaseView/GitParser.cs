@@ -61,14 +61,10 @@ namespace CodebaseView
             Array.Reverse(tempstarter);
 
             string repoName = new string(tempstarter).Replace(".git", "");
-            this.setRepoDirectory(repoName);
             return repoName;
         }
 
-        private void setRepoDirectory(string directory)
-        {   
-            this.fileDirectory = "C:\\ProgramData\\codebaseviewtemp\\" + directory;
-        }
+        
 
         public string getFileDirectory()
         {
