@@ -222,8 +222,8 @@ namespace CodebaseView
             if (this.labelShowFileName.Text != string.Empty)
             {
                 string filename = this.labelShowFileName.Text;
-                selectQueryBuilder.setJOINBy("File_Map_Commit fmc on fmc.commit_id = commit.commit_id ");
-                selectQueryBuilder.setJOINBy("FILE F on F.file_id = fmc.file_id and F.filename = '" +
+                selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc on fmc.commit_id = commit.commit_id ");
+                selectQueryBuilder.setInnerJoinBy("FILE F on F.file_id = fmc.file_id and F.filename = '" +
                                                     filename + "'");
 
             }

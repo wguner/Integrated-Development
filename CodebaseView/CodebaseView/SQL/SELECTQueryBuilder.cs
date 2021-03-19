@@ -14,7 +14,7 @@ namespace CodebaseView
         private List<string> conditionals;
         private List<string> groupBy;
         private List<string> orderBy;
-        private List<string> joinBy;
+        private List<string> innerJoinBy;
 
         public SELECTQueryBuilder()
         {
@@ -23,7 +23,7 @@ namespace CodebaseView
             this.conditionals = new List<string>();
             this.groupBy = new List<string>();
             this.orderBy = new List<string>();
-            this.joinBy = new List<string>();
+            this.innerJoinBy = new List<string>();
         }
 
         public SELECTQueryBuilder setColumns(params string[] arguments)
@@ -71,11 +71,11 @@ namespace CodebaseView
             return this;
         }
 
-        public SELECTQueryBuilder setJOINBy(params string[] arguments)
+        public SELECTQueryBuilder setInnerJoinBy(params string[] arguments)
         {
             foreach (string joinBy in arguments)
             {
-                this.joinBy.Add(joinBy);
+                this.innerJoinBy.Add(joinBy);
             }
             return this;
         }
@@ -88,21 +88,21 @@ namespace CodebaseView
             query += " FROM ";
             foreach (string table in this.tables) { query += table + ","; }
             query = query.Trim(',');
-            if (this.joinBy.Count > 0)
+            if (this.innerJoinBy.Count > 0)
             {
-                query += " JOIN ";
+                query += " INNER JOIN ";
 
                 int index = 0;
-                foreach (string joinBy in this.joinBy) 
+                foreach (string joinBy in this.innerJoinBy) 
                 { 
-                    if (index == this.joinBy.Count - 1)
+                    if (index == this.innerJoinBy.Count - 1)
                     {
                         query += joinBy + " ";
                         break;
                     }
                     else
                     {
-                        query += joinBy + " JOIN ";
+                        query += joinBy + " INNER JOIN ";
                     }
          
                     index++;
