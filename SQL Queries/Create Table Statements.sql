@@ -17,7 +17,7 @@ CREATE TABLE Branch (
     repo_id INTEGER,
 
     PRIMARY KEY (branch_id),
-    FOREIGN KEY (repo_id) REFERENCES (Repository)
+    FOREIGN KEY (repo_id) REFERENCES Repository(repo_id)
 );
 
 CREATE TABLE Commit_Map_Branch (
