@@ -14,6 +14,7 @@ namespace CodebaseView
         private List<string> conditionals;
         private List<string> groupBy;
         private List<string> orderBy;
+        private List<string> joinBy;
 
         public SELECTQueryBuilder()
         {
@@ -22,6 +23,7 @@ namespace CodebaseView
             this.conditionals = new List<string>();
             this.groupBy = new List<string>();
             this.orderBy = new List<string>();
+            this.joinBy = new List<string>();
         }
 
         public SELECTQueryBuilder setColumns(params string[] arguments)
@@ -69,6 +71,15 @@ namespace CodebaseView
             return this;
         }
 
+        public SELECTQueryBuilder setJOINBy(params string[] arguments)
+        {
+            foreach (string joinBy in arguments)
+            {
+                this.joinBy.Add(joinBy);
+            }
+            return this;
+        }
+
         public string build()
         {
             string query = "SELECT ";
@@ -77,6 +88,27 @@ namespace CodebaseView
             query += " FROM ";
             foreach (string table in this.tables) { query += table + ","; }
             query = query.Trim(',');
+            if (this.joinBy.Count > 0)
+            {
+                query += " JOIN ";
+
+                int index = 0;
+                foreach (string joinBy in this.joinBy) 
+                { 
+                    if (index == this.joinBy.Count - 1)
+                    {
+                        query += joinBy + " ";
+                        break;
+                    }
+                    else
+                    {
+                        query += joinBy + " JOIN ";
+                    }
+         
+                    index++;
+                }
+                
+            }
             if (this.conditionals.Count > 0)
             {
                 query += " WHERE ";

@@ -340,7 +340,7 @@
             // 
             this.richTextBoxCodeChanges.BackColor = System.Drawing.SystemColors.Menu;
             this.richTextBoxCodeChanges.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBoxCodeChanges.Location = new System.Drawing.Point(0, 12);
+            this.richTextBoxCodeChanges.Location = new System.Drawing.Point(-6, 12);
             this.richTextBoxCodeChanges.Name = "richTextBoxCodeChanges";
             this.richTextBoxCodeChanges.ReadOnly = true;
             this.richTextBoxCodeChanges.Size = new System.Drawing.Size(868, 416);
@@ -373,7 +373,7 @@
             // AddRepositoryStrip
             // 
             this.AddRepositoryStrip.Name = "AddRepositoryStrip";
-            this.AddRepositoryStrip.Size = new System.Drawing.Size(180, 22);
+            this.AddRepositoryStrip.Size = new System.Drawing.Size(155, 22);
             this.AddRepositoryStrip.Text = "Add Repository";
             this.AddRepositoryStrip.Click += new System.EventHandler(this.AddRepositoryStrip_Click);
             // 

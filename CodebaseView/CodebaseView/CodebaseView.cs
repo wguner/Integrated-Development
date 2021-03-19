@@ -171,6 +171,7 @@ namespace CodebaseView
 
             GitParser parser = new GitParser();
             string repoURL = parser.retrieveRepoURL();
+            
 
             //get repo_id
             if (repoURL != null || repoURL != string.Empty)
@@ -184,10 +185,14 @@ namespace CodebaseView
                 if (tempRepoID.Rows.Count > 0)
                 {
                     string repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
-                    selectQueryBuilder.setConditionals("repo_id = " + repo_id);
+                    selectQueryBuilder.setConditionals("commit.repo_id = " + repo_id);
                 }
             }
+
+
+
             selectQueryBuilder.setConditionals("datetime >= '" + timeAfter + "' and datetime <= '" + timeBefore + "'");
+
 
             //get author id
             if (this.comboBoxSelectAuthor.SelectedIndex > -1)
@@ -213,17 +218,21 @@ namespace CodebaseView
                 selectQueryBuilder.setConditionals("commit_hash = '" + commitHash + "'");
             }
 
+            //TODO: get filename
+            if (this.labelShowFileName.Text != string.Empty)
+            {
+                string filename = this.labelShowFileName.Text;
+                selectQueryBuilder.setJOINBy("File_Map_Commit fmc on fmc.commit_id = commit.commit_id ");
+                selectQueryBuilder.setJOINBy("FILE F on F.file_id = fmc.file_id and F.filename = '" +
+                                                    filename + "'");
+
+            }
+
             string selectQueryString = selectQueryBuilder.build();
             DataTable commitTable = SQL.execute(selectQueryString);
 
             this.dataGridViewCommitHashBox.DataSource = commitTable;
 
-            //TODO: get filename
-            if (this.labelShowFileName.Text != string.Empty)
-            {
-                string filename = this.labelShowFileName.Text;
-                //selectQueryBuilder.setConditionals("commit_hash = '" + commitHash + "'");
-            }
 
 
             //TODO: get directory
@@ -285,9 +294,23 @@ namespace CodebaseView
 
             int length = directory.Length - (index + startingGitDirectory.Length + 1);
 
-            string finalFileName = directory.Substring(index + startingGitDirectory.Length + 1, length);
+            string tempFileName1 = directory.Substring(index + startingGitDirectory.Length + 1, length);
 
-            return finalFileName;
+            //flip the backward slashes with forward because that is how the database file names are.
+            string tempFileName2 = tempFileName1.Replace(@"\", @"/");
+
+            //remove the extension at the end of the file name
+            if (tempFileName2.Contains("."))
+            {
+                int tempIndex = tempFileName2.IndexOf(".");
+
+                if (tempIndex > 0)
+                {
+                    string returned = tempFileName2.Substring(0, tempIndex);
+                    return returned;
+                }
+            }
+            return tempFileName2;
         }
 
         private void commitHashBox_mouseClick(object sender, MouseEventArgs e)
