@@ -32,16 +32,16 @@ namespace CodebaseView
         {
             string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime", "message").setTables("commit").setOrderBy("datetime").build();
             string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
-            string repoName = new SELECTQueryBuilder().setColumns("repourl").setTables("repository").build();
+            string repoNames = new SELECTQueryBuilder().setColumns("repourl").setTables("repository").build();
             
             populateCommits(query);
             populateAuthorBox(authorNames);
-            populateRepositoryBox(repoName);
+            populateRepositoryBox(repoNames);
             this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             this.labelShowFileName.Text = "";
 
             disableFilteringOptions();
-            this.comboBoxSelectBranch.Items.Add("Test Repository");
+            this.comboBoxSelectBranch.Items.Add("Test Branch");
 
             //Temporary_Repo_Cloning.RepoCloner.createTempDirectory();
 
@@ -54,6 +54,7 @@ namespace CodebaseView
         }
         private void populateRepositoryBox(string sql)
         {
+            this.comboBoxSelectRepository.Items.Clear();
             DataTable dt = SQL.execute(sql);
             for(int i = 0; i < dt.Rows.Count; i++)
             {
@@ -375,9 +376,10 @@ namespace CodebaseView
         {
             string repoURL = sender as string;
             Repo_Cloning.RepoCloner.cloneRepoIntoTemp(repoURL);
+            string repoNames = new SELECTQueryBuilder().setColumns("repourl").setTables("repository").build();
+            populateRepositoryBox(repoNames);
 
-            
-            
+
         }
 
         private void enableFilteringOptions()

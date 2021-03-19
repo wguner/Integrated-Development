@@ -54,8 +54,8 @@ namespace CodebaseView.Repo_Cloning
             }
 
             gitParser.cloneNewRepo(repoURL, directory);
-
-            //gitParser.initNewRepo("-C " + directory + " log --all"); 
+            gitParser.initNewRepo("-C " + directory + " log --all");
+            gitParser.updateDatabaseTemp(directory, repoURL);
         }
 
     }
