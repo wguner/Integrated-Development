@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodebaseView", "CodebaseView/CodebaseView.csproj", "{6D9A2375-6267-4914-A1AB-D198E05E5715}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodebaseView", "CodebaseView\CodebaseView.csproj", "{6D9A2375-6267-4914-A1AB-D198E05E5715}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IDT_Tests", "IDT_Tests\IDT_Tests.csproj", "{8425E837-8B51-4EE2-A8C9-4F2A915E7AB5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{6D9A2375-6267-4914-A1AB-D198E05E5715}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D9A2375-6267-4914-A1AB-D198E05E5715}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D9A2375-6267-4914-A1AB-D198E05E5715}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8425E837-8B51-4EE2-A8C9-4F2A915E7AB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8425E837-8B51-4EE2-A8C9-4F2A915E7AB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8425E837-8B51-4EE2-A8C9-4F2A915E7AB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8425E837-8B51-4EE2-A8C9-4F2A915E7AB5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
