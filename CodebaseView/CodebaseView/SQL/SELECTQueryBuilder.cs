@@ -14,6 +14,8 @@ namespace CodebaseView
         private List<string> conditionals;
         private List<string> groupBy;
         private List<string> orderBy;
+        private List<string> innerJoinBy;
+        private bool distinct = false;
 
         public SELECTQueryBuilder()
         {
@@ -22,6 +24,7 @@ namespace CodebaseView
             this.conditionals = new List<string>();
             this.groupBy = new List<string>();
             this.orderBy = new List<string>();
+            this.innerJoinBy = new List<string>();
         }
 
         public SELECTQueryBuilder setColumns(params string[] arguments)
@@ -69,14 +72,51 @@ namespace CodebaseView
             return this;
         }
 
+        public SELECTQueryBuilder setInnerJoinBy(params string[] arguments)
+        {
+            foreach (string joinBy in arguments)
+            {
+                this.innerJoinBy.Add(joinBy);
+            }
+            return this;
+        }
+
+        public SELECTQueryBuilder setDistinct()
+        {
+            this.distinct = true;
+            return this;
+        }
+
         public string build()
         {
             string query = "SELECT ";
+            if (distinct){ query += " DISTINCT "; }
             foreach (string column in this.columns) { query += column + ","; }
             query = query.Trim(',');
             query += " FROM ";
             foreach (string table in this.tables) { query += table + ","; }
             query = query.Trim(',');
+            if (this.innerJoinBy.Count > 0)
+            {
+                query += " INNER JOIN ";
+
+                int index = 0;
+                foreach (string joinBy in this.innerJoinBy) 
+                { 
+                    if (index == this.innerJoinBy.Count - 1)
+                    {
+                        query += joinBy + " ";
+                        break;
+                    }
+                    else
+                    {
+                        query += joinBy + " INNER JOIN ";
+                    }
+         
+                    index++;
+                }
+                
+            }
             if (this.conditionals.Count > 0)
             {
                 query += " WHERE ";
