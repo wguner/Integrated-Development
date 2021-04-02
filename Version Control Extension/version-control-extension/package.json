@@ -14,6 +14,14 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"menus": {
+			"editor/title": [
+				{
+					"command": "version-control-extension.openGUI",
+					"group": "navigation"
+				}
+			]
+		},
 		"commands": [
 			{
 				"command": "version-control-extension.helloWorld",
@@ -21,7 +29,7 @@
 			},
 			{
 				"command": "version-control-extension.openGUI",
-				"title": "Open GUI"
+				"title": "Repo Insights"
 			}
 		]
 	},
