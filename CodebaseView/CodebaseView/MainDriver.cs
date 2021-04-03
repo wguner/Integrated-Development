@@ -15,7 +15,7 @@ namespace CodebaseView
             Application.SetCompatibleTextRenderingDefault(false);
 
 
-            GitParser parser = new GitParser();
+            GitStringParser parser = new GitStringParser();
             parser.init();
             parser.updateDatabase();
 

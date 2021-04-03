@@ -130,7 +130,7 @@ namespace CodebaseView
             builder.AppendLine("Email: " + authortable.Rows[0]["email"].ToString());
             textBoxAuthorCommitInfo.Text = builder.ToString();
 
-            GitParser parser = new GitParser();
+            GitStringParser parser = new GitStringParser();
 
             List<string> changes = new List<string>();
 
@@ -317,7 +317,7 @@ namespace CodebaseView
 
         private string GetRepoFileNameFromTrueDirectory(string directory)
         {
-            GitParser parser = new GitParser();
+            GitStringParser parser = new GitStringParser();
             char[] repoURL = parser.retrieveRepoURL().ToCharArray();
 
             List<char> templist = new List<char>();

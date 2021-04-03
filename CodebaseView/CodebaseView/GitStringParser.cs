@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CodebaseView
 {
-    public class GitParser
+    public class GitStringParser
     {
         private List<Commit> commits;
         //private List<file> files;
@@ -17,7 +17,7 @@ namespace CodebaseView
 
 
 
-        public GitParser()
+        public GitStringParser()
         {
             this.commits = new List<Commit>();
             //this.files = new List<file>();

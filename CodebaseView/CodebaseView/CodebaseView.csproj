@@ -100,8 +100,9 @@
     <Compile Include="AddRepositoryForm.Designer.cs">
       <DependentUpon>AddRepositoryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="GitlabParser.cs" />
     <Compile Include="Database Structs\Author.cs" />
-    <Compile Include="GitParser.cs" />
+    <Compile Include="GitStringParser.cs" />
     <Compile Include="Database Structs\TimeStamp.cs" />
     <Compile Include="Database Structs\Commit.cs" />
     <Compile Include="Database Structs\File.cs" />
