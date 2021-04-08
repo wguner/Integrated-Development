@@ -27,6 +27,7 @@ namespace CodebaseView
         {
             initCommits();
             initNewestCommit();
+            getBranch();
         }
 
         public List<string> initCodeChanges(string commit_hash, string location)
@@ -232,6 +233,22 @@ namespace CodebaseView
 
             return runGitCommandProcess("config --get remote.origin.url")[0];
         }
+        public void getBranch()
+        {
+            List<string> branchNames = new List<string>();
+            // for (int i = 0; i < branchName.)
+            branchNames = runGitCommandProcess("branch -r");
+            INSERTQueryBuilder branchInsert = new INSERTQueryBuilder().setTable("Branch");
+            for (int i = 0; i < branchNames.Count; i++)
+            {
+                if (branchNames[i].StartsWith("origin/"))
+                {
+                    string origin = branchNames[i].Replace("origin/", "");
+                    branchInsert.addColumnValue("name", branchNames[i]);
+                }
+            }
+            SQL.execute(branchInsert.build());
+        }
 
         public void updateDatabase()
         {
@@ -240,19 +257,20 @@ namespace CodebaseView
                 // REPOSITORY TABLE UPDATING
                 //figure out what the hell repo we're in
                 string repoURL;
-
+                string branchInfo;
                 repoURL = runGitCommandProcess("config --get remote.origin.url")[0];
-
 
                 //see if that repo is in the db
                 //if not, insert it
                 bool repoExists = SQL.execute(new SELECTQueryBuilder()
                     .setTables("Repository").setColumns("*").setConditionals("repoURL = '" + repoURL + "'").build()).Rows.Count > 0;
+
                 if (!repoExists)
                 {
                     INSERTQueryBuilder repoInsert = new INSERTQueryBuilder().setTable("Repository");
                     repoInsert.addColumnValue("repoURL", repoURL);
                     SQL.execute(repoInsert.build());
+
                 }
                 //retrieve repo id
                 string queryRepoID = new SELECTQueryBuilder().setTables("Repository")
