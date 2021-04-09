@@ -27,7 +27,6 @@ namespace CodebaseView
         {
             initCommits();
             initNewestCommit();
-            getBranch();
         }
 
         public List<string> initCodeChanges(string commit_hash, string location)
@@ -233,22 +232,39 @@ namespace CodebaseView
 
             return runGitCommandProcess("config --get remote.origin.url")[0];
         }
+        /*
         public void getBranch()
         {
             List<string> branchNames = new List<string>();
             // for (int i = 0; i < branchName.)
             branchNames = runGitCommandProcess("branch -r");
-            INSERTQueryBuilder branchInsert = new INSERTQueryBuilder().setTable("Branch");
             for (int i = 0; i < branchNames.Count; i++)
             {
-                if (branchNames[i].StartsWith("origin/"))
+                INSERTQueryBuilder branchInsert = new INSERTQueryBuilder().setTable("Branch");
+                if (branchNames[i].Contains("origin/HEAD ->"))
+                {
+                    string head = branchNames[i].Replace("origin/HEAD ->", "");
+                    branchInsert.addColumnValue("name", head);
+                    branchInsert.addColumnValue("repo_id", )
+                    SQL.execute(branchInsert.build());
+                    
+                }
+                else if (branchNames[i].Contains("origin/"))
                 {
                     string origin = branchNames[i].Replace("origin/", "");
+                    branchInsert.addColumnValue("name", origin);
+                    SQL.execute(branchInsert.build());
+                }/*
+                else if (i == branchNames.Count)
+                {
                     branchInsert.addColumnValue("name", branchNames[i]);
                 }
+                
+               // SQL.execute(branchInsert.build());
             }
-            SQL.execute(branchInsert.build());
-        }
+            
+
+        }*/
 
         public void updateDatabase()
         {
@@ -277,8 +293,39 @@ namespace CodebaseView
                     .setColumns("repo_id").setConditionals("repoURL = '" + repoURL + "'").build();
                 int repo_id = (int)SQL.execute(queryRepoID).Rows[0]["repo_id"];
 
-                // COMMIT TABLE UPDATING
-                foreach (Commit commit in this.commits)
+                List<string> branchNames = new List<string>();
+                // for (int i = 0; i < branchName.)
+                branchNames = runGitCommandProcess("branch -r");
+                for (int i = 0; i < branchNames.Count; i++)
+                {
+                    INSERTQueryBuilder branchInsert = new INSERTQueryBuilder().setTable("Branch");
+                    if (branchNames[i].Contains("origin/HEAD ->"))
+                    {
+                        string head = branchNames[i].Replace("origin/HEAD ->", "");
+                        bool branchExists = SQL.execute(new SELECTQueryBuilder().setTables("Branch").setColumns("*").setConditionals("name = '" + head + "'").build()).Rows.Count > 0;
+                        if (!branchExists)
+                        {
+                            branchInsert.addColumnValue("name", head);
+                            branchInsert.addColumnValue("repo_id", repo_id.ToString());
+                            SQL.execute(branchInsert.build());
+                        }
+
+                    }
+                    else if (branchNames[i].Contains("origin/"))
+                    {
+                        string origin = branchNames[i].Replace("origin/", "");
+                        bool originExists = SQL.execute(new SELECTQueryBuilder().setTables("Branch").setColumns("*").setConditionals("name = '" + origin + "'").build()).Rows.Count > 0;
+                        if (!originExists)
+                        {
+                            branchInsert.addColumnValue("name", origin);
+                            branchInsert.addColumnValue("repo_id", repo_id.ToString());
+                            SQL.execute(branchInsert.build());
+                        }
+                    }
+                    
+                }
+                    // COMMIT TABLE UPDATING
+                    foreach (Commit commit in this.commits)
                 {
                     // AUTHOR TABLE UPDATING
                     //if there's a new author not in the db, update the author table
