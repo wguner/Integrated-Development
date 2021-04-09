@@ -19,7 +19,8 @@ namespace CodebaseView
             parser.init();
             parser.updateDatabase();
 
-
+            string repoUrl = "https://gitlab.eecs.wsu.edu/api/v4/projects";
+            Console.WriteLine(GitlabParser.getData(repoUrl));
            
             CodebaseView form = new CodebaseView();
             Application.Run(form);

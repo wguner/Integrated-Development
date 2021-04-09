@@ -20,12 +20,15 @@ CREATE TABLE Branch (
     FOREIGN KEY (repo_id) REFERENCES Repository(repo_id)
 );
 
-CREATE TABLE Commit_Map_Branch (
-    branch_id INTEGER,
-    commit_id INTEGER,
-
-    FOREIGN KEY (branch_id) REFERENCES Branch(branch_id),
-    FOREIGN KEY (commit_id) REFERENCES Commit(commit_id)
+CREATE TABLE Commit(
+    commit_id SERIAL,
+    commit_hash VARCHAR,
+    author_id INTEGER, 
+    message VARCHAR,
+    datetime TIMESTAMP,
+	repo_id INTEGER,
+    PRIMARY KEY(commit_id),
+	FOREIGN KEY(repo_id) REFERENCES Repository(repo_id)
 );
 
 CREATE TABLE File (
@@ -37,15 +40,12 @@ CREATE TABLE File (
 	FOREIGN KEY (repo_id) REFERENCES Repository(repo_id)
 );
 
-CREATE TABLE Commit(
-    commit_id SERIAL,
-    commit_hash VARCHAR,
-    author_id INTEGER, 
-    message VARCHAR,
-    datetime TIMESTAMP,
-	repo_id INTEGER,
-    PRIMARY KEY(commit_id),
-	FOREIGN KEY(repo_id) REFERENCES Repository(repo_id)
+CREATE TABLE Commit_Map_Branch (
+    branch_id INTEGER,
+    commit_id INTEGER,
+
+    FOREIGN KEY (branch_id) REFERENCES Branch(branch_id),
+    FOREIGN KEY (commit_id) REFERENCES Commit(commit_id)
 );
 
 CREATE TABLE File_Map_Commit (
