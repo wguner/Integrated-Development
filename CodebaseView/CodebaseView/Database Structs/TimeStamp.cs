@@ -20,16 +20,34 @@ namespace CodebaseView
 
         public TimeStamp(string year, string month, string day, string time)
         {
-            this.year = year;
-            this.month = month;
-            this.day = day;
-            this.time = time;
+            if (time.StartsWith("{") && time.EndsWith("}"))
+            {
+                this.year = year;
+                this.month = month;
+                this.day = day;
+                this.time = time.Substring(1, 8);
+            }
+            else
+            {
+                this.year = year;
+                this.month = month;
+                this.day = day;
+                this.time = time;
+            }
+            
         }
 
-        public override string ToString()
+        
+
+        public string ToInsertString()
         {
             return "TO_TIMESTAMP('" + year + "-" + month + "-" + day + " " + time + 
                 "', 'YYYY-MON-DD HH24:MI:SS')";
+        }
+
+        public string ToSelectString()
+        {
+            return year + "-" + month + "-" + day + " " + time;
         }
 
         public static TimeStamp parseSQLTimeStamp(string dateTime)
@@ -55,7 +73,7 @@ namespace CodebaseView
         public static TimeStamp parseWinFormsTimeStamp(string dateTime)
         {
             TimeStamp timeStamp = new TimeStamp();
-
+            
             return timeStamp;
         }
     }

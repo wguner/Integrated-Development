@@ -34,17 +34,22 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.Commits = new System.Windows.Forms.GroupBox();
-            this.commitsDataGrid = new System.Windows.Forms.DataGridView();
+            this.dataGridViewCommitHashBox = new System.Windows.Forms.DataGridView();
             this.Options = new System.Windows.Forms.GroupBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.CommithashBox = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.selected_file_clicked = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.labelSelectRepository = new System.Windows.Forms.Label();
+            this.comboBoxSelectRepository = new System.Windows.Forms.ComboBox();
+            this.labelSelectBranch = new System.Windows.Forms.Label();
+            this.comboBoxSelectBranch = new System.Windows.Forms.ComboBox();
+            this.labelShowFileName = new System.Windows.Forms.Label();
+            this.labelFilterByCommitHash = new System.Windows.Forms.Label();
+            this.textBoxCommitHash = new System.Windows.Forms.TextBox();
+            this.labelSelectAuthors = new System.Windows.Forms.Label();
+            this.comboBoxSelectAuthor = new System.Windows.Forms.ComboBox();
+            this.buttonSelectDirectory = new System.Windows.Forms.Button();
+            this.buttonSelectFile = new System.Windows.Forms.Button();
+            this.Filter_Button = new System.Windows.Forms.Button();
+            this.labelStartDate = new System.Windows.Forms.Label();
+            this.labelEndDate = new System.Windows.Forms.Label();
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.CodeChanges = new System.Windows.Forms.GroupBox();
@@ -53,10 +58,10 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.AddRepositoryStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.commitsDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).BeginInit();
             this.Options.SuspendLayout();
             this.CodeChanges.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -75,7 +80,6 @@
             this.CommitBox.TabIndex = 0;
             this.CommitBox.TabStop = false;
             this.CommitBox.Text = "Commit Info";
-            this.CommitBox.Enter += new System.EventHandler(this.groupBox1_Enter);
             // 
             // textBoxAuthorCommitInfo
             // 
@@ -120,161 +124,209 @@
             // Commits
             // 
             this.Commits.AutoSize = true;
-            this.Commits.Controls.Add(this.commitsDataGrid);
+            this.Commits.Controls.Add(this.dataGridViewCommitHashBox);
             this.Commits.Location = new System.Drawing.Point(889, 27);
             this.Commits.Name = "Commits";
             this.Commits.Size = new System.Drawing.Size(355, 459);
             this.Commits.TabIndex = 4;
             this.Commits.TabStop = false;
             this.Commits.Text = "Commits";
-            this.Commits.Enter += new System.EventHandler(this.Commits_Enter);
             // 
-            // commitsDataGrid
+            // dataGridViewCommitHashBox
             // 
-            this.commitsDataGrid.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.commitsDataGrid.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
-            this.commitsDataGrid.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
-            this.commitsDataGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.commitsDataGrid.ColumnHeadersVisible = false;
-            this.commitsDataGrid.Dock = System.Windows.Forms.DockStyle.Top;
-            this.commitsDataGrid.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.commitsDataGrid.GridColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.commitsDataGrid.Location = new System.Drawing.Point(3, 16);
-            this.commitsDataGrid.MultiSelect = false;
-            this.commitsDataGrid.Name = "commitsDataGrid";
-            this.commitsDataGrid.ReadOnly = true;
-            this.commitsDataGrid.RowHeadersVisible = false;
-            this.commitsDataGrid.RowHeadersWidth = 100;
-            this.commitsDataGrid.Size = new System.Drawing.Size(349, 440);
-            this.commitsDataGrid.TabIndex = 2;
-            this.commitsDataGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridViewCommitHashBox.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.dataGridViewCommitHashBox.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
+            this.dataGridViewCommitHashBox.BackgroundColor = System.Drawing.SystemColors.ButtonFace;
+            this.dataGridViewCommitHashBox.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewCommitHashBox.ColumnHeadersVisible = false;
+            this.dataGridViewCommitHashBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.dataGridViewCommitHashBox.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dataGridViewCommitHashBox.GridColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.dataGridViewCommitHashBox.Location = new System.Drawing.Point(3, 16);
+            this.dataGridViewCommitHashBox.MultiSelect = false;
+            this.dataGridViewCommitHashBox.Name = "dataGridViewCommitHashBox";
+            this.dataGridViewCommitHashBox.ReadOnly = true;
+            this.dataGridViewCommitHashBox.RowHeadersVisible = false;
+            this.dataGridViewCommitHashBox.RowHeadersWidth = 100;
+            this.dataGridViewCommitHashBox.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridViewCommitHashBox.Size = new System.Drawing.Size(349, 429);
+            this.dataGridViewCommitHashBox.TabIndex = 2;
+            this.dataGridViewCommitHashBox.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellClick);
+            this.dataGridViewCommitHashBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.commitHashBox_mouseClick);
             // 
             // Options
             // 
             this.Options.AutoSize = true;
-            this.Options.Controls.Add(this.label7);
-            this.Options.Controls.Add(this.CommithashBox);
-            this.Options.Controls.Add(this.label3);
-            this.Options.Controls.Add(this.comboBox1);
-            this.Options.Controls.Add(this.button2);
-            this.Options.Controls.Add(this.selected_file_clicked);
-            this.Options.Controls.Add(this.button1);
-            this.Options.Controls.Add(this.label2);
-            this.Options.Controls.Add(this.label1);
+            this.Options.Controls.Add(this.labelSelectRepository);
+            this.Options.Controls.Add(this.comboBoxSelectRepository);
+            this.Options.Controls.Add(this.labelSelectBranch);
+            this.Options.Controls.Add(this.comboBoxSelectBranch);
+            this.Options.Controls.Add(this.labelShowFileName);
+            this.Options.Controls.Add(this.labelFilterByCommitHash);
+            this.Options.Controls.Add(this.textBoxCommitHash);
+            this.Options.Controls.Add(this.labelSelectAuthors);
+            this.Options.Controls.Add(this.comboBoxSelectAuthor);
+            this.Options.Controls.Add(this.buttonSelectDirectory);
+            this.Options.Controls.Add(this.buttonSelectFile);
+            this.Options.Controls.Add(this.Filter_Button);
+            this.Options.Controls.Add(this.labelStartDate);
+            this.Options.Controls.Add(this.labelEndDate);
             this.Options.Controls.Add(this.dateTimePicker2);
             this.Options.Controls.Add(this.dateTimePicker1);
             this.Options.Location = new System.Drawing.Point(1264, 27);
             this.Options.Name = "Options";
-            this.Options.Size = new System.Drawing.Size(225, 595);
+            this.Options.Size = new System.Drawing.Size(231, 595);
             this.Options.TabIndex = 1;
             this.Options.TabStop = false;
             this.Options.Text = "Options";
-            this.Options.Enter += new System.EventHandler(this.Options_Enter);
             // 
-            // label7
+            // labelSelectRepository
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(59, 212);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(109, 13);
-            this.label7.TabIndex = 12;
-            this.label7.Text = "Filter By Commit Hash";
+            this.labelSelectRepository.Location = new System.Drawing.Point(3, 16);
+            this.labelSelectRepository.Name = "labelSelectRepository";
+            this.labelSelectRepository.Size = new System.Drawing.Size(222, 15);
+            this.labelSelectRepository.TabIndex = 17;
+            this.labelSelectRepository.Text = "Select Repository";
+            this.labelSelectRepository.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // CommithashBox
+            // comboBoxSelectRepository
             // 
-            this.CommithashBox.Location = new System.Drawing.Point(7, 228);
-            this.CommithashBox.Name = "CommithashBox";
-            this.CommithashBox.Size = new System.Drawing.Size(211, 20);
-            this.CommithashBox.TabIndex = 11;
-            this.CommithashBox.TextChanged += new System.EventHandler(this.CommithashBox_TextChanged);
+            this.comboBoxSelectRepository.FormattingEnabled = true;
+            this.comboBoxSelectRepository.Location = new System.Drawing.Point(3, 34);
+            this.comboBoxSelectRepository.Name = "comboBoxSelectRepository";
+            this.comboBoxSelectRepository.Size = new System.Drawing.Size(222, 21);
+            this.comboBoxSelectRepository.TabIndex = 16;
+            this.comboBoxSelectRepository.SelectedIndexChanged += new System.EventHandler(this.comboBoxSelectRepository_selectionChanged);
             // 
-            // label3
+            // labelSelectBranch
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(84, 142);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
-            this.label3.TabIndex = 10;
-            this.label3.Text = "Authors";
+            this.labelSelectBranch.Location = new System.Drawing.Point(3, 75);
+            this.labelSelectBranch.Name = "labelSelectBranch";
+            this.labelSelectBranch.Size = new System.Drawing.Size(222, 17);
+            this.labelSelectBranch.TabIndex = 15;
+            this.labelSelectBranch.Text = "Select Branch";
+            this.labelSelectBranch.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // comboBox1
+            // comboBoxSelectBranch
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(6, 158);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(213, 21);
-            this.comboBox1.TabIndex = 9;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBoxSelectBranch.FormattingEnabled = true;
+            this.comboBoxSelectBranch.Location = new System.Drawing.Point(3, 95);
+            this.comboBoxSelectBranch.Name = "comboBoxSelectBranch";
+            this.comboBoxSelectBranch.Size = new System.Drawing.Size(222, 21);
+            this.comboBoxSelectBranch.TabIndex = 14;
+            this.comboBoxSelectBranch.SelectedIndexChanged += new System.EventHandler(this.comboBoxSelectBranch_selectionChanged);
             // 
-            // button2
+            // labelShowFileName
             // 
-            this.button2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.Location = new System.Drawing.Point(6, 421);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(213, 40);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Select Directory";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click_1);
+            this.labelShowFileName.AutoSize = true;
+            this.labelShowFileName.Location = new System.Drawing.Point(6, 482);
+            this.labelShowFileName.Name = "labelShowFileName";
+            this.labelShowFileName.Size = new System.Drawing.Size(48, 13);
+            this.labelShowFileName.TabIndex = 13;
+            this.labelShowFileName.Text = "File label";
             // 
-            // selected_file_clicked
+            // labelFilterByCommitHash
             // 
-            this.selected_file_clicked.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.selected_file_clicked.Location = new System.Drawing.Point(6, 477);
-            this.selected_file_clicked.Name = "selected_file_clicked";
-            this.selected_file_clicked.Size = new System.Drawing.Size(213, 40);
-            this.selected_file_clicked.TabIndex = 5;
-            this.selected_file_clicked.Text = "Select File";
-            this.selected_file_clicked.UseVisualStyleBackColor = true;
-            this.selected_file_clicked.Click += new System.EventHandler(this.button2_Click);
+            this.labelFilterByCommitHash.Location = new System.Drawing.Point(3, 320);
+            this.labelFilterByCommitHash.Name = "labelFilterByCommitHash";
+            this.labelFilterByCommitHash.Size = new System.Drawing.Size(222, 15);
+            this.labelFilterByCommitHash.TabIndex = 12;
+            this.labelFilterByCommitHash.Text = "Filter By Commit Hash";
+            this.labelFilterByCommitHash.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // textBoxCommitHash
             // 
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.Location = new System.Drawing.Point(6, 536);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(213, 40);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Filter";
-            this.button1.UseVisualStyleBackColor = true;
+            this.textBoxCommitHash.Location = new System.Drawing.Point(3, 338);
+            this.textBoxCommitHash.Name = "textBoxCommitHash";
+            this.textBoxCommitHash.Size = new System.Drawing.Size(222, 20);
+            this.textBoxCommitHash.TabIndex = 11;
             // 
-            // label2
+            // labelSelectAuthors
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(84, 18);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 13);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Start Date";
+            this.labelSelectAuthors.Location = new System.Drawing.Point(3, 143);
+            this.labelSelectAuthors.Name = "labelSelectAuthors";
+            this.labelSelectAuthors.Size = new System.Drawing.Size(222, 15);
+            this.labelSelectAuthors.TabIndex = 10;
+            this.labelSelectAuthors.Text = "Select Author";
+            this.labelSelectAuthors.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label1
+            // comboBoxSelectAuthor
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(84, 73);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(52, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "End Date";
+            this.comboBoxSelectAuthor.FormattingEnabled = true;
+            this.comboBoxSelectAuthor.Location = new System.Drawing.Point(3, 161);
+            this.comboBoxSelectAuthor.Name = "comboBoxSelectAuthor";
+            this.comboBoxSelectAuthor.Size = new System.Drawing.Size(222, 21);
+            this.comboBoxSelectAuthor.TabIndex = 9;
+            // 
+            // buttonSelectDirectory
+            // 
+            this.buttonSelectDirectory.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSelectDirectory.Location = new System.Drawing.Point(3, 392);
+            this.buttonSelectDirectory.Name = "buttonSelectDirectory";
+            this.buttonSelectDirectory.Size = new System.Drawing.Size(222, 40);
+            this.buttonSelectDirectory.TabIndex = 8;
+            this.buttonSelectDirectory.Text = "Select Directory";
+            this.buttonSelectDirectory.UseVisualStyleBackColor = true;
+            this.buttonSelectDirectory.Click += new System.EventHandler(this.buttonSelectDirectory_Click);
+            // 
+            // buttonSelectFile
+            // 
+            this.buttonSelectFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonSelectFile.Location = new System.Drawing.Point(3, 440);
+            this.buttonSelectFile.Name = "buttonSelectFile";
+            this.buttonSelectFile.Size = new System.Drawing.Size(222, 40);
+            this.buttonSelectFile.TabIndex = 5;
+            this.buttonSelectFile.Text = "Select File";
+            this.buttonSelectFile.UseVisualStyleBackColor = true;
+            this.buttonSelectFile.Click += new System.EventHandler(this.selectFileButton_clicked);
+            // 
+            // Filter_Button
+            // 
+            this.Filter_Button.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Filter_Button.Location = new System.Drawing.Point(3, 536);
+            this.Filter_Button.Name = "Filter_Button";
+            this.Filter_Button.Size = new System.Drawing.Size(222, 40);
+            this.Filter_Button.TabIndex = 4;
+            this.Filter_Button.Text = "Filter";
+            this.Filter_Button.UseVisualStyleBackColor = true;
+            this.Filter_Button.Click += new System.EventHandler(this.Filter_Button_Click);
+            // 
+            // labelStartDate
+            // 
+            this.labelStartDate.Location = new System.Drawing.Point(3, 204);
+            this.labelStartDate.Name = "labelStartDate";
+            this.labelStartDate.Size = new System.Drawing.Size(222, 15);
+            this.labelStartDate.TabIndex = 3;
+            this.labelStartDate.Text = "Start Date";
+            this.labelStartDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // labelEndDate
+            // 
+            this.labelEndDate.Location = new System.Drawing.Point(3, 255);
+            this.labelEndDate.Name = "labelEndDate";
+            this.labelEndDate.Size = new System.Drawing.Size(222, 13);
+            this.labelEndDate.TabIndex = 2;
+            this.labelEndDate.Text = "End Date";
+            this.labelEndDate.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // dateTimePicker2
             // 
             this.dateTimePicker2.CustomFormat = "yyyy/MM/dd hh:mm:ss";
             this.dateTimePicker2.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker2.Location = new System.Drawing.Point(6, 89);
+            this.dateTimePicker2.Location = new System.Drawing.Point(3, 271);
             this.dateTimePicker2.Name = "dateTimePicker2";
-            this.dateTimePicker2.Size = new System.Drawing.Size(213, 20);
+            this.dateTimePicker2.Size = new System.Drawing.Size(222, 20);
             this.dateTimePicker2.TabIndex = 1;
             // 
             // dateTimePicker1
             // 
             this.dateTimePicker1.CustomFormat = "yyyy/MM/dd hh:mm:ss";
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePicker1.Location = new System.Drawing.Point(6, 34);
+            this.dateTimePicker1.Location = new System.Drawing.Point(4, 222);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(213, 20);
+            this.dateTimePicker1.Size = new System.Drawing.Size(221, 20);
             this.dateTimePicker1.TabIndex = 0;
             this.dateTimePicker1.Value = new System.DateTime(2021, 2, 24, 0, 0, 0, 0);
-            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
             // CodeChanges
             // 
@@ -290,17 +342,14 @@
             // richTextBoxCodeChanges
             // 
             this.richTextBoxCodeChanges.BackColor = System.Drawing.SystemColors.Menu;
-            this.richTextBoxCodeChanges.Location = new System.Drawing.Point(0, 12);
+            this.richTextBoxCodeChanges.Font = new System.Drawing.Font("Courier New", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.richTextBoxCodeChanges.Location = new System.Drawing.Point(-6, 12);
             this.richTextBoxCodeChanges.Name = "richTextBoxCodeChanges";
             this.richTextBoxCodeChanges.ReadOnly = true;
             this.richTextBoxCodeChanges.Size = new System.Drawing.Size(868, 416);
             this.richTextBoxCodeChanges.TabIndex = 0;
             this.richTextBoxCodeChanges.Text = "";
             this.richTextBoxCodeChanges.WordWrap = false;
-            // 
-            // folderBrowserDialog1
-            // 
-            this.folderBrowserDialog1.HelpRequest += new System.EventHandler(this.folderBrowserDialog1_HelpRequest);
             // 
             // openFileDialog1
             // 
@@ -319,16 +368,17 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
+            this.AddRepositoryStrip});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
             this.toolStripMenuItem1.Text = "File";
             // 
-            // fileToolStripMenuItem
+            // AddRepositoryStrip
             // 
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
-            this.fileToolStripMenuItem.Text = "Add Repository";
+            this.AddRepositoryStrip.Name = "AddRepositoryStrip";
+            this.AddRepositoryStrip.Size = new System.Drawing.Size(155, 22);
+            this.AddRepositoryStrip.Text = "Add Repository";
+            this.AddRepositoryStrip.Click += new System.EventHandler(this.AddRepositoryStrip_Click);
             // 
             // CodebaseView
             // 
@@ -348,7 +398,7 @@
             this.CommitBox.ResumeLayout(false);
             this.CommitBox.PerformLayout();
             this.Commits.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.commitsDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).EndInit();
             this.Options.ResumeLayout(false);
             this.Options.PerformLayout();
             this.CodeChanges.ResumeLayout(false);
@@ -365,28 +415,33 @@
         private System.Windows.Forms.GroupBox Options;
         private System.Windows.Forms.GroupBox CodeChanges;
         private System.Windows.Forms.GroupBox Commits;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label labelStartDate;
+        private System.Windows.Forms.Label labelEndDate;
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Filter_Button;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
-        private System.Windows.Forms.Button selected_file_clicked;
+        private System.Windows.Forms.Button buttonSelectFile;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.DataGridView commitsDataGrid;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.DataGridView dataGridViewCommitHashBox;
+        private System.Windows.Forms.Button buttonSelectDirectory;
+        private System.Windows.Forms.Label labelSelectAuthors;
+        private System.Windows.Forms.ComboBox comboBoxSelectAuthor;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox CommithashBox;
+        private System.Windows.Forms.Label labelFilterByCommitHash;
+        private System.Windows.Forms.TextBox textBoxCommitHash;
         private System.Windows.Forms.TextBox textBoxCommitMessage;
         private System.Windows.Forms.TextBox textBoxAuthorCommitInfo;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem AddRepositoryStrip;
         private System.Windows.Forms.RichTextBox richTextBoxCodeChanges;
+        private System.Windows.Forms.Label labelShowFileName;
+        private System.Windows.Forms.Label labelSelectRepository;
+        private System.Windows.Forms.ComboBox comboBoxSelectRepository;
+        private System.Windows.Forms.Label labelSelectBranch;
+        private System.Windows.Forms.ComboBox comboBoxSelectBranch;
     }
 }
 
