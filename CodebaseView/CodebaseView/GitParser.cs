@@ -299,9 +299,9 @@ namespace CodebaseView
                 for (int i = 0; i < branchNames.Count; i++)
                 {
                     INSERTQueryBuilder branchInsert = new INSERTQueryBuilder().setTable("Branch");
-                    if (branchNames[i].Contains("origin/HEAD ->"))
+                    if (branchNames[i].Contains(" origin/HEAD -> "))
                     {
-                        string head = branchNames[i].Replace("origin/HEAD ->", "");
+                        string head = branchNames[i].Replace(" origin/HEAD -> ", "");
                         bool branchExists = SQL.execute(new SELECTQueryBuilder().setTables("Branch").setColumns("*").setConditionals("name = '" + head + "'").build()).Rows.Count > 0;
                         if (!branchExists)
                         {
@@ -311,9 +311,9 @@ namespace CodebaseView
                         }
 
                     }
-                    else if (branchNames[i].Contains("origin/"))
+                    else if (branchNames[i].Contains(" origin/"))
                     {
-                        string origin = branchNames[i].Replace("origin/", "");
+                        string origin = branchNames[i].Replace(" origin/", "");
                         bool originExists = SQL.execute(new SELECTQueryBuilder().setTables("Branch").setColumns("*").setConditionals("name = '" + origin + "'").build()).Rows.Count > 0;
                         if (!originExists)
                         {
