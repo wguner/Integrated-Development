@@ -19,8 +19,8 @@ namespace CodebaseView
       //  DataTable commitInfo = new DataTable();
         BindingSource binding = new BindingSource();
         
-        public string connectionString = "Host = localhost; Username = postgres; Database = 421Db; password = password";
-
+        public string connectionString = "Host = postgres423.cgfq6uy019go.us-east-2.rds.amazonaws.com; Port = 5432; Username = postgres423; Database = postgres423; password = password";
+        public string repo_id = string.Empty;
         
         public CodebaseView()
         {
@@ -33,15 +33,16 @@ namespace CodebaseView
             string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime", "message").setTables("commit").setOrderBy("datetime").build();
             string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
             string repoNames = new SELECTQueryBuilder().setColumns("repourl").setTables("repository").build();
+            string branchNames = new SELECTQueryBuilder().setColumns("name").setTables("Branch").build();
             
-            populateAuthorBox(authorNames);
+            
             populateRepositoryBox(repoNames);
+            populateBranchBox(branchNames);
             this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             this.labelShowFileName.Text = "";
 
             disableFilteringOptions();
-            this.comboBoxSelectBranch.Items.Add("Test Branch");
-            
+           
         }
 
         private void populateCommits(string query)
@@ -56,6 +57,15 @@ namespace CodebaseView
             for(int i = 0; i < dt.Rows.Count; i++)
             {
                 this.comboBoxSelectRepository.Items.Add(dt.Rows[i]["repourl"].ToString());
+            }
+        }
+        private void populateBranchBox(string sql)
+        {
+            this.comboBoxSelectBranch.Items.Clear();
+            DataTable dt = SQL.execute(sql);
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                this.comboBoxSelectBranch.Items.Add(dt.Rows[i]["name"].ToString());
             }
         }
         private void populateAuthorBox(string sql)
@@ -215,6 +225,8 @@ namespace CodebaseView
                     if (tempRepoID.Rows.Count > 0)
                     {
                         string repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
+                        this.repo_id = repo_id;
+
                         selectQueryBuilder.setConditionals("commit.repo_id = " + repo_id);
                     }
                 }
@@ -227,7 +239,22 @@ namespace CodebaseView
 
             if (this.comboBoxSelectBranch.SelectedIndex > -1)
             {
+                string branchname = this.comboBoxSelectBranch.SelectedItem.ToString();
 
+                if (branchname != null || branchname != string.Empty)
+                {
+                    SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
+                    tempQueryBuilder.setTables("Branch").setColumns("name").setConditionals("name = '" + branchname + "'");
+                    string tempSqlStr = tempQueryBuilder.build();
+
+                    DataTable tempBranch = SQL.execute(tempSqlStr);
+
+                    if (tempBranch.Rows.Count > 0)
+                    {
+                        string branch_id = tempBranch.Rows[0]["branch_id"].ToString();
+                        //selectQueryBuilder.setConditionals("commit.branch ");
+                    }
+                }
             }
 
             //get author id
@@ -418,6 +445,7 @@ namespace CodebaseView
         private void disableFilteringOptions()
         {
             this.CommitBox.Enabled = false;
+            this.comboBoxSelectBranch.Enabled = false;
             this.dateTimePicker1.Enabled = false;
             this.dateTimePicker2.Enabled = false;
             this.comboBoxSelectAuthor.Enabled = false;
@@ -434,6 +462,13 @@ namespace CodebaseView
             {
                 enableFilteringOptions();
             }
+
+            else if (this.comboBoxSelectRepository.SelectedIndex > -1)
+            {
+                this.comboBoxSelectBranch.Enabled = true; 
+            }
+            
+            
         }
 
         private void comboBoxSelectRepository_selectionChanged(object sender, EventArgs e)
@@ -444,6 +479,32 @@ namespace CodebaseView
         private void comboBoxSelectBranch_selectionChanged(object sender, EventArgs e)
         {
             shouldEnableFiltering();
+        }
+
+        private string getRepoID()
+        {
+            string repoURL = this.comboBoxSelectRepository.SelectedItem.ToString();
+            if (repoURL != null || repoURL != string.Empty)
+            {
+
+                SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
+                tempQueryBuilder.setTables("Repository").setColumns("repo_id").setConditionals("repoURL = '" + repoURL + "'");
+
+                string tempSqlStr = tempQueryBuilder.build();
+                DataTable tempRepoID = SQL.execute(tempSqlStr);
+
+                if (tempRepoID.Rows.Count > 0)
+                {
+                    string repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
+                    if (repo_id != null || repo_id != string.Empty)
+                    {
+                        return repo_id;
+                    }
+    
+                }
+            }
+
+            return string.Empty;
         }
     }
 }
