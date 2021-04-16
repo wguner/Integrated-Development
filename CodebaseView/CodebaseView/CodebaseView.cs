@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Npgsql;
 using System.IO;
+using CodebaseView.Git_REST_API;
+using CodebaseView.Git_REST_API.API_Objects;
+using CodebaseView.Git_REST_API.API_Objects.Repository;
 
 namespace CodebaseView
 {
@@ -26,6 +29,12 @@ namespace CodebaseView
         {
             InitializeComponent();
             InitPopulate();
+
+            GitAPIURLBuilder builder = new GitAPIURLBuilder();
+            builder.setRepo("MyEtherWallet", "etherwallet");
+            GitAPIExecutor executor = new GitAPIExecutor(builder.buildRepo());
+            Repository obj = executor.execute();
+            Console.WriteLine(obj);
         }
 
         private void InitPopulate()

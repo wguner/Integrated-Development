@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CodebaseView.Git_REST_API.API_Objects
 {
-    class Branch
+    public class Branch : APIObject
     {
     }
 }
