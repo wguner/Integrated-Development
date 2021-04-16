@@ -15,6 +15,18 @@ namespace Git_REST_API_Testing
         public Form1()
         {
             InitializeComponent();
+            //"https://github.com/MyEtherWallet/etherwallet"
+            //"https://github.com/octocat/Hello-World/commit/7fd1a60b01f91b314f59955a4e4d4e80d8edf11d.diff"
+            //"https://api.github.com/repos/MyEtherWallet/etherwallet"
+            showinfo("https://github.com/octocat/Hello-World/commit/7fd1a60b01f91b314f59955a4e4d4e80d8edf11d.diff");
+        }
+
+        public void showinfo(string url)
+        {
+            Git git = new Git(url);
+            Console.WriteLine( git.getResponse());
+
+
         }
     }
 }
