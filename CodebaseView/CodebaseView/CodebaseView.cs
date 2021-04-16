@@ -32,7 +32,7 @@ namespace CodebaseView
 
             GitAPIURLBuilder builder = new GitAPIURLBuilder();
             builder.setRepo("MyEtherWallet", "etherwallet");
-            GitAPIExecutor executor = new GitAPIExecutor(builder.buildRepo());
+            GitAPIExecutor executor = new GitAPIExecutor(builder.buildCommits());
             Repository obj = executor.execute();
             Console.WriteLine(obj);
         }
