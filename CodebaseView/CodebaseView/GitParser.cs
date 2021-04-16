@@ -366,6 +366,34 @@ namespace CodebaseView
                             .setColumns("commit_id").setConditionals("commit_hash = '" + commit.commit_hash + "'").build();
                         int commit_id = (int)SQL.execute(queryCommitID).Rows[0]["commit_id"];
 
+                        // BRANCH TABLE UPDATING
+                        // run command for each commit hash to see which branches contain it
+                        // for each branch, create and execute insert on file table
+                        foreach (string branch in getBranches(commit.commit_hash))
+                        {
+                            bool branchExists = SQL.execute(new SELECTQueryBuilder().setTables("Branch")
+                                .setColumns("*").setConditionals("name = '" + branch + "'").build()).Rows.Count > 0;
+                            if (!branchExists)
+                            {
+                                INSERTQueryBuilder branchInsert = new INSERTQueryBuilder().setTable("Branch");
+                                branchInsert.addColumnValue("name", branch);
+                                branchInsert.addColumnValue("repo_id", repo_id + "");
+                                string branchInsertQuery = branchInsert.build();
+                                SQL.execute(branchInsertQuery);
+                            }
+                            // query branch id
+                            string queryBranchID = new SELECTQueryBuilder().setTables("Branch")
+                                .setColumns("branch_id").setConditionals("name = '" + branch + "'", "repo_id = '" + repo_id + "'").build();
+                            int branch_id = (int)SQL.execute(queryBranchID).Rows[0]["branch_id"];
+
+                            // COMMIT_MAP_BRANCH UPDATING
+                            INSERTQueryBuilder branchCommitMapInsert = new INSERTQueryBuilder().setTable("Commit_Map_Branch");
+                            branchCommitMapInsert.addColumnValue("branch_id", branch_id + "");
+                            branchCommitMapInsert.addColumnValue("commit_id", commit_id + "");
+                            string insertBranchCommitMap = branchCommitMapInsert.build();
+                            SQL.execute(insertBranchCommitMap);
+                        }
+
                         // FILE TABLE UDPDATING
                         // run command for each commit hash to see which files it affected
                         // for each file, create and execute insert on file table
@@ -373,7 +401,7 @@ namespace CodebaseView
                         {
                             // check if file is in db
                             bool fileExists = SQL.execute(new SELECTQueryBuilder().setTables("File")
-                                .setColumns("*").setConditionals("filename = '" + file).build() + "'").Rows.Count > 0;
+                                .setColumns("*").setConditionals("filename = '" + file + "'").build()).Rows.Count > 0;
                             int fileNameEnd = file.LastIndexOf('.');
                             if (!fileExists)
                             {
@@ -395,34 +423,6 @@ namespace CodebaseView
                             fileCommitMapInsert.addColumnValue("commit_id", commit_id + "");
                             string insertFileCommitMap = fileCommitMapInsert.build();
                             SQL.execute(insertFileCommitMap);
-                        }
-
-                        // BRANCH TABLE UPDATING
-                        // run command for each commit hash to see which branches contain it
-                        // for each branch, create and execute insert on file table
-                        foreach (string branch in getBranches(commit.commit_hash))
-                        {
-                            bool branchExists = SQL.execute(new SELECTQueryBuilder().setTables("Branch")
-                                .setColumns("*").setConditionals("name = '" + branch).build() + "'").Rows.Count > 0;
-                            if (!branchExists)
-                            {
-                                INSERTQueryBuilder branchInsert = new INSERTQueryBuilder().setTable("Branch");
-                                branchInsert.addColumnValue("name", branch);
-                                branchInsert.addColumnValue("repo_id", repo_id + "");
-                                string branchInsertQuery = branchInsert.build();
-                                SQL.execute(branchInsertQuery);
-                            }
-                            // query branch id
-                            string queryBranchID = new SELECTQueryBuilder().setTables("Branch")
-                                .setColumns("branch_id").setConditionals("name = '" + branch + "'", "repo_id = '" + repo_id + "'").build();
-                            int branch_id = (int)SQL.execute(queryBranchID).Rows[0]["branch_id"];
-
-                            // COMMIT_MAP_BRANCH UPDATING
-                            INSERTQueryBuilder branchCommitMapInsert = new INSERTQueryBuilder().setTable("Commit_Map_Branch");
-                            branchCommitMapInsert.addColumnValue("branch_id", branch_id + "");
-                            branchCommitMapInsert.addColumnValue("commit_id", commit_id + "");
-                            string insertBranchCommitMap = branchCommitMapInsert.build();
-                            SQL.execute(insertBranchCommitMap);
                         }
                     }
                 }
@@ -524,9 +524,15 @@ namespace CodebaseView
 
         private List<string> getBranches(string commit_hash)
         {
-            List<string> branches = runGitCommandProcess("branch --contains " + commit_hash);
-            // filtering?
-            return branches;
+            List<string> branches = runGitCommandProcess("branch -r --contains " + commit_hash);
+            // filtering
+            List<string> returnBranches = new List<string>();
+            foreach (string branch in branches)
+            {
+                string returnBranch = branch.Replace("origin/HEAD ->", "").Replace("origin/", "");
+                returnBranches.Add(returnBranch.Trim(' '));
+            }
+            return returnBranches;
         }
 
         private List<string> getFiles(string commit_hash)
