@@ -11,6 +11,15 @@ CREATE TABLE Repository (
 	PRIMARY KEY(repo_id)
 );
 
+CREATE TABLE Branch (
+    branch_id SERIAL,
+    name VARCHAR,
+    repo_id INTEGER,
+
+    PRIMARY KEY (branch_id),
+    FOREIGN KEY (repo_id) REFERENCES Repository(repo_id)
+);
+
 CREATE TABLE File (
     filename VARCHAR,
     file_id SERIAL, 
@@ -29,6 +38,14 @@ CREATE TABLE Commit(
 	repo_id INTEGER,
     PRIMARY KEY(commit_id),
 	FOREIGN KEY(repo_id) REFERENCES Repository(repo_id)
+);
+
+CREATE TABLE Commit_Map_Branch (
+    branch_id INTEGER,
+    commit_id INTEGER,
+
+    FOREIGN KEY (branch_id) REFERENCES Branch(branch_id),
+    FOREIGN KEY (commit_id) REFERENCES Commit(commit_id)
 );
 
 CREATE TABLE File_Map_Commit (
