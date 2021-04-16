@@ -56,9 +56,9 @@ namespace CodebaseView.Repo_Cloning
                 //alert user to overwrite?
             }
 
-            gitParser.cloneNewRepo(repoURL, directory);
+            GitParser.cloneNewRepo(repoURL, directory);
             gitParser.initNewRepo("-C " + directory + " log --all");
-            gitParser.updateDatabaseTemp(directory, repoURL);
+            gitParser.updateDatabase(directory, repoURL);
 
             Registry_Keys.RegistryHandler.writeFileLocation(repoURL, directory);
         }
