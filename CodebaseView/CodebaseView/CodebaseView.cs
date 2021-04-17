@@ -41,6 +41,7 @@ namespace CodebaseView
             //populateBranchBox(branchNames);
             this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             this.labelShowFileName.Text = "";
+            this.labelShowDirectory.Text = "";
 
             disableFilteringOptions();
            
@@ -291,8 +292,16 @@ namespace CodebaseView
                 selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc on fmc.commit_id = commit.commit_id ");
                 selectQueryBuilder.setInnerJoinBy("FILE F on F.file_id = fmc.file_id and F.filename = '" +
                                                     filename + "'");
-
             }
+
+            //get file directory
+            if (this.labelShowDirectory.Text != string.Empty)
+            {
+                string folderName = this.labelShowDirectory.Text;
+                selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc on fmc.commit_id = commit.commit_id ");
+                selectQueryBuilder.setInnerJoinBy("FILE F on F.file_id = fmc.file_id and F.filename like CONCAT('" + folderName + "', '%')");
+            }
+
             selectQueryBuilder.setDistinct();
             string selectQueryString = selectQueryBuilder.build();
             DataTable commitTable = SQL.execute(selectQueryString);
@@ -339,7 +348,8 @@ namespace CodebaseView
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
                     string folder = fbd.SelectedPath;
-                    System.Windows.Forms.MessageBox.Show("Files found: " + folder, "Message");
+                    string repoFolderName = this.GetRepoFileNameFromTrueDirectory(folder);
+                    this.labelShowDirectory.Text = repoFolderName;
                 }
             }
         }
