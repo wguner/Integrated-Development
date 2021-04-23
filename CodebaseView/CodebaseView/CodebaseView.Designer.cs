@@ -36,6 +36,7 @@
             this.Commits = new System.Windows.Forms.GroupBox();
             this.dataGridViewCommitHashBox = new System.Windows.Forms.DataGridView();
             this.Options = new System.Windows.Forms.GroupBox();
+            this.checkBoxExcludeCommits = new System.Windows.Forms.CheckBox();
             this.labelShowDirectory = new System.Windows.Forms.Label();
             this.labelSelectRepository = new System.Windows.Forms.Label();
             this.comboBoxSelectRepository = new System.Windows.Forms.ComboBox();
@@ -60,7 +61,6 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.AddRepositoryStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.checkBoxExcludeCommits = new System.Windows.Forms.CheckBox();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).BeginInit();
@@ -183,6 +183,16 @@
             this.Options.TabIndex = 1;
             this.Options.TabStop = false;
             this.Options.Text = "Options";
+            // 
+            // checkBoxExcludeCommits
+            // 
+            this.checkBoxExcludeCommits.AutoSize = true;
+            this.checkBoxExcludeCommits.Location = new System.Drawing.Point(3, 123);
+            this.checkBoxExcludeCommits.Name = "checkBoxExcludeCommits";
+            this.checkBoxExcludeCommits.Size = new System.Drawing.Size(190, 17);
+            this.checkBoxExcludeCommits.TabIndex = 19;
+            this.checkBoxExcludeCommits.Text = "Exclude commits in other branches";
+            this.checkBoxExcludeCommits.UseVisualStyleBackColor = true;
             // 
             // labelShowDirectory
             // 
@@ -392,16 +402,6 @@
             this.AddRepositoryStrip.Size = new System.Drawing.Size(155, 22);
             this.AddRepositoryStrip.Text = "Add Repository";
             this.AddRepositoryStrip.Click += new System.EventHandler(this.AddRepositoryStrip_Click);
-            // 
-            // checkBoxExcludeCommits
-            // 
-            this.checkBoxExcludeCommits.AutoSize = true;
-            this.checkBoxExcludeCommits.Location = new System.Drawing.Point(3, 123);
-            this.checkBoxExcludeCommits.Name = "checkBoxExcludeCommits";
-            this.checkBoxExcludeCommits.Size = new System.Drawing.Size(190, 17);
-            this.checkBoxExcludeCommits.TabIndex = 19;
-            this.checkBoxExcludeCommits.Text = "Exclude commits in other branches";
-            this.checkBoxExcludeCommits.UseVisualStyleBackColor = true;
             // 
             // CodebaseView
             // 

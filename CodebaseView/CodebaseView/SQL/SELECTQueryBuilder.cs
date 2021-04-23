@@ -16,6 +16,7 @@ namespace CodebaseView
         private List<string> orderBy;
         private List<string> innerJoinBy;
         private List<SELECTQueryBuilder> notIn;
+        private List<SELECTQueryBuilder> in_;
 
         private bool distinct = false;
 
@@ -28,6 +29,8 @@ namespace CodebaseView
             this.orderBy = new List<string>();
             this.innerJoinBy = new List<string>();
             this.notIn = new List<SELECTQueryBuilder>();
+            this.in_ = new List<SELECTQueryBuilder>();
+
         }
 
         public SELECTQueryBuilder setColumns(params string[] arguments)
@@ -93,6 +96,15 @@ namespace CodebaseView
             return this;
         }
 
+        public SELECTQueryBuilder setIn(params SELECTQueryBuilder[] arguments)
+        {
+            foreach (SELECTQueryBuilder in_ in arguments)
+            {
+                this.in_.Add(in_);
+            }
+            return this;
+        }
+
         public SELECTQueryBuilder setDistinct()
         {
             this.distinct = true;
@@ -141,18 +153,26 @@ namespace CodebaseView
                 foreach (string groupBy in this.groupBy) { query += groupBy + ","; }
                 query = query.Trim(',');
             }
-            if (this.orderBy.Count > 0)
-            {
-                query += " ORDER BY ";
-                foreach (string orderBy in this.orderBy) { query += orderBy + ","; }
-                query = query.Trim(',');
-            }
-
+            
             if (this.notIn.Count > 0)
             {
                 query += " NOT IN (";
                 foreach(SELECTQueryBuilder notIn in this.notIn) { query += notIn.build(); }
                 query += ")";
+            }
+
+            if (this.in_.Count > 0)
+            {
+                query += " IN (";
+                foreach (SELECTQueryBuilder in_ in this.in_) { query += in_.build(); }
+                query += ")";
+            }
+
+            if (this.orderBy.Count > 0)
+            {
+                query += " ORDER BY ";
+                foreach (string orderBy in this.orderBy) { query += orderBy + ","; }
+                query = query.Trim(',');
             }
             return query;
         }

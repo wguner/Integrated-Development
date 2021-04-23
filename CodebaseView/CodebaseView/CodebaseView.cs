@@ -250,7 +250,8 @@ namespace CodebaseView
                 if (branchname != null || branchname != string.Empty)
                 {
                     SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
-                    tempQueryBuilder.setTables("Branch").setColumns("branch_id").setConditionals("name = '" + branchname + "'");
+                    tempQueryBuilder.setTables("Branch").setColumns("branch_id").setConditionals("name = '" + branchname + "'")
+                        .setConditionals("repo_id = " + repo_id.ToString());
                     string tempSqlStr = tempQueryBuilder.build();
 
                     DataTable tempBranch = SQL.execute(tempSqlStr);
@@ -269,7 +270,7 @@ namespace CodebaseView
                             tempbuilder.setTables("commit_map_branch")
                                 .setColumns("commit_id")
                                 .setConditionals("branch_id != " + branch_id.ToString())
-                                .setConditionals("repo_id = " + repo_id.ToString())
+                                //.setConditionals("repo_id = " + repo_id.ToString())
                                 .setDistinct();
 
                             selectQueryBuilder.setNotIn(tempbuilder);
@@ -333,7 +334,7 @@ namespace CodebaseView
             DataTable commitTable = SQL.execute(selectQueryString);
 
             this.dataGridViewCommitHashBox.DataSource = commitTable;
-            int count = dataGridViewCommitHashBox.RowCount;
+            int count = dataGridViewCommitHashBox.RowCount - 1;
 
             this.Commits.Text = "Commits: " + count.ToString();
         }
@@ -513,14 +514,12 @@ namespace CodebaseView
                     DataTable repoTable = SQL.execute(id);
                     string repo_id = repoTable.Rows[0]["repo_id"].ToString();
 
-                    /*select distinct name 
-                        from author
-                        join commit C on C.repo_id = 1*/
                     string authors = new SELECTQueryBuilder()
                         .setDistinct()
                         .setColumns("name")
-                        .setTables("Author")
-                        .setInnerJoinBy("commit C on C.repo_id = " + repo_id)
+                        .setTables("author")
+                        .setConditionals("author_id")
+                        .setIn(new SELECTQueryBuilder().setDistinct().setTables("commit").setColumns("author_id").setConditionals("repo_id = " + repo_id.ToString()))
                         .build();
                     populateAuthorBox(authors);
 
@@ -547,7 +546,7 @@ namespace CodebaseView
                     .setDistinct()
                     .setColumns("name")
                     .setTables("Branch")
-                    .setInnerJoinBy("commit C on C.repo_id = " + repo_id)
+                    .setConditionals("repo_id = " + repo_id)
                     .build();
                 populateBranchBox(branches);
 
