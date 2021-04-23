@@ -30,10 +30,10 @@ namespace CodebaseView
 
         private void InitPopulate()
         {
-            string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime", "message").setTables("commit").setOrderBy("datetime").build();
-            string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
+            //string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime", "message").setTables("commit").setOrderBy("datetime").build();
+            //string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
             string repoNames = new SELECTQueryBuilder().setColumns("repourl").setTables("repository").build();
-            string branchNames = new SELECTQueryBuilder().setColumns("name").setTables("Branch").build();
+            //string branchNames = new SELECTQueryBuilder().setColumns("name").setTables("Branch").build();
             
             
             populateRepositoryBox(repoNames);
@@ -41,6 +41,7 @@ namespace CodebaseView
             this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             this.labelShowFileName.Text = "";
             this.labelShowDirectory.Text = "";
+            this.Commits.Text = "Commits: 0";
 
             disableFilteringOptions();
            
@@ -83,38 +84,13 @@ namespace CodebaseView
             }
         }
 
-        private void populateFiles(string query)
-        {
-            DataTable dt = SQL.execute(query);
-            
-        }
+    
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
-        
-
-        private void test()
-        {
-            this.richTextBoxCodeChanges.Text = "";
-            string dateTime = this.dateTimePicker1.Text;
-
-            TimeStamp date = new TimeStamp(this.dateTimePicker1.Value.Year.ToString(),
-                this.dateTimePicker1.Value.Month.ToString(),
-                this.dateTimePicker1.Value.Day.ToString(),
-                this.dateTimePicker1.Value.TimeOfDay.ToString());
-
-            SELECTQueryBuilder qe = new SELECTQueryBuilder();
-            string currentDate = dateTimePicker1.Value.ToString();
-            string sqlstr = qe.setColumns("message", "author_id").setTables("commit").setConditionals("datetime = '"
-                + date.ToSelectString() + "'").build();
-            DataTable authorCommit = SQL.execute(sqlstr);
-
-            textBoxCommitMessage.Text = authorCommit.Rows[0]["message"].ToString();
-        }
-       
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -307,8 +283,8 @@ namespace CodebaseView
             if (this.labelShowFileName.Text != string.Empty)
             {
                 string filename = this.labelShowFileName.Text;
-                selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc on fmc.commit_id = commit.commit_id ");
-                selectQueryBuilder.setInnerJoinBy("FILE F on F.file_id = fmc.file_id and F.filename = '" +
+                selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc_file on fmc_file.commit_id = commit.commit_id ");
+                selectQueryBuilder.setInnerJoinBy("FILE F_file on F_file.file_id = fmc_file.file_id and F_file.filename = '" +
                                                     filename + "'");
             }
 
@@ -316,8 +292,8 @@ namespace CodebaseView
             if (this.labelShowDirectory.Text != string.Empty)
             {
                 string folderName = this.labelShowDirectory.Text;
-                selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc on fmc.commit_id = commit.commit_id ");
-                selectQueryBuilder.setInnerJoinBy("FILE F on F.file_id = fmc.file_id and F.filename like CONCAT('" + folderName + "', '%')");
+                selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc_dir on fmc_dir.commit_id = commit.commit_id ");
+                selectQueryBuilder.setInnerJoinBy("FILE F_dir on F_dir.file_id = fmc_dir.file_id and F_dir.filename like CONCAT('" + folderName + "', '%')");
             }
 
 
@@ -358,9 +334,9 @@ namespace CodebaseView
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string fileName = openFileDialog1.SafeFileName.ToString();
-                string directory = openFileDialog1.FileName.ToString();
+                string directory = openFileDialog1.FileName.ToString(); //.Replace(fileName, "");
       
-                string repoFileName = this.GetRepoFileNameFromTrueDirectory(directory);
+                string repoFileName = this.GetRepoFileNameFromTrueDirectory(fileName, directory);
                 this.labelShowFileName.Text = repoFileName;
             }
         }
@@ -374,16 +350,25 @@ namespace CodebaseView
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
                     string folder = fbd.SelectedPath;
-                    string repoFolderName = this.GetRepoFileNameFromTrueDirectory(folder);
+                    string repoFolderName = this.GetRepoFileNameFromTrueDirectory("*directory*", folder);
                     this.labelShowDirectory.Text = repoFolderName;
                 }
             }
         }
 
 
-        private string GetRepoFileNameFromTrueDirectory(string directory)
+        private string GetRepoFileNameFromTrueDirectory(string fileName, string directory)
         {
             GitParser parser = new GitParser();
+            if (fileName != "*directory*")
+            {
+                parser.setCurrentDirectory(directory.Replace(fileName, ""));
+            }
+            else
+            {
+                parser.setCurrentDirectory(directory);
+            }
+
             char[] repoURL = parser.retrieveRepoURL().ToCharArray();
 
             List<char> templist = new List<char>();
@@ -552,6 +537,10 @@ namespace CodebaseView
 
                 this.comboBoxSelectBranch.Enabled = true;
                 this.checkBoxExcludeCommits.Enabled = true;
+                this.labelShowDirectory.Text = "";
+                this.labelShowFileName.Text = "";
+                this.textBoxCommitHash.Text = "";
+
             }
             
             
@@ -559,7 +548,25 @@ namespace CodebaseView
 
         private void comboBoxSelectRepository_selectionChanged(object sender, EventArgs e)
         {
+            this.richTextBoxCodeChanges.Text = "";
+            this.textBoxCommitMessage.Text = "";
+            this.textBoxAuthorCommitInfo.Text = "";
+            this.Commits.Text = "Commits: 0";
+            this.dataGridViewCommitHashBox.DataSource = null;
             shouldEnableFiltering();
+            
+            this.comboBoxSelectBranch.SelectedItem = null;
+            this.comboBoxSelectAuthor.SelectedItem = null;
+            this.CommitBox.Enabled = false;
+            this.dateTimePicker1.Enabled = false;
+            this.dateTimePicker2.Enabled = false;
+            this.comboBoxSelectAuthor.Enabled = false;
+            this.textBoxCommitHash.Enabled = false;
+            this.buttonSelectDirectory.Enabled = false;
+            this.buttonSelectFile.Enabled = false;
+            this.Filter_Button.Enabled = false;
+
+            repo_and_branch_selected = false;
         }
 
         private void comboBoxSelectBranch_selectionChanged(object sender, EventArgs e)
