@@ -20,7 +20,6 @@ namespace CodebaseView
         BindingSource binding = new BindingSource();
         
         public string connectionString = "Host = localhost; Port = 5432; Username = postgres; Database = 421Db; password = password";
-        public string repo_id = string.Empty;
         private bool repo_and_branch_selected = false;
         
         public CodebaseView()
@@ -65,6 +64,8 @@ namespace CodebaseView
         {
             this.comboBoxSelectBranch.Items.Clear();
             DataTable dt = SQL.execute(sql);
+
+            this.comboBoxSelectBranch.Items.Add("");
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 this.comboBoxSelectBranch.Items.Add(dt.Rows[i]["name"].ToString());
@@ -74,6 +75,8 @@ namespace CodebaseView
         {
             this.comboBoxSelectAuthor.Items.Clear();
             DataTable dt = SQL.execute(sql);
+
+            this.comboBoxSelectAuthor.Items.Add("");
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 this.comboBoxSelectAuthor.Items.Add(dt.Rows[i]["name"].ToString());
@@ -209,7 +212,9 @@ namespace CodebaseView
 
             //GitParser parser = new GitParser();
             //string repoURL = parser.retrieveRepoURL();
-            
+
+            string repo_id = string.Empty;
+            string branch_id = string.Empty;
 
             //get repo_id
             if (this.comboBoxSelectRepository.SelectedIndex > -1)
@@ -226,9 +231,7 @@ namespace CodebaseView
 
                     if (tempRepoID.Rows.Count > 0)
                     {
-                        string repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
-                        this.repo_id = repo_id;
-
+                        repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
                         selectQueryBuilder.setConditionals("commit.repo_id = " + repo_id);
                     }
                 }
@@ -237,10 +240,10 @@ namespace CodebaseView
             //get dates
             selectQueryBuilder.setConditionals("datetime >= '" + timeAfter + "' and datetime <= '" + timeBefore + "'");
 
-            //get branch id
 
-            
-            if (this.comboBoxSelectBranch.SelectedIndex > -1)
+
+            //get branch id
+            if (this.comboBoxSelectBranch.SelectedIndex > -1 && this.comboBoxSelectBranch.SelectedItem.ToString() != "")
             {
                 string branchname = this.comboBoxSelectBranch.SelectedItem.ToString();
 
@@ -254,15 +257,29 @@ namespace CodebaseView
 
                     if (tempBranch.Rows.Count > 0)
                     {
-                        string branch_id = tempBranch.Rows[0]["branch_id"].ToString();
+                        branch_id = tempBranch.Rows[0]["branch_id"].ToString();
                         selectQueryBuilder.setInnerJoinBy("Commit_Map_Branch CMB on CMB.branch_id = " + branch_id +
                             " and CMB.commit_id = commit.commit_id");
+
+
+                        //get includeCheckbox
+                        if (this.checkBoxExcludeCommits.Checked)
+                        {
+                            SELECTQueryBuilder tempbuilder = new SELECTQueryBuilder();
+                            tempbuilder.setTables("commit_map_branch")
+                                .setColumns("commit_id")
+                                .setConditionals("branch_id != " + branch_id.ToString())
+                                .setConditionals("repo_id = " + repo_id.ToString())
+                                .setDistinct();
+
+                            selectQueryBuilder.setNotIn(tempbuilder);
+                        }
                     }
                 }
             }
 
             //get author id
-            if (this.comboBoxSelectAuthor.SelectedIndex > -1)
+            if (this.comboBoxSelectAuthor.SelectedIndex > -1 && this.comboBoxSelectAuthor.SelectedItem.ToString() != "")
             {
                 string name = this.comboBoxSelectAuthor.SelectedItem.ToString();
                 SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
@@ -302,15 +319,23 @@ namespace CodebaseView
                 selectQueryBuilder.setInnerJoinBy("FILE F on F.file_id = fmc.file_id and F.filename like CONCAT('" + folderName + "', '%')");
             }
 
+
+            
+
+            if (this.checkBoxExcludeCommits.Checked && this.comboBoxSelectBranch.SelectedItem.ToString() != "")
+            {
+                selectQueryBuilder.setConditionals("commit.commit_id");
+            }
+
             selectQueryBuilder.setDistinct();
+            selectQueryBuilder.setOrderBy("datetime desc");
             string selectQueryString = selectQueryBuilder.build();
             DataTable commitTable = SQL.execute(selectQueryString);
 
             this.dataGridViewCommitHashBox.DataSource = commitTable;
+            int count = dataGridViewCommitHashBox.RowCount;
 
-
-
-            //TODO: get directory
+            this.Commits.Text = "Commits: " + count.ToString();
         }
 
         private string GetTimeStamp(DateTimePicker dateTimePicker)
@@ -465,7 +490,7 @@ namespace CodebaseView
             this.textBoxCommitHash.Enabled = false;
             this.buttonSelectDirectory.Enabled = false;
             this.buttonSelectFile.Enabled = false;
-
+            this.checkBoxExcludeCommits.Enabled = false;
             this.Filter_Button.Enabled = false;
         }
 
@@ -525,7 +550,9 @@ namespace CodebaseView
                     .setInnerJoinBy("commit C on C.repo_id = " + repo_id)
                     .build();
                 populateBranchBox(branches);
-                this.comboBoxSelectBranch.Enabled = true; 
+
+                this.comboBoxSelectBranch.Enabled = true;
+                this.checkBoxExcludeCommits.Enabled = true;
             }
             
             

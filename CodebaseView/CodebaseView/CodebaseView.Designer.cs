@@ -36,6 +36,7 @@
             this.Commits = new System.Windows.Forms.GroupBox();
             this.dataGridViewCommitHashBox = new System.Windows.Forms.DataGridView();
             this.Options = new System.Windows.Forms.GroupBox();
+            this.labelShowDirectory = new System.Windows.Forms.Label();
             this.labelSelectRepository = new System.Windows.Forms.Label();
             this.comboBoxSelectRepository = new System.Windows.Forms.ComboBox();
             this.labelSelectBranch = new System.Windows.Forms.Label();
@@ -59,7 +60,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.AddRepositoryStrip = new System.Windows.Forms.ToolStripMenuItem();
-            this.labelShowDirectory = new System.Windows.Forms.Label();
+            this.checkBoxExcludeCommits = new System.Windows.Forms.CheckBox();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).BeginInit();
@@ -158,6 +159,7 @@
             // Options
             // 
             this.Options.AutoSize = true;
+            this.Options.Controls.Add(this.checkBoxExcludeCommits);
             this.Options.Controls.Add(this.labelShowDirectory);
             this.Options.Controls.Add(this.labelSelectRepository);
             this.Options.Controls.Add(this.comboBoxSelectRepository);
@@ -181,6 +183,15 @@
             this.Options.TabIndex = 1;
             this.Options.TabStop = false;
             this.Options.Text = "Options";
+            // 
+            // labelShowDirectory
+            // 
+            this.labelShowDirectory.AutoSize = true;
+            this.labelShowDirectory.Location = new System.Drawing.Point(6, 435);
+            this.labelShowDirectory.Name = "labelShowDirectory";
+            this.labelShowDirectory.Size = new System.Drawing.Size(48, 13);
+            this.labelShowDirectory.TabIndex = 18;
+            this.labelShowDirectory.Text = "File label";
             // 
             // labelSelectRepository
             // 
@@ -382,14 +393,15 @@
             this.AddRepositoryStrip.Text = "Add Repository";
             this.AddRepositoryStrip.Click += new System.EventHandler(this.AddRepositoryStrip_Click);
             // 
-            // labelShowDirectory
+            // checkBoxExcludeCommits
             // 
-            this.labelShowDirectory.AutoSize = true;
-            this.labelShowDirectory.Location = new System.Drawing.Point(6, 435);
-            this.labelShowDirectory.Name = "labelShowDirectory";
-            this.labelShowDirectory.Size = new System.Drawing.Size(48, 13);
-            this.labelShowDirectory.TabIndex = 18;
-            this.labelShowDirectory.Text = "File label";
+            this.checkBoxExcludeCommits.AutoSize = true;
+            this.checkBoxExcludeCommits.Location = new System.Drawing.Point(3, 123);
+            this.checkBoxExcludeCommits.Name = "checkBoxExcludeCommits";
+            this.checkBoxExcludeCommits.Size = new System.Drawing.Size(190, 17);
+            this.checkBoxExcludeCommits.TabIndex = 19;
+            this.checkBoxExcludeCommits.Text = "Exclude commits in other branches";
+            this.checkBoxExcludeCommits.UseVisualStyleBackColor = true;
             // 
             // CodebaseView
             // 
@@ -454,6 +466,7 @@
         private System.Windows.Forms.Label labelSelectBranch;
         private System.Windows.Forms.ComboBox comboBoxSelectBranch;
         private System.Windows.Forms.Label labelShowDirectory;
+        private System.Windows.Forms.CheckBox checkBoxExcludeCommits;
     }
 }
 

@@ -15,6 +15,8 @@ namespace CodebaseView
         private List<string> groupBy;
         private List<string> orderBy;
         private List<string> innerJoinBy;
+        private List<SELECTQueryBuilder> notIn;
+
         private bool distinct = false;
 
         public SELECTQueryBuilder()
@@ -25,6 +27,7 @@ namespace CodebaseView
             this.groupBy = new List<string>();
             this.orderBy = new List<string>();
             this.innerJoinBy = new List<string>();
+            this.notIn = new List<SELECTQueryBuilder>();
         }
 
         public SELECTQueryBuilder setColumns(params string[] arguments)
@@ -77,6 +80,15 @@ namespace CodebaseView
             foreach (string joinBy in arguments)
             {
                 this.innerJoinBy.Add(joinBy);
+            }
+            return this;
+        }
+
+        public SELECTQueryBuilder setNotIn(params SELECTQueryBuilder[] arguments)
+        {
+            foreach (SELECTQueryBuilder notIn in arguments)
+            {
+                this.notIn.Add(notIn);
             }
             return this;
         }
@@ -134,6 +146,13 @@ namespace CodebaseView
                 query += " ORDER BY ";
                 foreach (string orderBy in this.orderBy) { query += orderBy + ","; }
                 query = query.Trim(',');
+            }
+
+            if (this.notIn.Count > 0)
+            {
+                query += " NOT IN (";
+                foreach(SELECTQueryBuilder notIn in this.notIn) { query += notIn.build(); }
+                query += ")";
             }
             return query;
         }
