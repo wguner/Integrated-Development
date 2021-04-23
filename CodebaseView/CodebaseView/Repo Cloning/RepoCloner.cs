@@ -58,6 +58,8 @@ namespace CodebaseView.Repo_Cloning
 
             GitParser.cloneNewRepo(repoURL, directory);
             gitParser.initNewRepo("-C " + directory + " log --all");
+
+            gitParser.setCurrentDirectory(directory);
             gitParser.updateDatabase(directory, repoURL);
 
             Registry_Keys.RegistryHandler.writeFileLocation(repoURL, directory);

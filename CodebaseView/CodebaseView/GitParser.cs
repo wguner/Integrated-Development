@@ -27,6 +27,11 @@ namespace CodebaseView
             this.currentDirectory = directory;
         }
 
+        public void setCurrentDirectory(string directory)
+        {
+            this.currentDirectory = directory;
+        }
+
         public void init()
         {
             initCommits();
@@ -45,6 +50,7 @@ namespace CodebaseView
 
         public static void cloneNewRepo(string url, string folderlocation)
         {
+            
             runGitCommandProcess("clone " + url + " " + folderlocation, Environment.CurrentDirectory);
         }
 
@@ -320,7 +326,8 @@ namespace CodebaseView
                     foreach (string branch in getBranches(commit.commit_hash))
                     {
                         bool branchExists = SQL.execute(new SELECTQueryBuilder().setTables("Branch")
-                            .setColumns("*").setConditionals("name = '" + branch + "'").build()).Rows.Count > 0;
+                            .setColumns("*").setConditionals("name = '" + branch + "'")
+                            .setConditionals("repo_id = " + repo_id.ToString()).build()).Rows.Count > 0;
                         if (!branchExists)
                         {
                             INSERTQueryBuilder branchInsert = new INSERTQueryBuilder().setTable("Branch");
@@ -379,7 +386,7 @@ namespace CodebaseView
 
         private List<string> getBranches(string commit_hash)
         {
-            List<string> branches = runGitCommandProcess("branch -r --contains " + commit_hash);
+            List<string> branches = runGitCommandProcess("branch -r --contains " + commit_hash, currentDirectory);
             // filtering
             List<string> returnBranches = new List<string>();
             foreach (string branch in branches)

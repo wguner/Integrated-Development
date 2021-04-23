@@ -36,6 +36,8 @@
             this.Commits = new System.Windows.Forms.GroupBox();
             this.dataGridViewCommitHashBox = new System.Windows.Forms.DataGridView();
             this.Options = new System.Windows.Forms.GroupBox();
+            this.checkBoxExcludeCommits = new System.Windows.Forms.CheckBox();
+            this.labelShowDirectory = new System.Windows.Forms.Label();
             this.labelSelectRepository = new System.Windows.Forms.Label();
             this.comboBoxSelectRepository = new System.Windows.Forms.ComboBox();
             this.labelSelectBranch = new System.Windows.Forms.Label();
@@ -157,6 +159,8 @@
             // Options
             // 
             this.Options.AutoSize = true;
+            this.Options.Controls.Add(this.checkBoxExcludeCommits);
+            this.Options.Controls.Add(this.labelShowDirectory);
             this.Options.Controls.Add(this.labelSelectRepository);
             this.Options.Controls.Add(this.comboBoxSelectRepository);
             this.Options.Controls.Add(this.labelSelectBranch);
@@ -179,6 +183,25 @@
             this.Options.TabIndex = 1;
             this.Options.TabStop = false;
             this.Options.Text = "Options";
+            // 
+            // checkBoxExcludeCommits
+            // 
+            this.checkBoxExcludeCommits.AutoSize = true;
+            this.checkBoxExcludeCommits.Location = new System.Drawing.Point(3, 123);
+            this.checkBoxExcludeCommits.Name = "checkBoxExcludeCommits";
+            this.checkBoxExcludeCommits.Size = new System.Drawing.Size(190, 17);
+            this.checkBoxExcludeCommits.TabIndex = 19;
+            this.checkBoxExcludeCommits.Text = "Exclude commits in other branches";
+            this.checkBoxExcludeCommits.UseVisualStyleBackColor = true;
+            // 
+            // labelShowDirectory
+            // 
+            this.labelShowDirectory.AutoSize = true;
+            this.labelShowDirectory.Location = new System.Drawing.Point(6, 435);
+            this.labelShowDirectory.Name = "labelShowDirectory";
+            this.labelShowDirectory.Size = new System.Drawing.Size(48, 13);
+            this.labelShowDirectory.TabIndex = 18;
+            this.labelShowDirectory.Text = "File label";
             // 
             // labelSelectRepository
             // 
@@ -219,7 +242,7 @@
             // labelShowFileName
             // 
             this.labelShowFileName.AutoSize = true;
-            this.labelShowFileName.Location = new System.Drawing.Point(6, 482);
+            this.labelShowFileName.Location = new System.Drawing.Point(6, 511);
             this.labelShowFileName.Name = "labelShowFileName";
             this.labelShowFileName.Size = new System.Drawing.Size(48, 13);
             this.labelShowFileName.TabIndex = 13;
@@ -272,7 +295,7 @@
             // buttonSelectFile
             // 
             this.buttonSelectFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.buttonSelectFile.Location = new System.Drawing.Point(3, 440);
+            this.buttonSelectFile.Location = new System.Drawing.Point(3, 468);
             this.buttonSelectFile.Name = "buttonSelectFile";
             this.buttonSelectFile.Size = new System.Drawing.Size(222, 40);
             this.buttonSelectFile.TabIndex = 5;
@@ -442,6 +465,8 @@
         private System.Windows.Forms.ComboBox comboBoxSelectRepository;
         private System.Windows.Forms.Label labelSelectBranch;
         private System.Windows.Forms.ComboBox comboBoxSelectBranch;
+        private System.Windows.Forms.Label labelShowDirectory;
+        private System.Windows.Forms.CheckBox checkBoxExcludeCommits;
     }
 }
 
