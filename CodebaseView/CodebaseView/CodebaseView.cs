@@ -313,12 +313,11 @@ namespace CodebaseView
             this.dataGridViewCommitHashBox.DataSource = commitTable;
             int count = dataGridViewCommitHashBox.RowCount - 1;
 
-            if (count == 0)
-            {
-                this.textBoxCommitMessage.Text = "";
-                this.textBoxAuthorCommitInfo.Text = "";
-                this.richTextBoxCodeChanges.Text = "";
-            }
+            
+            this.textBoxCommitMessage.Text = "";
+            this.textBoxAuthorCommitInfo.Text = "";
+            this.richTextBoxCodeChanges.Text = "";
+            
             this.Commits.Text = "Commits: " + count.ToString();
         }
 
