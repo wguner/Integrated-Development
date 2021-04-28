@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,6 +37,9 @@ namespace CodebaseView
         {
             initCommits();
             initNewestCommit();
+            commits = new List<Commit>();
+
+            initCommitsTempFolder(getReposInTemp());
         }
 
         public List<string> initCodeChanges(string commit_hash, string location)
@@ -52,6 +56,39 @@ namespace CodebaseView
         {
             
             runGitCommandProcess("clone " + url + " " + folderlocation, Environment.CurrentDirectory);
+        }
+
+        private List<string> getReposInTemp()
+        {
+            string[] directories = Directory.GetDirectories(System.IO.Path.GetTempPath() + Repo_Cloning.RepoCloner.TEMP_FOLDER_NAME);
+            List<string> listDirectories = new List<string>();
+            listDirectories.AddRange(directories);
+            return listDirectories;
+        }
+
+        private void initCommitsTempFolder(List<string> directories)
+        {
+            foreach (string folder in directories)
+            {
+                string[] tempfolders = Directory.GetDirectories(folder);
+                List<string> listDirectories = new List<string>();
+                listDirectories.AddRange(tempfolders);
+
+                foreach(string innerFolder in listDirectories)
+                {
+                    if (innerFolder.Contains("\\.git"))
+                    {
+                        currentDirectory = folder;
+                        initCommits();
+                        initNewestCommit();
+                        updateDatabase();
+
+                        commits = new List<Commit>();
+
+                        break;
+                    }
+                }
+            }
         }
 
         public string parseNameFromURL(string url)
@@ -111,7 +148,7 @@ namespace CodebaseView
 
         private void initNewestCommit()
         {
-            List<string> lines = runGitCommandProcess("log --all -1");
+            List<string> lines = runGitCommandProcess("log --all -1", currentDirectory);
             this.newestCommitID = lines[0].Substring(7, 40);
 
         }
@@ -119,7 +156,7 @@ namespace CodebaseView
 
         private void initCommits()
         {
-            List<string> commitLines = runGitCommandProcess("log --all");
+            List<string> commitLines = runGitCommandProcess("log --all", currentDirectory);
             for (int i = 0; i < commitLines.Count; i++)
             {
                 string line = commitLines[i];
