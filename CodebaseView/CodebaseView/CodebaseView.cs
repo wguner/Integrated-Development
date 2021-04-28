@@ -43,7 +43,7 @@ namespace CodebaseView
             this.labelShowFileName.Text = "";
             this.labelShowDirectory.Text = "";
             this.Commits.Text = "Commits: 0";
-
+            this.checkBoxExcludeCommits.Checked = true;
             disableFilteringOptions();
            
         }
@@ -241,7 +241,7 @@ namespace CodebaseView
 
 
                         //get includeCheckbox
-                        if (this.checkBoxExcludeCommits.Checked)
+                        if (!this.checkBoxExcludeCommits.Checked)
                         {
                             SELECTQueryBuilder tempbuilder = new SELECTQueryBuilder();
                             tempbuilder.setTables("commit_map_branch")
@@ -300,7 +300,7 @@ namespace CodebaseView
 
             
 
-            if (this.checkBoxExcludeCommits.Checked && this.comboBoxSelectBranch.SelectedItem.ToString() != "")
+            if (!this.checkBoxExcludeCommits.Checked && this.comboBoxSelectBranch.SelectedItem.ToString() != "")
             {
                 selectQueryBuilder.setConditionals("commit.commit_id");
             }
@@ -313,6 +313,12 @@ namespace CodebaseView
             this.dataGridViewCommitHashBox.DataSource = commitTable;
             int count = dataGridViewCommitHashBox.RowCount - 1;
 
+            if (count == 0)
+            {
+                this.textBoxCommitMessage.Text = "";
+                this.textBoxAuthorCommitInfo.Text = "";
+                this.richTextBoxCodeChanges.Text = "";
+            }
             this.Commits.Text = "Commits: " + count.ToString();
         }
 

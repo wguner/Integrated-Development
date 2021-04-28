@@ -189,9 +189,9 @@
             this.checkBoxExcludeCommits.AutoSize = true;
             this.checkBoxExcludeCommits.Location = new System.Drawing.Point(3, 123);
             this.checkBoxExcludeCommits.Name = "checkBoxExcludeCommits";
-            this.checkBoxExcludeCommits.Size = new System.Drawing.Size(190, 17);
+            this.checkBoxExcludeCommits.Size = new System.Drawing.Size(187, 17);
             this.checkBoxExcludeCommits.TabIndex = 19;
-            this.checkBoxExcludeCommits.Text = "Exclude commits in other branches";
+            this.checkBoxExcludeCommits.Text = "Include commits in other branches";
             this.checkBoxExcludeCommits.UseVisualStyleBackColor = true;
             // 
             // labelShowDirectory
