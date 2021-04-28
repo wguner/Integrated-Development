@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using CodebaseView.Registry_Keys;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -37,11 +38,13 @@ namespace CodebaseView
         {
             initCommits();
             initNewestCommit();
-            commits = new List<Commit>();
-
-            initCommitsTempFolder(getReposInTemp());
         }
 
+        public void initAndUpdateClonedRepos()
+        {
+            commits = new List<Commit>();
+            initCommitsTempFolder(getReposInTemp());
+        }
         public List<string> initCodeChanges(string commit_hash, string location)
         { 
             return runGitCommandProcess("-C " + location + " show " + commit_hash);
@@ -313,6 +316,13 @@ namespace CodebaseView
                 repoInsert.addColumnValue("repoURL", repoURL);
                 SQL.execute(repoInsert.build());
 
+                
+                string location = RegistryHandler.readFileLocation(repoURL);
+               
+                if (location != null || location != string.Empty)
+                {
+                    RegistryHandler.writeFileLocation(repoURL, currentDirectory);
+                }
             }
             //retrieve repo id
             string queryRepoID = new SELECTQueryBuilder().setTables("Repository")

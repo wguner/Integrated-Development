@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Npgsql;
 using System.IO;
+using CodebaseView.Registry_Keys;
 
 namespace CodebaseView
 {
@@ -331,6 +332,13 @@ namespace CodebaseView
 
         private void selectFileButton_clicked(object sender, EventArgs e)
         {
+            string repoPath = RegistryHandler.readFileLocation(this.comboBoxSelectRepository.SelectedItem.ToString());
+
+            if (Directory.Exists(repoPath))
+            {
+                openFileDialog1.InitialDirectory = repoPath;
+            }
+
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string fileName = openFileDialog1.SafeFileName.ToString();
@@ -345,8 +353,14 @@ namespace CodebaseView
         {
             using (var fbd = new FolderBrowserDialog())
             {
-                DialogResult result = fbd.ShowDialog();
+                string repoPath = RegistryHandler.readFileLocation(this.comboBoxSelectRepository.SelectedItem.ToString());
+                
+                if (Directory.Exists(repoPath))
+                {
+                    fbd.SelectedPath = repoPath;
+                }
 
+                DialogResult result = fbd.ShowDialog();
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
                     string folder = fbd.SelectedPath;
