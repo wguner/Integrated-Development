@@ -29,16 +29,19 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.programmerInfo = new System.Windows.Forms.DataGridView();
+            this.printGrades = new System.Windows.Forms.Button();
+            this.viewGrades = new System.Windows.Forms.Button();
+            this.ProgrammerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numCommits = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.programmerGrade = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.programmerInfo)).BeginInit();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.dataGridView1);
+            this.groupBox1.Controls.Add(this.programmerInfo);
             this.groupBox1.Location = new System.Drawing.Point(201, 3);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(586, 435);
@@ -46,44 +49,64 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Programmer Information";
             // 
-            // dataGridView1
+            // programmerInfo
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(8, 23);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(572, 392);
-            this.dataGridView1.TabIndex = 0;
+            this.programmerInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.programmerInfo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ProgrammerName,
+            this.numCommits,
+            this.programmerGrade});
+            this.programmerInfo.Location = new System.Drawing.Point(8, 23);
+            this.programmerInfo.Name = "programmerInfo";
+            this.programmerInfo.Size = new System.Drawing.Size(572, 392);
+            this.programmerInfo.TabIndex = 0;
             // 
-            // button1
+            // printGrades
             // 
-            this.button1.Location = new System.Drawing.Point(11, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(184, 173);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Print Grades";
-            this.button1.UseVisualStyleBackColor = true;
+            this.printGrades.Location = new System.Drawing.Point(11, 12);
+            this.printGrades.Name = "printGrades";
+            this.printGrades.Size = new System.Drawing.Size(184, 196);
+            this.printGrades.TabIndex = 1;
+            this.printGrades.Text = "Print Grades";
+            this.printGrades.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // viewGrades
             // 
-            this.button2.Location = new System.Drawing.Point(12, 214);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(184, 204);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Close Window";
-            this.button2.UseVisualStyleBackColor = true;
+            this.viewGrades.Location = new System.Drawing.Point(12, 214);
+            this.viewGrades.Name = "viewGrades";
+            this.viewGrades.Size = new System.Drawing.Size(184, 204);
+            this.viewGrades.TabIndex = 2;
+            this.viewGrades.Text = "View Grades";
+            this.viewGrades.UseVisualStyleBackColor = true;
+            this.viewGrades.Click += new System.EventHandler(this.viewGrades_Click);
+            // 
+            // ProgrammerName
+            // 
+            this.ProgrammerName.HeaderText = "Programmer Name";
+            this.ProgrammerName.Name = "ProgrammerName";
+            // 
+            // numCommits
+            // 
+            this.numCommits.HeaderText = "Number of Commits";
+            this.numCommits.Name = "numCommits";
+            // 
+            // programmerGrade
+            // 
+            this.programmerGrade.HeaderText = "Programmer Grade";
+            this.programmerGrade.Name = "programmerGrade";
             // 
             // ProgrammerGradesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.viewGrades);
+            this.Controls.Add(this.printGrades);
             this.Controls.Add(this.groupBox1);
             this.Name = "ProgrammerGradesForm";
             this.Text = "ProgrammerGradesForm";
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.programmerInfo)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -91,8 +114,11 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.DataGridView programmerInfo;
+        private System.Windows.Forms.Button printGrades;
+        private System.Windows.Forms.Button viewGrades;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ProgrammerName;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numCommits;
+        private System.Windows.Forms.DataGridViewTextBoxColumn programmerGrade;
     }
 }

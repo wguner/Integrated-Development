@@ -105,6 +105,12 @@
     <Compile Include="Database Structs\TimeStamp.cs" />
     <Compile Include="Database Structs\Commit.cs" />
     <Compile Include="Database Structs\File.cs" />
+    <Compile Include="ProgrammerGradesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProgrammerGradesForm.Designer.cs">
+      <DependentUpon>ProgrammerGradesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Registry Keys\RegistryHandler.cs" />
     <Compile Include="SQL\INSERTQueryBuilder.cs" />
     <Compile Include="MessageBox.cs">
@@ -133,6 +139,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MessageBox.resx">
       <DependentUpon>MessageBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProgrammerGradesForm.resx">
+      <DependentUpon>ProgrammerGradesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

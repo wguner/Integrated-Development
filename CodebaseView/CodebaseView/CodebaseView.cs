@@ -599,5 +599,11 @@ namespace CodebaseView
 
             return string.Empty;
         }
+
+        private void commitsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProgrammerGradesForm form = new ProgrammerGradesForm();
+            form.Show();
+        }
     }
 }
