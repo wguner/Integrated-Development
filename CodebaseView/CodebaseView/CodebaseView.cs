@@ -19,8 +19,8 @@ namespace CodebaseView
       //  DataTable commitInfo = new DataTable();
         BindingSource binding = new BindingSource();
         
-        public string connectionString = "Host = localhost; Username = postgres; Database = 421Db; password = password";
-
+        public string connectionString = "Host = localhost; Port = 5432; Username = postgres; Database = 421Db; password = password";
+        private bool repo_and_branch_selected = false;
         
         public CodebaseView()
         {
@@ -30,18 +30,21 @@ namespace CodebaseView
 
         private void InitPopulate()
         {
-            string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime", "message").setTables("commit").setOrderBy("datetime").build();
-            string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
+            //string query = new SELECTQueryBuilder().setColumns("commit_hash", "datetime", "message").setTables("commit").setOrderBy("datetime").build();
+            //string authorNames = new SELECTQueryBuilder().setColumns("name").setTables("author").build();
             string repoNames = new SELECTQueryBuilder().setColumns("repourl").setTables("repository").build();
+            //string branchNames = new SELECTQueryBuilder().setColumns("name").setTables("Branch").build();
             
-            populateAuthorBox(authorNames);
+            
             populateRepositoryBox(repoNames);
+            //populateBranchBox(branchNames);
             this.dataGridViewCommitHashBox.CellBorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
             this.labelShowFileName.Text = "";
+            this.labelShowDirectory.Text = "";
+            this.Commits.Text = "Commits: 0";
 
             disableFilteringOptions();
-            this.comboBoxSelectBranch.Items.Add("Test Branch");
-            
+           
         }
 
         private void populateCommits(string query)
@@ -58,48 +61,36 @@ namespace CodebaseView
                 this.comboBoxSelectRepository.Items.Add(dt.Rows[i]["repourl"].ToString());
             }
         }
+        private void populateBranchBox(string sql)
+        {
+            this.comboBoxSelectBranch.Items.Clear();
+            DataTable dt = SQL.execute(sql);
+
+            this.comboBoxSelectBranch.Items.Add("");
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                this.comboBoxSelectBranch.Items.Add(dt.Rows[i]["name"].ToString());
+            }
+        }
         private void populateAuthorBox(string sql)
         {
             this.comboBoxSelectAuthor.Items.Clear();
             DataTable dt = SQL.execute(sql);
+
+            this.comboBoxSelectAuthor.Items.Add("");
             for (int i = 0; i < dt.Rows.Count; i++)
             {
                 this.comboBoxSelectAuthor.Items.Add(dt.Rows[i]["name"].ToString());
             }
         }
 
-        private void populateFiles(string query)
-        {
-            DataTable dt = SQL.execute(query);
-            
-        }
+    
 
         private void Form1_Load(object sender, EventArgs e)
         {
 
         }
 
-        
-
-        private void test()
-        {
-            this.richTextBoxCodeChanges.Text = "";
-            string dateTime = this.dateTimePicker1.Text;
-
-            TimeStamp date = new TimeStamp(this.dateTimePicker1.Value.Year.ToString(),
-                this.dateTimePicker1.Value.Month.ToString(),
-                this.dateTimePicker1.Value.Day.ToString(),
-                this.dateTimePicker1.Value.TimeOfDay.ToString());
-
-            SELECTQueryBuilder qe = new SELECTQueryBuilder();
-            string currentDate = dateTimePicker1.Value.ToString();
-            string sqlstr = qe.setColumns("message", "author_id").setTables("commit").setConditionals("datetime = '"
-                + date.ToSelectString() + "'").build();
-            DataTable authorCommit = SQL.execute(sqlstr);
-
-            textBoxCommitMessage.Text = authorCommit.Rows[0]["message"].ToString();
-        }
-       
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -197,7 +188,9 @@ namespace CodebaseView
 
             //GitParser parser = new GitParser();
             //string repoURL = parser.retrieveRepoURL();
-            
+
+            string repo_id = string.Empty;
+            string branch_id = string.Empty;
 
             //get repo_id
             if (this.comboBoxSelectRepository.SelectedIndex > -1)
@@ -214,7 +207,7 @@ namespace CodebaseView
 
                     if (tempRepoID.Rows.Count > 0)
                     {
-                        string repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
+                        repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
                         selectQueryBuilder.setConditionals("commit.repo_id = " + repo_id);
                     }
                 }
@@ -223,15 +216,47 @@ namespace CodebaseView
             //get dates
             selectQueryBuilder.setConditionals("datetime >= '" + timeAfter + "' and datetime <= '" + timeBefore + "'");
 
+
+
             //get branch id
-
-            if (this.comboBoxSelectBranch.SelectedIndex > -1)
+            if (this.comboBoxSelectBranch.SelectedIndex > -1 && this.comboBoxSelectBranch.SelectedItem.ToString() != "")
             {
+                string branchname = this.comboBoxSelectBranch.SelectedItem.ToString();
 
+                if (branchname != null || branchname != string.Empty)
+                {
+                    SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
+                    tempQueryBuilder.setTables("Branch").setColumns("branch_id").setConditionals("name = '" + branchname + "'")
+                        .setConditionals("repo_id = " + repo_id.ToString());
+                    string tempSqlStr = tempQueryBuilder.build();
+
+                    DataTable tempBranch = SQL.execute(tempSqlStr);
+
+                    if (tempBranch.Rows.Count > 0)
+                    {
+                        branch_id = tempBranch.Rows[0]["branch_id"].ToString();
+                        selectQueryBuilder.setInnerJoinBy("Commit_Map_Branch CMB on CMB.branch_id = " + branch_id +
+                            " and CMB.commit_id = commit.commit_id");
+
+
+                        //get includeCheckbox
+                        if (this.checkBoxExcludeCommits.Checked)
+                        {
+                            SELECTQueryBuilder tempbuilder = new SELECTQueryBuilder();
+                            tempbuilder.setTables("commit_map_branch")
+                                .setColumns("commit_id")
+                                .setConditionals("branch_id != " + branch_id.ToString())
+                                //.setConditionals("repo_id = " + repo_id.ToString())
+                                .setDistinct();
+
+                            selectQueryBuilder.setNotIn(tempbuilder);
+                        }
+                    }
+                }
             }
 
             //get author id
-            if (this.comboBoxSelectAuthor.SelectedIndex > -1)
+            if (this.comboBoxSelectAuthor.SelectedIndex > -1 && this.comboBoxSelectAuthor.SelectedItem.ToString() != "")
             {
                 string name = this.comboBoxSelectAuthor.SelectedItem.ToString();
                 SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
@@ -258,20 +283,36 @@ namespace CodebaseView
             if (this.labelShowFileName.Text != string.Empty)
             {
                 string filename = this.labelShowFileName.Text;
-                selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc on fmc.commit_id = commit.commit_id ");
-                selectQueryBuilder.setInnerJoinBy("FILE F on F.file_id = fmc.file_id and F.filename = '" +
+                selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc_file on fmc_file.commit_id = commit.commit_id ");
+                selectQueryBuilder.setInnerJoinBy("FILE F_file on F_file.file_id = fmc_file.file_id and F_file.filename = '" +
                                                     filename + "'");
-
             }
+
+            //get file directory
+            if (this.labelShowDirectory.Text != string.Empty)
+            {
+                string folderName = this.labelShowDirectory.Text;
+                selectQueryBuilder.setInnerJoinBy("File_Map_Commit fmc_dir on fmc_dir.commit_id = commit.commit_id ");
+                selectQueryBuilder.setInnerJoinBy("FILE F_dir on F_dir.file_id = fmc_dir.file_id and F_dir.filename like CONCAT('" + folderName + "', '%')");
+            }
+
+
+            
+
+            if (this.checkBoxExcludeCommits.Checked && this.comboBoxSelectBranch.SelectedItem.ToString() != "")
+            {
+                selectQueryBuilder.setConditionals("commit.commit_id");
+            }
+
             selectQueryBuilder.setDistinct();
+            selectQueryBuilder.setOrderBy("datetime desc");
             string selectQueryString = selectQueryBuilder.build();
             DataTable commitTable = SQL.execute(selectQueryString);
 
             this.dataGridViewCommitHashBox.DataSource = commitTable;
+            int count = dataGridViewCommitHashBox.RowCount - 1;
 
-
-
-            //TODO: get directory
+            this.Commits.Text = "Commits: " + count.ToString();
         }
 
         private string GetTimeStamp(DateTimePicker dateTimePicker)
@@ -293,9 +334,9 @@ namespace CodebaseView
             if (openFileDialog1.ShowDialog() == DialogResult.OK)
             {
                 string fileName = openFileDialog1.SafeFileName.ToString();
-                string directory = openFileDialog1.FileName.ToString();
+                string directory = openFileDialog1.FileName.ToString(); //.Replace(fileName, "");
       
-                string repoFileName = this.GetRepoFileNameFromTrueDirectory(directory);
+                string repoFileName = this.GetRepoFileNameFromTrueDirectory(fileName, directory);
                 this.labelShowFileName.Text = repoFileName;
             }
         }
@@ -309,15 +350,25 @@ namespace CodebaseView
                 if (result == DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
                     string folder = fbd.SelectedPath;
-                    System.Windows.Forms.MessageBox.Show("Files found: " + folder, "Message");
+                    string repoFolderName = this.GetRepoFileNameFromTrueDirectory("*directory*", folder);
+                    this.labelShowDirectory.Text = repoFolderName;
                 }
             }
         }
 
 
-        private string GetRepoFileNameFromTrueDirectory(string directory)
+        private string GetRepoFileNameFromTrueDirectory(string fileName, string directory)
         {
             GitParser parser = new GitParser();
+            if (fileName != "*directory*")
+            {
+                parser.setCurrentDirectory(directory.Replace(fileName, ""));
+            }
+            else
+            {
+                parser.setCurrentDirectory(directory);
+            }
+
             char[] repoURL = parser.retrieveRepoURL().ToCharArray();
 
             List<char> templist = new List<char>();
@@ -418,13 +469,14 @@ namespace CodebaseView
         private void disableFilteringOptions()
         {
             this.CommitBox.Enabled = false;
+            this.comboBoxSelectBranch.Enabled = false;
             this.dateTimePicker1.Enabled = false;
             this.dateTimePicker2.Enabled = false;
             this.comboBoxSelectAuthor.Enabled = false;
             this.textBoxCommitHash.Enabled = false;
             this.buttonSelectDirectory.Enabled = false;
             this.buttonSelectFile.Enabled = false;
-
+            this.checkBoxExcludeCommits.Enabled = false;
             this.Filter_Button.Enabled = false;
         }
 
@@ -432,18 +484,120 @@ namespace CodebaseView
         {
             if (this.comboBoxSelectRepository.SelectedIndex > -1 && this.comboBoxSelectBranch.SelectedIndex > -1)
             {
-                enableFilteringOptions();
+                if (!repo_and_branch_selected)
+                {
+                    enableFilteringOptions();
+
+                    string repo_url = comboBoxSelectRepository.SelectedItem.ToString();
+                    //get author names from particular repo
+                    string id = new SELECTQueryBuilder()
+                        .setColumns("repo_id")
+                        .setTables("Repository")
+                        .setConditionals("repourl = '" + repo_url + "'")
+                        .build();
+
+                    DataTable repoTable = SQL.execute(id);
+                    string repo_id = repoTable.Rows[0]["repo_id"].ToString();
+
+                    string authors = new SELECTQueryBuilder()
+                        .setDistinct()
+                        .setColumns("name")
+                        .setTables("author")
+                        .setConditionals("author_id")
+                        .setIn(new SELECTQueryBuilder().setDistinct().setTables("commit").setColumns("author_id").setConditionals("repo_id = " + repo_id.ToString()))
+                        .build();
+                    populateAuthorBox(authors);
+
+                    repo_and_branch_selected = true;
+                }
+                
             }
+
+            else if (this.comboBoxSelectRepository.SelectedIndex > -1)
+            {
+                string repo_url = comboBoxSelectRepository.SelectedItem.ToString();
+                
+                string id = new SELECTQueryBuilder()
+                    .setColumns("repo_id")
+                    .setTables("Repository")
+                    .setConditionals("repourl = '" + repo_url + "'")
+                    .build();
+
+                DataTable repoTable = SQL.execute(id);
+                string repo_id = repoTable.Rows[0]["repo_id"].ToString();
+
+                
+                string branches = new SELECTQueryBuilder()
+                    .setDistinct()
+                    .setColumns("name")
+                    .setTables("Branch")
+                    .setConditionals("repo_id = " + repo_id)
+                    .build();
+                populateBranchBox(branches);
+
+                this.comboBoxSelectBranch.Enabled = true;
+                this.checkBoxExcludeCommits.Enabled = true;
+                this.labelShowDirectory.Text = "";
+                this.labelShowFileName.Text = "";
+                this.textBoxCommitHash.Text = "";
+
+            }
+            
+            
         }
 
         private void comboBoxSelectRepository_selectionChanged(object sender, EventArgs e)
         {
+            this.richTextBoxCodeChanges.Text = "";
+            this.textBoxCommitMessage.Text = "";
+            this.textBoxAuthorCommitInfo.Text = "";
+            this.Commits.Text = "Commits: 0";
+            this.dataGridViewCommitHashBox.DataSource = null;
             shouldEnableFiltering();
+            
+            this.comboBoxSelectBranch.SelectedItem = null;
+            this.comboBoxSelectAuthor.SelectedItem = null;
+            this.CommitBox.Enabled = false;
+            this.dateTimePicker1.Enabled = false;
+            this.dateTimePicker2.Enabled = false;
+            this.comboBoxSelectAuthor.Enabled = false;
+            this.textBoxCommitHash.Enabled = false;
+            this.buttonSelectDirectory.Enabled = false;
+            this.buttonSelectFile.Enabled = false;
+            this.Filter_Button.Enabled = false;
+
+            repo_and_branch_selected = false;
         }
 
         private void comboBoxSelectBranch_selectionChanged(object sender, EventArgs e)
         {
             shouldEnableFiltering();
+        }
+
+        private string getRepoID()
+        {
+            string repoURL = this.comboBoxSelectRepository.SelectedItem.ToString();
+            if (repoURL != null || repoURL != string.Empty)
+            {
+
+                SELECTQueryBuilder tempQueryBuilder = new SELECTQueryBuilder();
+                tempQueryBuilder.setTables("Repository").setColumns("repo_id").setConditionals("repoURL = '" + repoURL + "'");
+
+                string tempSqlStr = tempQueryBuilder.build();
+                DataTable tempRepoID = SQL.execute(tempSqlStr);
+
+                if (tempRepoID.Rows.Count > 0)
+                {
+                    string repo_id = tempRepoID.Rows[0]["repo_id"].ToString();
+                    if (repo_id != null || repo_id != string.Empty)
+                    {
+                        return repo_id;
+                    }
+    
+                }
+            }
+
+            return string.Empty;
         }
     }
 }
