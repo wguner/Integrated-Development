@@ -63,6 +63,7 @@ namespace CodebaseView
 
         private List<string> getReposInTemp()
         {
+            Repo_Cloning.RepoCloner.createTempDirectory();
             string[] directories = Directory.GetDirectories(System.IO.Path.GetTempPath() + Repo_Cloning.RepoCloner.TEMP_FOLDER_NAME);
             List<string> listDirectories = new List<string>();
             listDirectories.AddRange(directories);
