@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="520e1bc0-38c5-4173-8699-6ea26599bd4a" Name="IDT_Installer" Language="1033" Version="1.0.0.0" Manufacturer="TeamSokka" UpgradeCode="78b801b4-f293-48ff-8a63-9c6e1f7e94cb">
+	<Product Id="520e1bc0-38c5-4173-8699-6ea26599bd4a" Name="IDT_CodebaseView" Language="1033" Version="1.0.0.0" Manufacturer="TeamSokka" UpgradeCode="78b801b4-f293-48ff-8a63-9c6e1f7e94cb">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
 		<MediaTemplate EmbedCab="yes"/>
 
-		<Feature Id="ProductFeature" Title="IDT_Installer" Level="1">
+		<Feature Id="ProductFeature" Title="IDT_CodebaseView" Level="1">
 			<ComponentGroupRef Id="ProductComponents" />
 		</Feature>
 	</Product>
@@ -14,7 +14,7 @@
 	<Fragment>
 		<Directory Id="TARGETDIR" Name="SourceDir">
 			<Directory Id="ProgramFilesFolder">
-				<Directory Id="INSTALLFOLDER" Name="IDT_Installer" />
+				<Directory Id="INSTALLFOLDER" Name="IDT_CodebaseView" />
 			</Directory>
 		</Directory>
 	</Fragment>
