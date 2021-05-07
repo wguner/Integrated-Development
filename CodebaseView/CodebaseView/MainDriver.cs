@@ -19,7 +19,7 @@ namespace CodebaseView
             parser.init();
             parser.updateDatabase();
 
-
+            parser.initAndUpdateClonedRepos();
            
             CodebaseView form = new CodebaseView();
             Application.Run(form);

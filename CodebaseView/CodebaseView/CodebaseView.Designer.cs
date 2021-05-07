@@ -63,6 +63,8 @@
             this.AddRepositoryStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.viewGradesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.commitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.switchToAWSDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.switchToLocalDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).BeginInit();
@@ -191,9 +193,9 @@
             this.checkBoxExcludeCommits.AutoSize = true;
             this.checkBoxExcludeCommits.Location = new System.Drawing.Point(3, 123);
             this.checkBoxExcludeCommits.Name = "checkBoxExcludeCommits";
-            this.checkBoxExcludeCommits.Size = new System.Drawing.Size(190, 17);
+            this.checkBoxExcludeCommits.Size = new System.Drawing.Size(187, 17);
             this.checkBoxExcludeCommits.TabIndex = 19;
-            this.checkBoxExcludeCommits.Text = "Exclude commits in other branches";
+            this.checkBoxExcludeCommits.Text = "Include commits in other branches";
             this.checkBoxExcludeCommits.UseVisualStyleBackColor = true;
             // 
             // labelShowDirectory
@@ -394,7 +396,9 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AddRepositoryStrip});
+            this.AddRepositoryStrip,
+            this.switchToAWSDatabaseToolStripMenuItem,
+            this.switchToLocalDatabaseToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
             this.toolStripMenuItem1.Text = "File";
@@ -420,6 +424,20 @@
             this.commitsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.commitsToolStripMenuItem.Text = "Commits";
             this.commitsToolStripMenuItem.Click += new System.EventHandler(this.commitsToolStripMenuItem_Click);
+            // 
+            // switchToAWSDatabaseToolStripMenuItem
+            // 
+            this.switchToAWSDatabaseToolStripMenuItem.Name = "switchToAWSDatabaseToolStripMenuItem";
+            this.switchToAWSDatabaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.switchToAWSDatabaseToolStripMenuItem.Text = "Use AWS Database";
+            this.switchToAWSDatabaseToolStripMenuItem.Click += new System.EventHandler(this.switchToAWSDatabaseToolStripMenuItem_Click);
+            // 
+            // switchToLocalDatabaseToolStripMenuItem
+            // 
+            this.switchToLocalDatabaseToolStripMenuItem.Name = "switchToLocalDatabaseToolStripMenuItem";
+            this.switchToLocalDatabaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.switchToLocalDatabaseToolStripMenuItem.Text = "Use Local Database";
+            this.switchToLocalDatabaseToolStripMenuItem.Click += new System.EventHandler(this.switchToLocalDatabaseToolStripMenuItem_Click);
             // 
             // CodebaseView
             // 
@@ -487,6 +505,8 @@
         private System.Windows.Forms.CheckBox checkBoxExcludeCommits;
         private System.Windows.Forms.ToolStripMenuItem viewGradesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem commitsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem switchToAWSDatabaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem switchToLocalDatabaseToolStripMenuItem;
     }
 }
 
