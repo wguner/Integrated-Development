@@ -61,6 +61,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.AddRepositoryStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.switchToAWSDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.switchToLocalDatabaseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).BeginInit();
@@ -391,7 +393,9 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.AddRepositoryStrip});
+            this.AddRepositoryStrip,
+            this.switchToAWSDatabaseToolStripMenuItem,
+            this.switchToLocalDatabaseToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
             this.toolStripMenuItem1.Text = "File";
@@ -399,9 +403,23 @@
             // AddRepositoryStrip
             // 
             this.AddRepositoryStrip.Name = "AddRepositoryStrip";
-            this.AddRepositoryStrip.Size = new System.Drawing.Size(155, 22);
+            this.AddRepositoryStrip.Size = new System.Drawing.Size(180, 22);
             this.AddRepositoryStrip.Text = "Add Repository";
             this.AddRepositoryStrip.Click += new System.EventHandler(this.AddRepositoryStrip_Click);
+            // 
+            // switchToAWSDatabaseToolStripMenuItem
+            // 
+            this.switchToAWSDatabaseToolStripMenuItem.Name = "switchToAWSDatabaseToolStripMenuItem";
+            this.switchToAWSDatabaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.switchToAWSDatabaseToolStripMenuItem.Text = "Use AWS Database";
+            this.switchToAWSDatabaseToolStripMenuItem.Click += new System.EventHandler(this.switchToAWSDatabaseToolStripMenuItem_Click);
+            // 
+            // switchToLocalDatabaseToolStripMenuItem
+            // 
+            this.switchToLocalDatabaseToolStripMenuItem.Name = "switchToLocalDatabaseToolStripMenuItem";
+            this.switchToLocalDatabaseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.switchToLocalDatabaseToolStripMenuItem.Text = "Use Local Database";
+            this.switchToLocalDatabaseToolStripMenuItem.Click += new System.EventHandler(this.switchToLocalDatabaseToolStripMenuItem_Click);
             // 
             // CodebaseView
             // 
@@ -467,6 +485,8 @@
         private System.Windows.Forms.ComboBox comboBoxSelectBranch;
         private System.Windows.Forms.Label labelShowDirectory;
         private System.Windows.Forms.CheckBox checkBoxExcludeCommits;
+        private System.Windows.Forms.ToolStripMenuItem switchToAWSDatabaseToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem switchToLocalDatabaseToolStripMenuItem;
     }
 }
 

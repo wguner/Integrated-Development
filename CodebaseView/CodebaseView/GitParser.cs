@@ -278,7 +278,7 @@ namespace CodebaseView
             string query = new SELECTQueryBuilder()
                 .setColumns("commit_id").setTables("Commit").build();
 
-            DataTable dt = SQL.execute(query);
+            DataTable dt = SQL.execute(query, true);
 
             return !dt.Columns.Contains(newestCommitID);
         }
@@ -298,7 +298,6 @@ namespace CodebaseView
                 string repoURL;
                 repoURL = runGitCommandProcess("config --get remote.origin.url")[0];
                 updateDatabase(currentDirectory, repoURL);
-                
             }
         }
 
@@ -308,13 +307,13 @@ namespace CodebaseView
             //see if that repo is in the db
             //if not, insert it
             bool repoExists = SQL.execute(new SELECTQueryBuilder()
-                .setTables("Repository").setColumns("*").setConditionals("repoURL = '" + repoURL + "'").build()).Rows.Count > 0;
+                .setTables("Repository").setColumns("*").setConditionals("repoURL = '" + repoURL + "'").build(), true).Rows.Count > 0;
 
             if (!repoExists)
             {
                 INSERTQueryBuilder repoInsert = new INSERTQueryBuilder().setTable("Repository");
                 repoInsert.addColumnValue("repoURL", repoURL);
-                SQL.execute(repoInsert.build());
+                SQL.execute(repoInsert.build(), true);
 
                 
                 string location = RegistryHandler.readFileLocation(repoURL);
@@ -327,7 +326,7 @@ namespace CodebaseView
             //retrieve repo id
             string queryRepoID = new SELECTQueryBuilder().setTables("Repository")
                 .setColumns("repo_id").setConditionals("repoURL = '" + repoURL + "'").build();
-            int repo_id = (int)SQL.execute(queryRepoID).Rows[0]["repo_id"];
+            int repo_id = (int)SQL.execute(queryRepoID, true).Rows[0]["repo_id"];
 
             // COMMIT TABLE UPDATING
             foreach (Commit commit in this.commits)
@@ -335,23 +334,23 @@ namespace CodebaseView
                 // AUTHOR TABLE UPDATING
                 //if there's a new author not in the db, update the author table
                 bool authorExists = SQL.execute(new SELECTQueryBuilder()
-                .setTables("Author").setColumns("*").setConditionals("email = '" + commit.authorEmail + "'").build()).Rows.Count > 0;
+                .setTables("Author").setColumns("*").setConditionals("email = '" + commit.authorEmail + "'").build(), true).Rows.Count > 0;
                 if (!authorExists)
                 {
                     INSERTQueryBuilder authorInsert = new INSERTQueryBuilder().setTable("Author");
                     authorInsert.addColumnValue("name", commit.authorName);
                     authorInsert.addColumnValue("email", commit.authorEmail);
-                    SQL.execute(authorInsert.build());
+                    SQL.execute(authorInsert.build(), true);
                 }
 
                 //query author id by email
                 string queryAuthorID = new SELECTQueryBuilder().setTables("Author")
                 .setColumns("author_id").setConditionals("email = '" + commit.authorEmail + "'").build();
-                int author_id = (int)SQL.execute(queryAuthorID).Rows[0]["author_id"];
+                int author_id = (int)SQL.execute(queryAuthorID, true).Rows[0]["author_id"];
 
                 //check if commit is in db first?
                 bool commitExists = SQL.execute(new SELECTQueryBuilder().setTables("Commit")
-                    .setColumns("*").setConditionals("commit_hash = '" + commit.commit_hash + "'").build()).Rows.Count > 0;
+                    .setColumns("*").setConditionals("commit_hash = '" + commit.commit_hash + "'").build(), true).Rows.Count > 0;
                 if (!commitExists)
                 {
                     INSERTQueryBuilder commitInsert = new INSERTQueryBuilder().setTable("commit");
@@ -361,11 +360,11 @@ namespace CodebaseView
                     commitInsert.addColumnValue("datetime", commit.timestamp.ToInsertString());
                     commitInsert.addColumnValue("repo_id", repo_id + "");
                     string commitInsertQuery = commitInsert.build();
-                    SQL.execute(commitInsertQuery);
+                    SQL.execute(commitInsertQuery, true);
 
                     string queryCommitID = new SELECTQueryBuilder().setTables("Commit")
                         .setColumns("commit_id").setConditionals("commit_hash = '" + commit.commit_hash + "'").build();
-                    int commit_id = (int)SQL.execute(queryCommitID).Rows[0]["commit_id"];
+                    int commit_id = (int)SQL.execute(queryCommitID, true).Rows[0]["commit_id"];
 
                     // BRANCH TABLE UPDATING
                     // run command for each commit hash to see which branches contain it
@@ -374,26 +373,26 @@ namespace CodebaseView
                     {
                         bool branchExists = SQL.execute(new SELECTQueryBuilder().setTables("Branch")
                             .setColumns("*").setConditionals("name = '" + branch + "'")
-                            .setConditionals("repo_id = " + repo_id.ToString()).build()).Rows.Count > 0;
+                            .setConditionals("repo_id = " + repo_id.ToString()).build(), true).Rows.Count > 0;
                         if (!branchExists)
                         {
                             INSERTQueryBuilder branchInsert = new INSERTQueryBuilder().setTable("Branch");
                             branchInsert.addColumnValue("name", branch);
                             branchInsert.addColumnValue("repo_id", repo_id + "");
                             string branchInsertQuery = branchInsert.build();
-                            SQL.execute(branchInsertQuery);
+                            SQL.execute(branchInsertQuery, true);
                         }
                         // query branch id
                         string queryBranchID = new SELECTQueryBuilder().setTables("Branch")
                             .setColumns("branch_id").setConditionals("name = '" + branch + "'", "repo_id = '" + repo_id + "'").build();
-                        int branch_id = (int)SQL.execute(queryBranchID).Rows[0]["branch_id"];
+                        int branch_id = (int)SQL.execute(queryBranchID, true).Rows[0]["branch_id"];
 
                         // COMMIT_MAP_BRANCH UPDATING
                         INSERTQueryBuilder branchCommitMapInsert = new INSERTQueryBuilder().setTable("Commit_Map_Branch");
                         branchCommitMapInsert.addColumnValue("branch_id", branch_id + "");
                         branchCommitMapInsert.addColumnValue("commit_id", commit_id + "");
                         string insertBranchCommitMap = branchCommitMapInsert.build();
-                        SQL.execute(insertBranchCommitMap);
+                        SQL.execute(insertBranchCommitMap, true);
                     }
 
                     // FILE TABLE UDPDATING
@@ -403,7 +402,7 @@ namespace CodebaseView
                     {
                         // check if file is in db
                         bool fileExists = SQL.execute(new SELECTQueryBuilder().setTables("File")
-                            .setColumns("*").setConditionals("filename = '" + file + "'").build()).Rows.Count > 0;
+                            .setColumns("*").setConditionals("filename = '" + file + "'").build(), true).Rows.Count > 0;
                         int fileNameEnd = file.LastIndexOf('.');
                         if (!fileExists)
                         {
@@ -412,19 +411,19 @@ namespace CodebaseView
                             fileInsert.addColumnValue("file_extension", file.Substring(fileNameEnd));
                             fileInsert.addColumnValue("repo_id", repo_id + "");
                             string fileInsertQuery = fileInsert.build();
-                            SQL.execute(fileInsertQuery);
+                            SQL.execute(fileInsertQuery, true);
                         }
                         // query file id
                         string queryFileID = new SELECTQueryBuilder().setTables("File")
                             .setColumns("file_id").setConditionals("filename = '" + file.Substring(0, fileNameEnd) + "'", "repo_id = '" + repo_id + "'").build();
-                        int file_id = (int)SQL.execute(queryFileID).Rows[0]["file_id"];
+                        int file_id = (int)SQL.execute(queryFileID, true).Rows[0]["file_id"];
 
                         // FILE_MAP_COMMIT UPDATING
                         INSERTQueryBuilder fileCommitMapInsert = new INSERTQueryBuilder().setTable("File_Map_Commit");
                         fileCommitMapInsert.addColumnValue("file_id", file_id + "");
                         fileCommitMapInsert.addColumnValue("commit_id", commit_id + "");
                         string insertFileCommitMap = fileCommitMapInsert.build();
-                        SQL.execute(insertFileCommitMap);
+                        SQL.execute(insertFileCommitMap, true);
                     }
                 }
             }
