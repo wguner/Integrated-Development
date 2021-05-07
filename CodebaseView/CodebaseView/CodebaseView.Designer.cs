@@ -61,6 +61,8 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.AddRepositoryStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewGradesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.commitsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CommitBox.SuspendLayout();
             this.Commits.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCommitHashBox)).BeginInit();
@@ -381,7 +383,8 @@
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
+            this.toolStripMenuItem1,
+            this.viewGradesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1501, 24);
@@ -399,9 +402,24 @@
             // AddRepositoryStrip
             // 
             this.AddRepositoryStrip.Name = "AddRepositoryStrip";
-            this.AddRepositoryStrip.Size = new System.Drawing.Size(155, 22);
+            this.AddRepositoryStrip.Size = new System.Drawing.Size(180, 22);
             this.AddRepositoryStrip.Text = "Add Repository";
             this.AddRepositoryStrip.Click += new System.EventHandler(this.AddRepositoryStrip_Click);
+            // 
+            // viewGradesToolStripMenuItem
+            // 
+            this.viewGradesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.commitsToolStripMenuItem});
+            this.viewGradesToolStripMenuItem.Name = "viewGradesToolStripMenuItem";
+            this.viewGradesToolStripMenuItem.Size = new System.Drawing.Size(83, 20);
+            this.viewGradesToolStripMenuItem.Text = "View Grades";
+            // 
+            // commitsToolStripMenuItem
+            // 
+            this.commitsToolStripMenuItem.Name = "commitsToolStripMenuItem";
+            this.commitsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.commitsToolStripMenuItem.Text = "Commits";
+            this.commitsToolStripMenuItem.Click += new System.EventHandler(this.commitsToolStripMenuItem_Click);
             // 
             // CodebaseView
             // 
@@ -467,6 +485,8 @@
         private System.Windows.Forms.ComboBox comboBoxSelectBranch;
         private System.Windows.Forms.Label labelShowDirectory;
         private System.Windows.Forms.CheckBox checkBoxExcludeCommits;
+        private System.Windows.Forms.ToolStripMenuItem viewGradesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem commitsToolStripMenuItem;
     }
 }
 
