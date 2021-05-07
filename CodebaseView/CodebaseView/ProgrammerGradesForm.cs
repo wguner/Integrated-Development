@@ -25,9 +25,13 @@ namespace CodebaseView
             this.ProgrammerName.Visible = true;
             this.numCommits.Visible = true;
             this.programmerGrade.Visible = true;
-            this.programmerInfo.Rows.Add("Shawn Poole", "58", "B");
-            this.programmerInfo.Rows.Add("Alex Udodik", "54", "B");
-            this.programmerInfo.Rows.Add("Jacob Huber", "45", "B-");
+
+            // insert querying db here and ai evaluation
+
+            this.programmerInfo.Rows.Add("Shawn Poole", "59", "A-");
+            this.programmerInfo.Rows.Add("Alex Udodik", "65", "A");
+            this.programmerInfo.Rows.Add("Jacob Huber", "55", "B+");
+            this.programmerInfo.Rows.Add("Malachi Potts", "45", "B");
         }
     }
 }

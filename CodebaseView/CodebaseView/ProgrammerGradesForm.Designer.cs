@@ -30,11 +30,11 @@
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.programmerInfo = new System.Windows.Forms.DataGridView();
-            this.printGrades = new System.Windows.Forms.Button();
-            this.viewGrades = new System.Windows.Forms.Button();
             this.ProgrammerName = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.numCommits = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.programmerGrade = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.printGrades = new System.Windows.Forms.Button();
+            this.viewGrades = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.programmerInfo)).BeginInit();
             this.SuspendLayout();
@@ -51,15 +51,33 @@
             // 
             // programmerInfo
             // 
+            this.programmerInfo.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.programmerInfo.AutoSizeRowsMode = System.Windows.Forms.DataGridViewAutoSizeRowsMode.AllCells;
             this.programmerInfo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.programmerInfo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ProgrammerName,
             this.numCommits,
             this.programmerGrade});
-            this.programmerInfo.Location = new System.Drawing.Point(8, 23);
+            this.programmerInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.programmerInfo.Location = new System.Drawing.Point(3, 16);
             this.programmerInfo.Name = "programmerInfo";
-            this.programmerInfo.Size = new System.Drawing.Size(572, 392);
+            this.programmerInfo.Size = new System.Drawing.Size(580, 416);
             this.programmerInfo.TabIndex = 0;
+            // 
+            // ProgrammerName
+            // 
+            this.ProgrammerName.HeaderText = "Programmer Name";
+            this.ProgrammerName.Name = "ProgrammerName";
+            // 
+            // numCommits
+            // 
+            this.numCommits.HeaderText = "Number of Commits";
+            this.numCommits.Name = "numCommits";
+            // 
+            // programmerGrade
+            // 
+            this.programmerGrade.HeaderText = "Programmer Grade";
+            this.programmerGrade.Name = "programmerGrade";
             // 
             // printGrades
             // 
@@ -79,21 +97,6 @@
             this.viewGrades.Text = "View Grades";
             this.viewGrades.UseVisualStyleBackColor = true;
             this.viewGrades.Click += new System.EventHandler(this.viewGrades_Click);
-            // 
-            // ProgrammerName
-            // 
-            this.ProgrammerName.HeaderText = "Programmer Name";
-            this.ProgrammerName.Name = "ProgrammerName";
-            // 
-            // numCommits
-            // 
-            this.numCommits.HeaderText = "Number of Commits";
-            this.numCommits.Name = "numCommits";
-            // 
-            // programmerGrade
-            // 
-            this.programmerGrade.HeaderText = "Programmer Grade";
-            this.programmerGrade.Name = "programmerGrade";
             // 
             // ProgrammerGradesForm
             // 
